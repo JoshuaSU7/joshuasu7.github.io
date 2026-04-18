@@ -147,7 +147,7 @@
 						<p>
 							<!-- Describe your discovery project in a sentence or two -->
 							This project explores crash detection and notification to a web server through using an ESP32, accelerometer, and gyroscope.
-							The goal was to gain a deeper understanding of embedded systems, programming in C++, using RTOS, and wireless
+							The goal was to gain a deeper understanding of embedded systems, programming in C++, and wireless
 							networking. Ideally the module would be integrated into a wearable form factor in order to detect falling or impact collisions
 							, which could especially benefit the elderly, cyclists, or motorcyclists.
 						</p>
@@ -180,13 +180,59 @@
 
 						<!-- Process / Methods -->
 						<span class="section-badge">Process</span>
-						<h3>How I Explored It</h3>
+						<h3>Overall Approach</h3>
 						<p>
-							Before getting into the technical aspects of programming and configuring hardware, I began by thinking of the project from a 
-							thresholding approach, something I was familiar with from my other projects. E.g.,
-							past what acceleration/rotation denotes a fall? What change in acceleration/rotation denotes an impact? I also researched
-							how other companies approach the issue, such as the Apple watch's and Tesla vehicle crash detection systems. After researching the
-							relevant metrics for the project, I began familiarizing myself with RTOS, C++, and and wireless networking. 
+							I approached this project from a thresholding perspective, so I began researching what levels of acceleration denote
+							a fall or crash on a bike or e-scooter, which range from 200-700m/s^2. For this application, it is better to set the
+							threshold at the lower bound, as potential false positives are less dire than false negatives. Aside from just acceleration, 
+							crashes are characterized either by being in free-fall before or after impact, or abrupt stillness after impact (where impacts are characterized by high acceleration). 
+							To reflect this, I couple this acceleration thresholding with pre-impact and post-impact analyses, which is explained
+							later. The results of the pre and post analyses as well as the additional acceleration of the device past the 
+							threshold, can increase the crash likelihood score. Once a crash is confirmed, a message is sent to a web-server hosted over Wi-fi with the time of the crash and
+							the crash likelihood score. 
+						</p>
+						
+						<h3>Hardware</h3>
+						<p>
+							This project uses an ESP32 Dev module, and a MPU6050 (acclerometer and gyroscope). Additional hardware that were considered
+							were NEO-6M GPS and SIM800L modules, for location reporting and cellular wireless connection to a web server, but due to cost
+							constraints, they were ommitted for this project. Working hands-on with hardware helped me gain experience in reading
+							pinouts, and understanding I2C communication. 
+						</p>
+
+						<h3>Software</h3>
+						<p>
+							The hardware was programmed using C++ via the PlatformIO application in VSCode. PlatformIO provides an organized and
+							efficient way to upload and flash code to the ESP32, and lets you choose different well-known programming 
+							frameworks. Its built-in library manager already contains drivers for the MPU6050, which was used later
+							during programming. I have experience programming in Python, but was decently new to programming in C++, 
+							which taught me concepts like file structure, OOP, and how to use pointers for effective memory management. 
+						</p>
+
+						<h3>Programming/Algorithm Design</h3>
+						<p>
+							Instead of putting all code into one file, I decided to break the code up into 3 C++ programs - data collection, 
+							main (which contains the detection algorithm), and wifi notification. This way the code is more organized and mirrors
+							the main programming tasks of the project. 
+							
+							The datacollection file uses functions within the MPU6050 drivers to update the
+							MPU object with its current acceleration and gyro readings.
+
+							The wifinotify file uses the built-in support for WiFi on ESP-32, and HTTP POST requests to connect to a server hosted
+							by my personal computer over WiFi, and send the crash detection message and collision likelihood score to the server.
+							The server is hosted using Flask, and is written in Python. 
+							
+							The main file uses the datacollection and wifinotify file to fully integrate real-time data collection, crash detection
+							, and notification. It is structured into 2 parts: initial setup, and a real-time loop. Setup contains initial calibration of the 
+							MPU6050, by taking the average of the first 10 readings, and subtracting that from any subsequent readings. This is done to normalize
+							the data and account for the constant acceleration of gravity. Setup is also used to initialize functions and variables that will
+							be used later in the real-time loop. In the real-time loop, data is collected using the function from datacollection.cpp,
+							printed to the Serial Monitor, and the magnitude of acceleration is recorded (use magnitude of acceleration to be independent of orientation).
+							In order for thorough analysis of an impact to be completed, a running history of X previous values of acceleration magnitude is kept.
+							Once acceleration magnitude exceeds a defined threshold, it is denoted as an impact and performs a pre-impact analysis, where it checks if the device was in free-fall before impact.
+							If it was, it adds onto the collision likelihood score. Afterwards, it analyses Y values after the impact to see if the device was in free-fall or if the device is still
+							after impact. If it is, then it adds onto the collision likelihood score. Once pre and post analyses are concluded, it sends the notification
+							and message to the web server. 
 						</p>
 
 						<!-- Process Images -->
