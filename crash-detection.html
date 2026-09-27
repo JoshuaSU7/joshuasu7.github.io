@@ -71,13 +71,13 @@
     <h2>Overview</h2>
     <p>
       This project detects crashes and falls using an ESP32 paired with an accelerometer and gyroscope, then notifies a web
-      server over Wi-Fi. The goal was a deeper understanding of embedded systems, C++, and wireless networking &mdash; but the
+      server over Wi-Fi. The goal was a deeper understanding of embedded systems, C++, and wireless networking. The
       end application is a wearable module that could genuinely help the elderly, cyclists and motorcyclists.
     </p>
 
     <h2>Why This Topic</h2>
     <p>
-      What drew me in was the idea of a stroke detection and notification device &mdash; a fall detection module alongside other
+      What drew me in was the idea of a stroke detection and notification device. A fall detection module alongside other
       biosensors. Given the project timeframe, focusing on the fall and crash detection half made more sense.
     </p>
     <p>
@@ -94,7 +94,7 @@
     <h2>Approach</h2>
     <p>
       I approached this from a thresholding perspective, researching what acceleration levels actually characterise a crash
-      on a bike or e-scooter &mdash; roughly 200&ndash;700&nbsp;m/s&sup2;. I set the threshold at the lower bound deliberately: a
+      on a bike or e-scooter (roughly 200&ndash;700&nbsp;m/s&sup2;). I set the threshold at the lower bound deliberately: a
       false positive is far less costly than a missed crash.
     </p>
     <p>
@@ -113,7 +113,7 @@
     </p>
 
     <div class="fig-row">
-      <figure><img src="images/esp32.jpg" alt="ESP32 development module" /><figcaption>ESP32 Dev module &mdash; Wi-Fi, enough compute for real-time analysis, and an I2C bus for the IMU.</figcaption></figure>
+      <figure><img src="images/esp32.jpg" alt="ESP32 development module" /><figcaption>ESP32 Dev module, enough compute for real-time analysis, and an I2C bus for the IMU.</figcaption></figure>
       <figure><img src="images/Hardware-IRL.jpg" alt="Assembled hardware on a breadboard" /><figcaption>The assembled prototype: ESP32 and MPU6050 wired over I2C.</figcaption></figure>
     </div>
 
@@ -138,8 +138,8 @@
       subtracting that offset from everything after, which normalises the data and cancels the constant 1&nbsp;g of gravity.
     </p>
     <p>
-      In the loop, readings come in, get printed to the serial monitor, and the <em>magnitude</em> of acceleration is recorded &mdash;
-      magnitude rather than per-axis, so detection is independent of how the device is oriented. A rolling history of the
+      In the loop, readings come in, get printed to the serial monitor, and the <em>magnitude</em> of acceleration is recorded (magnitude
+      rather than per-axis, so detection is independent of how the device is oriented). A rolling history of the
       previous X magnitude values is kept so an impact can be analysed in context.
     </p>
     <p>
@@ -151,8 +151,8 @@
     <h2>Demo</h2>
     <p>
       The clip below shows the system running: live acceleration data, impact detection, and the server notification. For
-      easy testing the ESP32 is dropped about three feet onto a hard surface &mdash; visible as the spike to roughly
-      23&nbsp;m/s&sup2; at 0:05 &mdash; against a 20&nbsp;m/s&sup2; threshold. In the real application that threshold would be far
+      easy testing the ESP32 is dropped about three feet onto a hard surface (visible as the spike to roughly
+      23&nbsp;m/s&sup2; at 0:05 against a 20&nbsp;m/s&sup2; threshold). In the real application that threshold would be far
       higher, 100&nbsp;m/s&sup2; at minimum.
     </p>
     <figure>

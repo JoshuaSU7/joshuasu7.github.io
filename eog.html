@@ -45,7 +45,7 @@
   <div class="wrap">
     <a class="backlink" href="projects.html">&larr; All projects</a>
     <h1>EOG Eye Tracking &amp; Blink Detection</h1>
-    <p class="lede">Electrooculography-based eye tracking and blink detection for mouse control &mdash; giving people who can only move their eyes a way back to a computer.</p>
+    <p class="lede">Electrooculography-based eye tracking and blink detection for mouse control, giving people who can only move their eyes a way back to a computer.</p>
     <div class="tags">
       <span class="tag">Python</span>
       <span class="tag">Arduino</span>
@@ -66,7 +66,7 @@
     <h2>Overview</h2>
     <p>
       What if you could control a mouse using only your eyes? For most people that is a gimmick. For someone with
-      locked-in syndrome &mdash; a form of paralysis where eye movement is the only motion left &mdash; it is the difference
+      locked-in syndrome (a form of paralysis where eye movement is the only motion left). It is the difference
       between having a way to communicate and not having one.
     </p>
     <p>
@@ -76,15 +76,15 @@
 
     <h2>Approach</h2>
     <p>
-      My team and I started with the vertical axis only. We first found the optimal electrode placement &mdash; directly above
-      and below the eye &mdash; then acquired and filtered the signal using an Arduino, a biosignal amplifier, and a bandpass
+      My team and I started with the vertical axis only. We first found the optimal electrode placement (directly above
+      and below the eye), then acquired and filtered the signal using an Arduino, a biosignal amplifier, and a bandpass
       filter from 0.1&nbsp;Hz to 30&nbsp;Hz.
     </p>
     <p>
       Investigating the relationship between EOG signal magnitude and gaze angle turned up something useful: it is
       <strong>linear</strong>. The further the eyes move, the higher the peak in the signal. That meant a simple linear
       regression on incoming signal peaks was enough to drive cursor movement. We also found blink peaks are significantly
-      larger than eye-movement peaks, so straightforward thresholding separates the two &mdash; and blinks become clicks.
+      larger than eye-movement peaks, so straightforward thresholding separates the two, and blinks become clicks.
     </p>
 
     <h3>Calibration</h3>
@@ -99,7 +99,7 @@
     </p>
 
     <div class="fig-row">
-      <figure><img src="images/eog-electrode-placement.jpg" alt="Electrode placement above and below the eye" /><figcaption>Electrode placement &mdash; directly above and below the eye, the position that gave the cleanest vertical-axis signal.</figcaption></figure>
+      <figure><img src="images/eog-electrode-placement.jpg" alt="Electrode placement above and below the eye" /><figcaption>Electrode placement, directly above and below the eye, the position that gave the cleanest vertical-axis signal.</figcaption></figure>
       <figure><img src="images/calibration.gif" alt="Eye movement calibration game" /><figcaption>The eye-movement calibration game. The user follows each point while the software records EOG in the background and fits the regression.</figcaption></figure>
     </div>
 
@@ -109,7 +109,7 @@
       revisions. The current version works like this:
     </p>
     <ol>
-      <li>When the signal is flat &mdash; no eye movement &mdash; establish a baseline average, plus symmetric upper and lower bounds around it.</li>
+      <li>When the signal is flat, no eye movement, establish a baseline average, plus symmetric upper and lower bounds around it.</li>
       <li>When the signal rises and breaks through the upper bound, watch for the inflection point where it turns from rising to falling. That point is the true peak.</li>
       <li>Subtract the baseline from that peak and feed the difference through the linear regression to get the corresponding mouse movement.</li>
     </ol>

@@ -101,12 +101,12 @@
           <tr>
             <td>Operating frequency f<sub>0</sub></td>
             <td>10.5 GHz</td>
-            <td>X-band is the practical sweet spot for ground SAR, maritime and weather sensing &mdash; small enough antennas to be portable, long enough wavelength to behave well in weather.</td>
+            <td>X-band is the practical sweet spot for ground SAR, maritime and weather sensing. Small enough antennas to be portable, but long enough wavelength to behave well in weather.</td>
           </tr>
           <tr>
             <td>Array dimensions</td>
             <td>4 &times; 4</td>
-            <td>One beamformer IC drives four elements, so 3&times;3 or 5&times;5 would waste channels. A square grid steers evenly in both azimuth and elevation, and 16 elements give strong gain and directivity without narrowing the beam so far it becomes hard to use. It is also affordable to fabricate.</td>
+            <td>One beamformer IC drives four elements, so 3&times;3 or 5&times;5 would waste channels. A square grid steers evenly in both azimuth and elevation, and 16 elements give strong gain and directivity without narrowing the beam so far it becomes hard to use. It is also more affordable to fabricate.</td>
           </tr>
           <tr>
             <td>Patch dimensions</td>
@@ -194,7 +194,7 @@
     <h3>Radiation pattern at boresight</h3>
     <figure class="shot">
       <img src="images/radar/gain-pattern-boresight.png" alt="3D total gain radiation pattern at boresight, 17.30 dBi peak" />
-      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a 3&nbsp;dB beamwidth of about 13&deg; &mdash; a narrow-to-medium beam. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
+      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a 3&nbsp;dB beamwidth of about 13&deg; &ndash; a narrow-to-medium beam. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
     </figure>
 
     <h3>Radiation pattern with the beam steered</h3>
@@ -220,12 +220,12 @@
     </p>
     <figure class="shot">
       <img src="images/radar/gain-over-theta-scan.png" alt="Antenna gain plotted against theta scan angle" />
-      <figcaption><b>Gain versus scan angle.</b> Gain holds nearly flat out to about 20&deg;, then rolls off smoothly. Realized gain (green) crosses the half-power line at roughly 60&deg;, giving a <b>60&deg; usable electronic beamsteering range</b> &mdash; very wide for a planar array of this size. Raw gain (red) holds on further, to about 70&deg;.</figcaption>
+      <figcaption><b>Gain versus scan angle.</b> Gain holds nearly flat out to about 20&deg;, then rolls off smoothly. Realized gain (green) crosses the half-power line at roughly 60&deg;, giving a <b>60&deg; usable electronic beamsteering range</b>, which is very wide for a planar array of this size. Raw gain (red) holds on further, to about 70&deg;.</figcaption>
     </figure>
 
     <h3>System efficiency across the scan</h3>
     <p>
-      System efficiency is radiated power over accepted power &mdash; how much of what goes in actually leaves the antenna
+      System efficiency is radiated power over accepted power &ndash; how much of what goes in actually leaves the antenna
       rather than being lost to reflection and coupling.
     </p>
     <div class="fig-row">
@@ -235,7 +235,7 @@
       </figure>
       <figure class="shot">
         <img src="images/radar/system-efficiency-phi-theta.png" alt="System efficiency versus phi scan for a family of theta scan angles" />
-        <figcaption><b>Efficiency vs. azimuth, swept over elevation.</b> Each curve is a different Theta_Scan. Efficiency generally rises with Phi_Scan, and the starting value depends mostly on elevation &mdash; but all curves converge above 0.9, so no azimuth direction is badly penalised.</figcaption>
+        <figcaption><b>Efficiency vs. azimuth, swept over elevation.</b> Each curve is a different Theta_Scan. Efficiency generally rises with Phi_Scan, and the starting value depends mostly on elevation. All curves converge above 0.9, so no azimuth direction is badly penalised.</figcaption>
       </figure>
     </div>
 
@@ -309,7 +309,7 @@
     <h3>Cleaning up the local oscillator</h3>
     <p>
       A synthesizer is only as clean as its supply and its loop filter. The LO&rsquo;s regulator is bypassed with a
-      three-capacitor bank chosen to cover different noise bands &mdash; 0.1&nbsp;&micro;F for 20&ndash;50&nbsp;MHz harmonics,
+      three-capacitor bank chosen to cover different noise bands. 0.1&nbsp;&micro;F for 20&ndash;50&nbsp;MHz harmonics,
       1&nbsp;&micro;F for 10&ndash;20&nbsp;MHz, and 10&nbsp;&micro;F for everything below 10&nbsp;MHz. Digital blocks inside the
       part switch fast and draw current in spikes; without that filtering the spikes ride on the internal LDO rail, the DC
       bias on the VCO gets noisy, and the phase noise of the whole chain suffers.
@@ -320,7 +320,7 @@
     </p>
     <figure class="shot">
       <img src="images/radar/charge-pump-loop-filter.png" alt="Charge pump DC tuning loop filter schematic" />
-      <figcaption><b>Charge pump loop filter.</b> The 1.2&nbsp;nF cap on the left absorbs the charge pump&rsquo;s current spikes so they never show up on the voltage line. The 180&nbsp;&Omega; resistor in series with 18&nbsp;nF adds phase margin &mdash; without it the loop hits 180&deg; of phase delay and the PLL never locks. The final 180&nbsp;&Omega; / 1&nbsp;nF RC stage low-passes what is left before it reaches the VCO tuning pin (Vtune).</figcaption>
+      <figcaption><b>Charge pump loop filter.</b> The 1.2&nbsp;nF cap on the left absorbs the charge pump&rsquo;s current spikes so they never show up on the voltage line. The 180&nbsp;&Omega; resistor in series with 18&nbsp;nF adds phase margin. Without it the loop hits 180&deg; of phase delay and the PLL never locks. The final 180&nbsp;&Omega; / 1&nbsp;nF RC stage low-passes what is left before it reaches the VCO tuning pin (Vtune).</figcaption>
     </figure>
 
     <h2>PCB Integration</h2>
