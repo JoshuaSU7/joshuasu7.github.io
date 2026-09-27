@@ -1,0 +1,416 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Phased Array RADAR Board | Joshua Su</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			.tag-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				margin-top: 0.2em;
+			}
+			.tag {
+				display: inline-block;
+				background: rgba(255,255,255,0.08);
+				border: 1px solid rgba(255,255,255,0.15);
+				border-radius: 4px;
+				padding: 0.15em 0.6em;
+				font-size: 0.75em;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+			}
+
+			.project-links {
+				display: flex;
+				gap: 0.7em;
+				margin-top: 0.8em;
+				flex-wrap: wrap;
+			}
+			.project-links a {
+				font-size: 0.82em;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35em;
+				opacity: 0.8;
+				transition: opacity 0.2s;
+			}
+			.project-links a:hover { opacity: 1; }
+
+			.project-block {
+				margin-bottom: 2em;
+				background: rgba(255,255,255,0.03);
+				border: 1px solid rgba(255,255,255,0.1);
+				border-radius: 10px;
+				overflow: hidden;
+			}
+			.project-block-header {
+				display: flex;
+				gap: 2.5em;
+				align-items: flex-start;
+				flex-wrap: wrap;
+			}
+			.project-block-header .block-img {
+				flex: 0 0 520px;
+				max-width: 100%;
+			}
+			.project-block-header .block-img img {
+				width: 100%;
+				height: 350px;
+				object-fit: cover;
+				display: block;
+				background: #000;
+			}
+			.project-block-header .block-title {
+				flex: 1;
+				min-width: 240px;
+				padding: 2em 2em 2em 0;
+			}
+			@media (max-width: 640px) {
+				.project-block-header .block-title { padding: 1.5em; }
+				.project-block-header .block-img { flex: 0 0 100%; }
+			}
+
+			.project-block-body {
+				padding: 0 2em 2em 2em;
+				border-top: 1px solid rgba(255,255,255,0.07);
+			}
+
+			.section-badge {
+				display: inline-block;
+				background: rgba(255,255,255,0.1);
+				border: 1px solid rgba(255,255,255,0.2);
+				border-radius: 4px;
+				padding: 0.2em 0.8em;
+				font-size: 0.75em;
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+				margin-bottom: 0.5em;
+				margin-top: 1.8em;
+			}
+
+			.project-block-body h4 {
+				margin: 0.3em 0 0.6em 0;
+				font-size: 1em;
+			}
+			.project-block-body p {
+				font-size: 0.92em;
+				opacity: 0.82;
+				line-height: 1.7;
+				margin-bottom: 0.8em;
+			}
+
+			.inline-gallery {
+				display: flex;
+				gap: 1em;
+				flex-wrap: wrap;
+				margin: 1em 0;
+			}
+			.inline-gallery figure {
+				margin: 0;
+				flex: 1;
+				min-width: 200px;
+				background: rgba(0,0,0,0.2);
+				border: 1px solid rgba(255,255,255,0.08);
+				border-radius: 6px;
+				overflow: hidden;
+			}
+			.inline-gallery figure img {
+				width: 100%;
+				height: 300px;
+				object-fit: contain;
+				background: #000;
+				display: block;
+			}
+			.inline-gallery figcaption {
+				padding: 0.5em 0.8em;
+				font-size: 0.8em;
+				opacity: 0.6;
+			}
+
+			/* Design variables / results tables */
+			.spec-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: 1em 0 1.5em 0;
+				font-size: 0.88em;
+			}
+			.spec-table th, .spec-table td {
+				text-align: left;
+				padding: 0.6em 0.9em;
+				border-bottom: 1px solid rgba(255,255,255,0.1);
+				vertical-align: top;
+			}
+			.spec-table th {
+				text-transform: uppercase;
+				font-size: 0.8em;
+				letter-spacing: 0.06em;
+				opacity: 0.6;
+				border-bottom: 1px solid rgba(255,255,255,0.25);
+			}
+			.spec-table tr:last-child td { border-bottom: none; }
+
+			.todo-note {
+				background: rgba(255,196,0,0.08);
+				border: 1px dashed rgba(255,196,0,0.4);
+				border-radius: 6px;
+				padding: 0.9em 1.2em;
+				font-size: 0.85em;
+				opacity: 0.85;
+				margin-bottom: 1em;
+			}
+
+			/* ── Projects dropdown submenu ── */
+			#menu .has-submenu summary {
+				cursor: pointer;
+				list-style: none;
+				display: block;
+			}
+			#menu .has-submenu summary::-webkit-details-marker { display: none; }
+			#menu .has-submenu summary::after {
+				content: '\25B8';
+				float: right;
+				opacity: 0.5;
+				transition: transform 0.2s;
+			}
+			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
+			#menu .submenu {
+				list-style: none;
+				margin: 0.3em 0 0.6em 1.4em;
+				padding: 0;
+			}
+			#menu .submenu li a {
+				font-size: 0.92em;
+				opacity: 0.85;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Joshua Su</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="index.html">Home</a></li>
+									<li><a href="introduction.html">About Me</a></li>
+									<li><a href="resume.html">Resume</a></li>
+									<li class="has-submenu">
+										<details open>
+											<summary>Projects</summary>
+											<ul class="submenu">
+												<li><a href="projects.html">All Projects</a></li>
+												<li><a href="radar.html">Phased Array RADAR</a></li>
+												<li><a href="eog.html">EOG Eye-Tracking</a></li>
+												<li><a href="crash-detection.html">Crash Detection Device</a></li>
+											</ul>
+										</details>
+									</li>
+									<li><a href="career.html">Career Goals</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Main -->
+			<article id="main">
+				<header>
+					<h2>Phased Array RADAR Board</h2>
+					<p><a href="projects.html">&larr; All Projects</a></p>
+				</header>
+				<section class="wrapper style5">
+					<div class="inner">
+
+						<div class="project-block">
+
+							<!-- Header: image + title -->
+							<div class="project-block-header">
+								<div class="block-img">
+									<!-- Replace with a real hero photo of the antenna board once available, e.g. images/radar-board.jpg -->
+									<img src="https://www.image2url.com/r2/default/gifs/1790184984795-0963f042-9a39-4b33-8685-8def3a184876.gif" alt="Phased array beamsteering simulation" />
+								</div>
+								<div class="block-title">
+									<div class="tag-list">
+										<span class="tag">RF / Microwave</span>
+										<span class="tag">Phased Array</span>
+										<span class="tag">Antenna Design</span>
+										<span class="tag">PCB Design</span>
+									</div>
+									<h3 style="margin: 0.6em 0 0.5em 0;">X-Band Phased Array RADAR Antenna Board</h3>
+									<div class="project-links">
+										<!-- <a href="#" class="button primary icon brands fa-github">View on GitHub</a> -->
+									</div>
+								</div>
+							</div>
+
+							<!-- Subsections -->
+							<div class="project-block-body">
+
+								<span class="section-badge">Overview</span>
+								<h4>What Is This Project?</h4>
+								<p>
+									A phased array antenna steers a beam electronically, by controlling the relative phase of the signal driving each
+									radiating element, rather than by physically rotating a dish. This project is the antenna half of a small X-band
+									RADAR system: an RF transverter chain (local oscillator, mixer, filtering, and amplification) generates a signal
+									around 10.5 GHz, which is then fed into this phased array board. My focus here is the array itself — element
+									layout, feed network, and phase control — so the system can steer its beam without any moving parts.
+								</p>
+
+								<span class="section-badge">Design Variables</span>
+								<h4>Key Parameters Driving the Array Design</h4>
+								<div class="todo-note">
+									I wasn't able to pull the specific rows from the "Antenna Design Variables" tab of the spreadsheet automatically.
+									Paste that data in here (element spacing, array size, substrate, feed network type, phase shifter resolution, etc.)
+									and I'll turn it into the table below.
+								</div>
+								<table class="spec-table">
+									<thead>
+										<tr>
+											<th>Variable</th>
+											<th>Value / Choice</th>
+											<th>Why It Matters</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Operating frequency</td>
+											<td>~10.5 GHz (X-band)</td>
+											<td>Set by the transverter's output frequency; drives element spacing and board material choice.</td>
+										</tr>
+										<tr>
+											<td>Element spacing</td>
+											<td><em>add value</em></td>
+											<td>Controls grating-lobe onset and how far the beam can be steered before artifacts appear.</td>
+										</tr>
+										<tr>
+											<td>Number of elements / array size</td>
+											<td><em>add value</em></td>
+											<td>Trade-off between beamwidth, gain, and board size/cost.</td>
+										</tr>
+										<tr>
+											<td>Substrate / PCB stack-up</td>
+											<td><em>add value</em></td>
+											<td>Dielectric constant and loss tangent at 10.5 GHz determine trace impedance and insertion loss.</td>
+										</tr>
+										<tr>
+											<td>Feed network topology</td>
+											<td><em>add value</em></td>
+											<td>Determines amplitude/phase balance delivered to each element.</td>
+										</tr>
+										<tr>
+											<td>Phase shifting method</td>
+											<td><em>add value</em></td>
+											<td>Sets steering resolution and speed.</td>
+										</tr>
+									</tbody>
+								</table>
+
+								<span class="section-badge">Design Results</span>
+								<h4>Simulated Beamsteering</h4>
+								<p>
+									Below is the simulated radiation pattern as the array's beam is steered off boresight by adjusting the
+									inter-element phase. Sweeping the phase progressively across the elements sweeps the main lobe across
+									angle without physically moving the board.
+								</p>
+								<div class="inline-gallery">
+									<figure>
+										<img src="https://www.image2url.com/r2/default/gifs/1790184984795-0963f042-9a39-4b33-8685-8def3a184876.gif" alt="Antenna array beamsteering simulation" />
+										<figcaption>Simulated array beamsteering across scan angle</figcaption>
+									</figure>
+								</div>
+
+								<div class="todo-note">
+									I also wasn't able to pull the "Antenna Design Results" tab automatically. Paste that data in here
+									(e.g. peak gain, half-power beamwidth, sidelobe levels, scan range, simulated vs. measured return loss)
+									and I'll fill out the table below and add any relevant plots.
+								</div>
+								<table class="spec-table">
+									<thead>
+										<tr>
+											<th>Metric</th>
+											<th>Result</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>Peak gain</td>
+											<td><em>add value</em></td>
+										</tr>
+										<tr>
+											<td>Half-power beamwidth</td>
+											<td><em>add value</em></td>
+										</tr>
+										<tr>
+											<td>Sidelobe level</td>
+											<td><em>add value</em></td>
+										</tr>
+										<tr>
+											<td>Scan range</td>
+											<td><em>add value</em></td>
+										</tr>
+										<tr>
+											<td>Return loss / VSWR</td>
+											<td><em>add value</em></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h4>Where It's Going</h4>
+								<p>
+									Next steps include finalizing the PCB layout for fabrication, validating the simulated patterns against
+									bench measurements in an anechoic or quasi-anechoic setup, and integrating the array with the RF
+									transverter board to test the full transmit/receive chain end-to-end.
+								</p>
+
+							</div>
+						</div>
+
+					</div>
+				</section>
+			</article>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

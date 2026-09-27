@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Personal Projects | Joshua Su</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* ── Project card grid ── */
+			.projects-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 2em;
+				margin: 2em 0;
+			}
+
+			.project-card {
+				background: rgba(255,255,255,0.03);
+				border: 1px solid rgba(255,255,255,0.1);
+				border-radius: 10px;
+				overflow: hidden;
+				transition: border-color 0.2s, transform 0.2s;
+				display: flex;
+				flex-direction: column;
+			}
+			.project-card:hover {
+				border-color: rgba(255,255,255,0.3);
+				transform: translateY(-4px);
+			}
+
+			.project-img {
+				width: 100%;
+				height: 200px;
+				object-fit: cover;
+				display: block;
+			}
+
+			.project-body {
+				padding: 1.4em 1.5em 1.6em 1.5em;
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				gap: 0.6em;
+			}
+			.project-body h4 {
+				margin: 0;
+				font-size: 1.1em;
+			}
+			.project-body p {
+				margin: 0;
+				font-size: 0.9em;
+				opacity: 0.75;
+				flex: 1;
+				line-height: 1.6;
+			}
+
+			/* Tag pills */
+			.tag-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				margin-top: 0.2em;
+			}
+			.tag {
+				display: inline-block;
+				background: rgba(255,255,255,0.08);
+				border: 1px solid rgba(255,255,255,0.15);
+				border-radius: 4px;
+				padding: 0.15em 0.6em;
+				font-size: 0.75em;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+			}
+
+			/* Card action links */
+			.project-links {
+				display: flex;
+				gap: 0.7em;
+				margin-top: 0.8em;
+				flex-wrap: wrap;
+			}
+			.project-links a {
+				font-size: 0.82em;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35em;
+				opacity: 0.8;
+				transition: opacity 0.2s;
+			}
+			.project-links a:hover { opacity: 1; }
+
+			/* ── Projects dropdown submenu ── */
+			#menu .has-submenu summary {
+				cursor: pointer;
+				list-style: none;
+				display: block;
+			}
+			#menu .has-submenu summary::-webkit-details-marker { display: none; }
+			#menu .has-submenu summary::after {
+				content: '\25B8';
+				float: right;
+				opacity: 0.5;
+				transition: transform 0.2s;
+			}
+			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
+			#menu .submenu {
+				list-style: none;
+				margin: 0.3em 0 0.6em 1.4em;
+				padding: 0;
+			}
+			#menu .submenu li a {
+				font-size: 0.92em;
+				opacity: 0.85;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Joshua Su</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="index.html">Home</a></li>
+									<li><a href="introduction.html">About Me</a></li>
+									<li><a href="resume.html">Resume</a></li>
+									<li class="has-submenu">
+										<details open>
+											<summary>Projects</summary>
+											<ul class="submenu">
+												<li><a href="projects.html">All Projects</a></li>
+												<li><a href="radar.html">Phased Array RADAR</a></li>
+												<li><a href="eog.html">EOG Eye-Tracking</a></li>
+												<li><a href="crash-detection.html">Crash Detection Device</a></li>
+											</ul>
+										</details>
+									</li>
+									<li><a href="career.html">Career Goals</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Main -->
+			<article id="main">
+				<header>
+					<h2>Personal Projects</h2>
+					<p>Things I've built, explored, and created on my own time.</p>
+				</header>
+				<section class="wrapper style5">
+					<div class="inner">
+
+						<div class="projects-grid">
+
+							<!-- RADAR -->
+							<div class="project-card">
+								<img class="project-img" src="https://www.image2url.com/r2/default/gifs/1790184984795-0963f042-9a39-4b33-8685-8def3a184876.gif" alt="Phased array beamsteering simulation" />
+								<div class="project-body">
+									<div class="tag-list">
+										<span class="tag">RF / Microwave</span>
+										<span class="tag">Antenna Design</span>
+									</div>
+									<h4>Phased Array RADAR Board</h4>
+									<p>An X-band phased array antenna board designed to electronically steer a beam, feeding off a custom 10.5 GHz RF transverter chain.</p>
+									<div class="project-links">
+										<a href="radar.html">View Project &rarr;</a>
+									</div>
+								</div>
+							</div>
+
+							<!-- EOG -->
+							<div class="project-card">
+								<img class="project-img" src="images/eog-project.jpg" alt="EOG project" />
+								<div class="project-body">
+									<div class="tag-list">
+										<span class="tag">Python</span>
+										<span class="tag">Signal Processing</span>
+									</div>
+									<h4>EOG Eye Tracking Project</h4>
+									<p>Electrooculography-based eye tracking and blink detection, built to give locked-in individuals a way to control a mouse with just their eyes.</p>
+									<div class="project-links">
+										<a href="eog.html">View Project &rarr;</a>
+									</div>
+								</div>
+							</div>
+
+							<!-- Crash Detection -->
+							<div class="project-card">
+								<img class="project-img" src="images/crash-detection.jpg" alt="Crash detection project" />
+								<div class="project-body">
+									<div class="tag-list">
+										<span class="tag">Embedded Systems</span>
+										<span class="tag">C++</span>
+									</div>
+									<h4>Embedded Crash Detection Device</h4>
+									<p>An ESP32-based fall and crash detection module that analyzes accelerometer/gyroscope data in real time and sends a wireless notification on impact.</p>
+									<div class="project-links">
+										<a href="crash-detection.html">View Project &rarr;</a>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+				</section>
+			</article>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

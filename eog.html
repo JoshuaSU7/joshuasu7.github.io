@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>EOG Eye Tracking Project | Joshua Su</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<style>
+			/* ── Tag pills ── */
+			.tag-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.4em;
+				margin-top: 0.2em;
+			}
+			.tag {
+				display: inline-block;
+				background: rgba(255,255,255,0.08);
+				border: 1px solid rgba(255,255,255,0.15);
+				border-radius: 4px;
+				padding: 0.15em 0.6em;
+				font-size: 0.75em;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+			}
+
+			/* Card action links */
+			.project-links {
+				display: flex;
+				gap: 0.7em;
+				margin-top: 0.8em;
+				flex-wrap: wrap;
+			}
+			.project-links a {
+				font-size: 0.82em;
+				font-weight: 600;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35em;
+				opacity: 0.8;
+				transition: opacity 0.2s;
+			}
+			.project-links a:hover { opacity: 1; }
+
+			/* ── Full project block ── */
+			.project-block {
+				margin-bottom: 2em;
+				background: rgba(255,255,255,0.03);
+				border: 1px solid rgba(255,255,255,0.1);
+				border-radius: 10px;
+				overflow: hidden;
+			}
+			.project-block-header {
+				display: flex;
+				gap: 2.5em;
+				align-items: flex-start;
+				flex-wrap: wrap;
+			}
+			.project-block-header .block-img {
+				flex: 0 0 520px;
+				max-width: 100%;
+			}
+			.project-block-header .block-img img {
+				width: 100%;
+				height: 350px;
+				object-fit: cover;
+				display: block;
+			}
+			.project-block-header .block-title {
+				flex: 1;
+				min-width: 240px;
+				padding: 2em 2em 2em 0;
+			}
+			@media (max-width: 640px) {
+				.project-block-header .block-title { padding: 1.5em; }
+				.project-block-header .block-img { flex: 0 0 100%; }
+			}
+
+			.project-block-body {
+				padding: 0 2em 2em 2em;
+				border-top: 1px solid rgba(255,255,255,0.07);
+			}
+
+			.section-badge {
+				display: inline-block;
+				background: rgba(255,255,255,0.1);
+				border: 1px solid rgba(255,255,255,0.2);
+				border-radius: 4px;
+				padding: 0.2em 0.8em;
+				font-size: 0.75em;
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+				margin-bottom: 0.5em;
+				margin-top: 1.8em;
+			}
+
+			.project-block-body h4 {
+				margin: 0.3em 0 0.6em 0;
+				font-size: 1em;
+			}
+			.project-block-body p {
+				font-size: 0.92em;
+				opacity: 0.82;
+				line-height: 1.7;
+				margin-bottom: 0.8em;
+			}
+
+			.inline-gallery {
+				display: flex;
+				gap: 1em;
+				flex-wrap: wrap;
+				margin: 1em 0;
+			}
+			.inline-gallery figure {
+				margin: 0;
+				flex: 1;
+				min-width: 200px;
+				background: rgba(0,0,0,0.2);
+				border: 1px solid rgba(255,255,255,0.08);
+				border-radius: 6px;
+				overflow: hidden;
+			}
+			.inline-gallery figure img,
+			.inline-gallery figure video {
+				width: 100%;
+				height: 300px;
+				object-fit: cover;
+				display: block;
+			}
+			.inline-gallery figcaption {
+				padding: 0.5em 0.8em;
+				font-size: 0.8em;
+				opacity: 0.6;
+			}
+
+			/* ── Projects dropdown submenu ── */
+			#menu .has-submenu summary {
+				cursor: pointer;
+				list-style: none;
+				display: block;
+			}
+			#menu .has-submenu summary::-webkit-details-marker { display: none; }
+			#menu .has-submenu summary::after {
+				content: '\25B8';
+				float: right;
+				opacity: 0.5;
+				transition: transform 0.2s;
+			}
+			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
+			#menu .submenu {
+				list-style: none;
+				margin: 0.3em 0 0.6em 1.4em;
+				padding: 0;
+			}
+			#menu .submenu li a {
+				font-size: 0.92em;
+				opacity: 0.85;
+			}
+		</style>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+		<div id="page-wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<h1><a href="index.html">Joshua Su</a></h1>
+				<nav id="nav">
+					<ul>
+						<li class="special">
+							<a href="#menu" class="menuToggle"><span>Menu</span></a>
+							<div id="menu">
+								<ul>
+									<li><a href="index.html">Home</a></li>
+									<li><a href="introduction.html">About Me</a></li>
+									<li><a href="resume.html">Resume</a></li>
+									<li class="has-submenu">
+										<details open>
+											<summary>Projects</summary>
+											<ul class="submenu">
+												<li><a href="projects.html">All Projects</a></li>
+												<li><a href="radar.html">Phased Array RADAR</a></li>
+												<li><a href="eog.html">EOG Eye-Tracking</a></li>
+												<li><a href="crash-detection.html">Crash Detection Device</a></li>
+											</ul>
+										</details>
+									</li>
+									<li><a href="career.html">Career Goals</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Main -->
+			<article id="main">
+				<header>
+					<h2>EOG Eye Tracking Project</h2>
+					<p><a href="projects.html">&larr; All Projects</a></p>
+				</header>
+				<section class="wrapper style5">
+					<div class="inner">
+
+						<div class="project-block">
+
+							<!-- Header: image + title -->
+							<div class="project-block-header">
+								<div class="block-img">
+									<img src="images/eog-project.jpg" alt="EOG project" />
+								</div>
+								<div class="block-title">
+									<div class="tag-list">
+										<span class="tag">Python</span>
+										<span class="tag">Arduino</span>
+										<span class="tag">Signal Processing</span>
+										<span class="tag">Real-time Analysis</span>
+									</div>
+									<h3 style="margin: 0.6em 0 0.5em 0;">Electrooculography-Based Eye Tracking and Blink Detection for Mouse Control</h3>
+									<div class="project-links">
+										<a href="https://github.com/JoshuaSU7/EOG-Software" class="button primary icon brands fa-github">View on GitHub</a>
+									</div>
+								</div>
+							</div>
+
+							<!-- Subsections -->
+							<div class="project-block-body">
+
+								<span class="section-badge">Overview</span>
+								<h4>What Is This Project?</h4>
+								<p>
+									What if you could control a mouse using only your eyes? For most, this might simply seem like a cool gimmick;
+									however, for individuals with locked-in syndrome — a type of paralysis in which individuals can only move their eyes —
+									it is a necessity to restore human-computer interaction and communication. Electrooculography (EOG) extracts electrical
+									signals from the eyes during eye movement or blinking, and thus can be used for eye tracking and blink detection.
+								</p>
+
+								<span class="section-badge">Methodology</span>
+								<h4>Initial Steps &amp; Approach</h4>
+								<p>
+									My team and I began by integrating eye tracking and blink detection only on the vertical axis. 
+									We first determined the optimal electrode placement, which was just above and below the eye. We acquired and filtered 
+									the EOG signal using an arduino, biosignal amplifier, and a bandpass filter between 0.1hz and 30hz. We then researched
+									the relationship between the EOG signal magnitude and gaze angle, and found a linear relationship (i.e., the more you move your eyes, the higher the peak is in the signal).
+									Because of this, we could easily run a linear regression on the incoming EOG signal peaks to control cursor movement. 
+									Additionally, we found that the peak of the EOG signal for blinks were significantly higher than those for eye movements.
+									Because of this, we could easily apply thresholding to the incoming EOG signal to determing whether it is a blink or eye movement, and
+									then use blinks to control clicks. 
+								</p>
+								<p>
+									Due to individual physiological differences, each user will have slightly different eye movement vs. signal magnitude slope, or blink vs. eye movement thresholds.
+									Because of this, we created calibration programs to tune linear regression models and thresholds. For eye movement calibration, we 
+									have users play an eye-tracking game where they press a button on the keyboard to move the next point and follow it with their eyes.
+									The software records the EOG signal in the background during the game and establishes the linear relationship between EOG signal magnitude
+									and the distance between the points once the game is finished. For blink calibration, we simply ask the users to blink several times, while the 
+									software records the EOG signal in the background and establishes the average EOG signal peak value once the game is finished.
+								</p>
+								<div class="inline-gallery">
+									<figure>
+										<img src="images/eog-electrode-placement.jpg" alt="Hardware setup" />
+										<figcaption>Electrode placement</figcaption>
+									</figure>
+									<figure>
+										<img src="images/calibration.gif" alt="Hardware setup" />
+										<figcaption>Eye movement calibration</figcaption>
+									</figure>
+								</div>
+
+								<span class="section-badge">Results &amp; Progress</span>
+								<h4>Where It Stands &amp; Where It's Going</h4>
+								<p>
+									Our current results show reliable blink detection, whereas reliable eye-tracking is more challenging. We have recently updated
+									our algorithm for eye tracking, it is as follows: 1) when the signal is flat (i.e., no eye movement) establish a baseline average value,
+									and an upper bound and lower bound, both symmetrical about the baseline. 2) When the signal is rising, and breaks through the upper bound,
+									watch for where the signal changes direction (inflection point) from rising to decreasing. This point is the peak value of the signal. 
+									3) Compare this peak value to the baseline (subtract the two), and use the linear regression to determine the corresponding movement 
+									of the mouse. 
+								</p>
+								<p>
+									Next steps include fine tuning certain parameters in the real-time algorithm, and implementing it for the horizontal axis as well. 
+									Additionally, collaboration will increase between the mechanical subteam, who are designing a wearable glasses form factor for the electrodes,
+									and electrical subteams, who are designing a custom PCB with enhanced amplification and signal filtering. 
+								</p>
+								<div class="inline-gallery">
+									<figure>
+										<video width="100%" controls autoplay muted loop>
+											<source src="images/EOG-demo.mp4" type="video/mp4">
+										</video>
+										<figcaption>Full software demo</figcaption>
+									</figure>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</section>
+			</article>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<ul class="icons">
+					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+				</ul>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.scrollex.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
