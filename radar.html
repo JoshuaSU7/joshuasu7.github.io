@@ -71,9 +71,10 @@
       apply a progressive phase shift across the array and the beam tilts &mdash; instantly, electronically, and with nothing moving.
     </p>
     <p>
-      This project is a complete small X-band RADAR front end. An RF transverter chain generates a clean 10.5&nbsp;GHz carrier
-      from a 7.5&nbsp;GHz local oscillator mixed with a 3&nbsp;GHz IF, filters and amplifies it, and routes it through a
-      transmit/receive switch into the antenna array. The array itself is sixteen microstrip patches driven through four
+      This project is a complete small X-band RADAR front end. A custom RF transceiver generates a clean 10.5&nbsp;GHz
+      carrier, filters and amplifies it, and routes it through a transmit/receive switch into the antenna array. The
+      frequency conversion itself is done by a transverter stage inside that chain, mixing a 7.5&nbsp;GHz local oscillator
+      with a 3&nbsp;GHz IF up to 10.5&nbsp;GHz. The array itself is sixteen microstrip patches driven through four
       beamformer ICs, which apply the per-element phase shifts that do the steering.
     </p>
 
@@ -250,8 +251,10 @@
 
     <h2>RF Front End</h2>
     <p>
-      The array is fed by a transverter chain that builds the 10.5&nbsp;GHz carrier, cleans it up, and amplifies it to a
-      usable transmit level. Each stage below was selected and specified as part of the RF PCB design.
+      The array is fed by a transceiver chain that builds the 10.5&nbsp;GHz carrier, cleans it up, and amplifies it to a
+      usable transmit level. The local oscillator and mixer together make up the transverter stage that does the frequency
+      conversion; everything after it filters, amplifies, switches and distributes. Each stage below was selected and
+      specified as part of the RF PCB design.
     </p>
 
     <div class="table-wrap">
@@ -338,7 +341,7 @@
     <h2>Where It&rsquo;s Going</h2>
     <p>
       Next steps are finishing the Altium layout for fabrication, then validating the simulated patterns against bench
-      measurements in a quasi-anechoic setup. After that, integrating the array with the transverter board to characterize
+      measurements in a quasi-anechoic setup. After that, integrating the array with the transceiver board to characterize
       the full transmit and receive chain end to end.
     </p>
 
