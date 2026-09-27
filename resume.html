@@ -31,7 +31,6 @@
           <a href="eog.html">EOG Eye Tracking</a>
           <a href="crash-detection.html">Crash Detection Device</a>
           <a href="pll.html">PLL Feedback Divider</a>
-          <a href="racquet.html">Heated Racquet Grip</a>
         </div>
       </div>
       <a href="resume.html" class="active">Resume</a>
@@ -46,7 +45,7 @@
   <div class="wrap">
     <span class="eyebrow">Updated September 2026</span>
     <h1>Resume</h1>
-    <p class="lede">Education, experience, projects and skills at a glance. The full PDF is below &mdash; or download a copy.</p>
+    <p class="lede">Education, experience, projects and skills. Read it below, or take a copy.</p>
     <div class="btn-row">
       <a class="btn btn-primary" href="Joshua_Su_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M3.5 17v2.5A1.5 1.5 0 0 0 5 21h14a1.5 1.5 0 0 0 1.5-1.5V17"/></svg> Download PDF</a>
       <a class="btn" href="Joshua_Su_Resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
@@ -56,97 +55,6 @@
 
 <div class="article">
   <div class="wrap">
-
-    <h2 style="border:0;padding:0;margin:0 0 1.4rem">Summary</h2>
-
-    <div class="fact-grid" style="margin-bottom:3rem">
-      <div class="fact"><h4>Education</h4><p>Georgia Institute of Technology<br />B.S. Electrical Engineering<br />Aug 2024 &ndash; May 2028 &middot; GPA 3.85</p></div>
-      <div class="fact"><h4>Location</h4><p>Atlanta, GA<br />US Citizen</p></div>
-      <div class="fact"><h4>Contact</h4><p><a class="tlink" href="mailto:joshua.su@gatech.edu">joshua.su@gatech.edu</a><br />770-309-4820</p></div>
-    </div>
-
-    <div class="section-head"><h2 style="border:0;padding:0;margin:0">Experience</h2></div>
-
-    <div class="xp-item">
-      <div class="xp-when">Aug 2026 &mdash; Present</div>
-      <div class="xp-body">
-        <h3>Antenna / RF Design Engineer</h3>
-        <div class="xp-org">GT Experimental Rocketry &middot; Ground Systems &mdash; Antenna Design, Altair FEKO</div>
-        <ul>
-          <li>Engineered a two-way RF ground station system for rocket-to-mission-control telemetry, designed to eliminate prior-launch communication dropouts with a modeled +75&nbsp;dB link margin.</li>
-          <li>Validated antenna link performance ahead of fabrication, confirming far-field radiation patterns met mission link-budget requirements through full rocket 3D mesh and test-site topology simulations in Altair FEKO.</li>
-          <li>Determined external RF hardware architecture: receive antenna, 19&nbsp;dB-gain LNA, bias tee injector, SX1262 LoRa transceiver (440&nbsp;MHz / 62.5&nbsp;kbps), Orange Pi 5 UART-to-network bridge and WiFi point-to-point module.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="xp-item">
-      <div class="xp-when">Aug 2026 &mdash; Present</div>
-      <div class="xp-body">
-        <h3>Hardware Engineer</h3>
-        <div class="xp-org">GT Yellow Jacket Space Program &middot; Avionics &mdash; PCB Design, Altium Designer</div>
-        <ul>
-          <li>Designed a 6-channel avionics sensor interface board in Altium Designer, implementing a 24&nbsp;V input protection stage (fuse, TVS diode, bulk capacitance) and a buck/LDO power tree delivering regulated 5&nbsp;V and 3.3&nbsp;V rails to downstream digital and analog circuitry.</li>
-          <li>Developed a hierarchical schematic and SPI-based signal chain connecting an STM32 microcontroller to an external ADC, enabling digitization of six 4&ndash;20&nbsp;mA current-loop sensor channels for pressure, temperature and force measurement.</li>
-          <li>Laid out PCB with room-based floorplanning, sizing power-rail trace widths for current capacity, isolating short analog sensor traces from noisy high-current paths, and stitching ground-pour copper for signal integrity.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Projects</h2></div>
-
-    <div class="xp-item">
-      <div class="xp-when">Jul 2026 &mdash; Present</div>
-      <div class="xp-body">
-        <h3><a class="tlink" href="radar.html">X-Band Phased Array RADAR Board</a></h3>
-        <div class="xp-org">Antenna &amp; PCB Design &mdash; ANSYS Electronics, Altium Designer</div>
-        <ul>
-          <li>Designed a 10.5&nbsp;GHz 4&times;4 microstrip patch antenna phased array in ANSYS Electronics, achieving a peak realized gain of 17.3&nbsp;dBi at boresight, 3&nbsp;dB beamwidth of 13&deg;, and S11 return loss of &minus;24&nbsp;dB at 10.5&nbsp;GHz with a 700&nbsp;MHz (&minus;10&nbsp;dB) bandwidth.</li>
-          <li>Building the RF module PCB in Altium Designer to integrate antenna array, software-defined radio and microcontroller subsystems.</li>
-          <li>Achieved 60&deg; electronic beamsteering across all 16 array elements via 4 integrated beamformer ICs, supported by an 8-layer PCB stackup isolating RF, digital and power domains.</li>
-          <li>Designed impedance-matched, length-matched GCPW and symmetrical stripline traces for high-speed RF routing, minimizing crosstalk and coupling while eliminating phase delay discrepancies introduced by beamformer traces.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="xp-item">
-      <div class="xp-when">Dec 2025</div>
-      <div class="xp-body">
-        <h3><a class="tlink" href="crash-detection.html">Embedded Crash Detection Device</a></h3>
-        <div class="xp-org">Embedded Systems &mdash; ESP32, C++</div>
-        <ul>
-          <li>Engineered a wearable/mountable crash and fall detection device using ESP32 and MPU6050 accelerometer, capable of autonomously identifying high-impact events.</li>
-          <li>Designed a modular C++ architecture separating data collection, crash-detection logic and WiFi notification, implementing a multi-stage algorithm that analyzes pre-impact free-fall and post-impact motion stillness to compute a collision likelihood score.</li>
-          <li>Achieved 90% detection accuracy and 2% false positive rate, validated through 10-foot drop tests, bicycle impact testing and routine exercise.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Skills</h2></div>
-
-    <div class="skill-grid">
-      <div class="skill-cell">
-        <h4>Engineering</h4>
-        <p>RADAR, antenna engineering, RF design, PCB design, signal processing, embedded systems, FPGAs, oscilloscopes, logic analyzers</p>
-      </div>
-      <div class="skill-cell">
-        <h4>Software &amp; Tools</h4>
-        <p>ANSYS Electronics Desktop, Altium Designer, Altair FEKO, Cadence Virtuoso, KiCAD</p>
-      </div>
-      <div class="skill-cell">
-        <h4>Programming</h4>
-        <p>Python, C/C++, MATLAB, VHDL</p>
-      </div>
-    </div>
-
-    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Relevant Coursework</h2></div>
-    <p class="muted">
-      RADAR and Electromagnetic Sensing &middot; Electromagnetics and Microwave Applications &middot; Electromagnetics &middot;
-      Signals and Systems &middot; Signal Processing &middot; Microelectronic Circuits &middot; Programming HW/SW Systems &middot;
-      Digital Design Lab
-    </p>
-
-    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Full PDF</h2></div>
 
     <object class="pdf-frame" data="Joshua_Su_Resume.pdf" type="application/pdf">
       <div class="pdf-fallback">

@@ -19,7 +19,6 @@ and push; GitHub Pages serves them as-is.
 | `eog.html` | EOG Eye Tracking & Blink Detection |
 | `crash-detection.html` | Embedded Crash Detection Device |
 | `pll.html` | PLL Feedback Divider |
-| `racquet.html` | Heated Racquet Grip |
 | `resume.html` | Resume (embeds `Joshua_Su_Resume.pdf`) |
 | `career.html` | Career goals |
 | `discovery.html` | Redirect → `crash-detection.html` (old URL) |
