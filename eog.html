@@ -1,333 +1,148 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>EOG Eye Tracking Project | Joshua Su</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<style>
-			/* ── Tag pills ── */
-			.tag-list {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.4em;
-				margin-top: 0.2em;
-			}
-			.tag {
-				display: inline-block;
-				background: rgba(255,255,255,0.08);
-				border: 1px solid rgba(255,255,255,0.15);
-				border-radius: 4px;
-				padding: 0.15em 0.6em;
-				font-size: 0.75em;
-				letter-spacing: 0.06em;
-				text-transform: uppercase;
-			}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EOG Eye Tracking & Blink Detection — Joshua Su</title>
+<meta name="description" content="Electrooculography-based eye tracking and blink detection for mouse control, built for individuals with locked-in syndrome." />
+<meta name="author" content="Joshua Su" />
+<meta property="og:title" content="EOG Eye Tracking & Blink Detection — Joshua Su" />
+<meta property="og:description" content="Electrooculography-based eye tracking and blink detection for mouse control, built for individuals with locked-in syndrome." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Joshua&nbsp;Su</a>
+    <button class="menu-btn" aria-label="Toggle menu">Menu</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="introduction.html">About</a>
+      <div class="nav-drop">
+        <button class="active">Projects <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="nav-drop-menu">
+          <a href="projects.html">All Projects</a>
+          <a href="radar.html">Phased Array RADAR</a>
+          <a href="eog.html">EOG Eye Tracking</a>
+          <a href="crash-detection.html">Crash Detection Device</a>
+          <a href="pll.html">PLL Feedback Divider</a>
+          <a href="racquet.html">Heated Racquet Grip</a>
+        </div>
+      </div>
+      <a href="resume.html">Resume</a>
+      <a href="career.html">Career</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle colour theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
 
-			/* Card action links */
-			.project-links {
-				display: flex;
-				gap: 0.7em;
-				margin-top: 0.8em;
-				flex-wrap: wrap;
-			}
-			.project-links a {
-				font-size: 0.82em;
-				font-weight: 600;
-				letter-spacing: 0.08em;
-				text-transform: uppercase;
-				display: inline-flex;
-				align-items: center;
-				gap: 0.35em;
-				opacity: 0.8;
-				transition: opacity 0.2s;
-			}
-			.project-links a:hover { opacity: 1; }
 
-			/* ── Full project block ── */
-			.project-block {
-				margin-bottom: 2em;
-				background: rgba(255,255,255,0.03);
-				border: 1px solid rgba(255,255,255,0.1);
-				border-radius: 10px;
-				overflow: hidden;
-			}
-			.project-block-header {
-				display: flex;
-				gap: 2.5em;
-				align-items: flex-start;
-				flex-wrap: wrap;
-			}
-			.project-block-header .block-img {
-				flex: 0 0 520px;
-				max-width: 100%;
-			}
-			.project-block-header .block-img img {
-				width: 100%;
-				height: 350px;
-				object-fit: cover;
-				display: block;
-			}
-			.project-block-header .block-title {
-				flex: 1;
-				min-width: 240px;
-				padding: 2em 2em 2em 0;
-			}
-			@media (max-width: 640px) {
-				.project-block-header .block-title { padding: 1.5em; }
-				.project-block-header .block-img { flex: 0 0 100%; }
-			}
+<div class="page-head">
+  <div class="wrap">
+    <a class="backlink" href="projects.html">&larr; All projects</a>
+    <h1>EOG Eye Tracking &amp; Blink Detection</h1>
+    <p class="lede">Electrooculography-based eye tracking and blink detection for mouse control &mdash; giving people who can only move their eyes a way back to a computer.</p>
+    <div class="tags">
+      <span class="tag">Python</span>
+      <span class="tag">Arduino</span>
+      <span class="tag">Signal Processing</span>
+      <span class="tag">Real-time Analysis</span>
+    </div>
+    <div class="btn-row" style="margin-top:1.6rem">
+      <a class="btn" href="https://github.com/JoshuaSU7/EOG-Software" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View on GitHub</a>
+    </div>
+  </div>
+</div>
 
-			.project-block-body {
-				padding: 0 2em 2em 2em;
-				border-top: 1px solid rgba(255,255,255,0.07);
-			}
+<div class="article">
+  <div class="wrap wrap-narrow">
 
-			.section-badge {
-				display: inline-block;
-				background: rgba(255,255,255,0.1);
-				border: 1px solid rgba(255,255,255,0.2);
-				border-radius: 4px;
-				padding: 0.2em 0.8em;
-				font-size: 0.75em;
-				text-transform: uppercase;
-				letter-spacing: 0.12em;
-				margin-bottom: 0.5em;
-				margin-top: 1.8em;
-			}
+    <figure><img src="images/eog-project.jpg" alt="EOG eye tracking hardware setup" /></figure>
 
-			.project-block-body h4 {
-				margin: 0.3em 0 0.6em 0;
-				font-size: 1em;
-			}
-			.project-block-body p {
-				font-size: 0.92em;
-				opacity: 0.82;
-				line-height: 1.7;
-				margin-bottom: 0.8em;
-			}
+    <h2>Overview</h2>
+    <p>
+      What if you could control a mouse using only your eyes? For most people that is a gimmick. For someone with
+      locked-in syndrome &mdash; a form of paralysis where eye movement is the only motion left &mdash; it is the difference
+      between having a way to communicate and not having one.
+    </p>
+    <p>
+      Electrooculography (EOG) picks up the electrical potential generated by the eye as it moves or blinks. Because that
+      signal carries both gaze direction and blink events, it can drive cursor movement and clicks at the same time.
+    </p>
 
-			.inline-gallery {
-				display: flex;
-				gap: 1em;
-				flex-wrap: wrap;
-				margin: 1em 0;
-			}
-			.inline-gallery figure {
-				margin: 0;
-				flex: 1;
-				min-width: 200px;
-				background: rgba(0,0,0,0.2);
-				border: 1px solid rgba(255,255,255,0.08);
-				border-radius: 6px;
-				overflow: hidden;
-			}
-			.inline-gallery figure img,
-			.inline-gallery figure video {
-				width: 100%;
-				height: 300px;
-				object-fit: cover;
-				display: block;
-			}
-			.inline-gallery figcaption {
-				padding: 0.5em 0.8em;
-				font-size: 0.8em;
-				opacity: 0.6;
-			}
+    <h2>Approach</h2>
+    <p>
+      My team and I started with the vertical axis only. We first found the optimal electrode placement &mdash; directly above
+      and below the eye &mdash; then acquired and filtered the signal using an Arduino, a biosignal amplifier, and a bandpass
+      filter from 0.1&nbsp;Hz to 30&nbsp;Hz.
+    </p>
+    <p>
+      Investigating the relationship between EOG signal magnitude and gaze angle turned up something useful: it is
+      <strong>linear</strong>. The further the eyes move, the higher the peak in the signal. That meant a simple linear
+      regression on incoming signal peaks was enough to drive cursor movement. We also found blink peaks are significantly
+      larger than eye-movement peaks, so straightforward thresholding separates the two &mdash; and blinks become clicks.
+    </p>
 
-			/* ── Projects dropdown submenu ── */
-			#menu .has-submenu summary {
-				cursor: pointer;
-				list-style: none;
-				display: block;
-			}
-			#menu .has-submenu summary::-webkit-details-marker { display: none; }
-			#menu .has-submenu summary::after {
-				content: '\25B8';
-				float: right;
-				opacity: 0.5;
-				transition: transform 0.2s;
-			}
-			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
-			#menu .submenu {
-				list-style: none;
-				margin: 0.3em 0 0.6em 1.4em;
-				padding: 0;
-			}
-			#menu .submenu li a {
-				font-size: 0.92em;
-				opacity: 0.85;
-			}
-		</style>
-	</head>
-	<body class="is-preload">
+    <h3>Calibration</h3>
+    <p>
+      Physiology varies between people, so every user has a slightly different magnitude-to-angle slope and a different
+      blink threshold. We built calibration programs for both.
+    </p>
+    <p>
+      For eye movement, the user plays a short tracking game: press a key, a point moves, follow it with your eyes. The
+      software records EOG in the background and fits the linear relationship between signal magnitude and point distance
+      once the game ends. For blinks, we simply ask the user to blink several times and take the average peak value.
+    </p>
 
-		<!-- Page Wrapper -->
-		<div id="page-wrapper">
+    <div class="fig-row">
+      <figure><img src="images/eog-electrode-placement.jpg" alt="Electrode placement above and below the eye" /><figcaption>Electrode placement &mdash; directly above and below the eye, the position that gave the cleanest vertical-axis signal.</figcaption></figure>
+      <figure><img src="images/calibration.gif" alt="Eye movement calibration game" /><figcaption>The eye-movement calibration game. The user follows each point while the software records EOG in the background and fits the regression.</figcaption></figure>
+    </div>
 
-			<!-- Header -->
-			<header id="header">
-				<h1><a href="index.html">Joshua Su</a></h1>
-				<nav id="nav">
-					<ul>
-						<li class="special">
-							<a href="#menu" class="menuToggle"><span>Menu</span></a>
-							<div id="menu">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li><a href="introduction.html">About Me</a></li>
-									<li><a href="resume.html">Resume</a></li>
-									<li class="has-submenu">
-										<details open>
-											<summary>Projects</summary>
-											<ul class="submenu">
-												<li><a href="projects.html">All Projects</a></li>
-												<li><a href="radar.html">Phased Array RADAR</a></li>
-												<li><a href="eog.html">EOG Eye-Tracking</a></li>
-												<li><a href="crash-detection.html">Crash Detection Device</a></li>
-											</ul>
-										</details>
-									</li>
-									<li><a href="career.html">Career Goals</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</header>
+    <h2>Results &amp; Progress</h2>
+    <p>
+      Blink detection is reliable. Eye tracking is the harder half, and the detection algorithm has been through several
+      revisions. The current version works like this:
+    </p>
+    <ol>
+      <li>When the signal is flat &mdash; no eye movement &mdash; establish a baseline average, plus symmetric upper and lower bounds around it.</li>
+      <li>When the signal rises and breaks through the upper bound, watch for the inflection point where it turns from rising to falling. That point is the true peak.</li>
+      <li>Subtract the baseline from that peak and feed the difference through the linear regression to get the corresponding mouse movement.</li>
+    </ol>
+    <p>
+      Next steps are tuning parameters in the real-time algorithm and extending it to the horizontal axis. In parallel,
+      the mechanical subteam is designing a wearable glasses form factor for the electrodes and the electrical subteam is
+      building a custom PCB with better amplification and filtering.
+    </p>
 
-			<!-- Main -->
-			<article id="main">
-				<header>
-					<h2>EOG Eye Tracking Project</h2>
-					<p><a href="projects.html">&larr; All Projects</a></p>
-				</header>
-				<section class="wrapper style5">
-					<div class="inner">
+    <figure>
+      <video controls muted loop playsinline preload="metadata" poster="images/eog-project.jpg">
+        <source src="images/EOG-demo.mp4" type="video/mp4" />
+      </video>
+      <figcaption>Full software demo &mdash; calibration through to live cursor control and blink-driven clicking.</figcaption>
+    </figure>
 
-						<div class="project-block">
+    <div class="btn-row" style="margin-top:2.5rem">
+      <a class="btn btn-primary" href="projects.html">&larr; Back to projects</a>
+      <a class="btn" href="https://github.com/JoshuaSU7/EOG-Software" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> GitHub</a>
+    </div>
 
-							<!-- Header: image + title -->
-							<div class="project-block-header">
-								<div class="block-img">
-									<img src="images/eog-project.jpg" alt="EOG project" />
-								</div>
-								<div class="block-title">
-									<div class="tag-list">
-										<span class="tag">Python</span>
-										<span class="tag">Arduino</span>
-										<span class="tag">Signal Processing</span>
-										<span class="tag">Real-time Analysis</span>
-									</div>
-									<h3 style="margin: 0.6em 0 0.5em 0;">Electrooculography-Based Eye Tracking and Blink Detection for Mouse Control</h3>
-									<div class="project-links">
-										<a href="https://github.com/JoshuaSU7/EOG-Software" class="button primary icon brands fa-github">View on GitHub</a>
-									</div>
-								</div>
-							</div>
-
-							<!-- Subsections -->
-							<div class="project-block-body">
-
-								<span class="section-badge">Overview</span>
-								<h4>What Is This Project?</h4>
-								<p>
-									What if you could control a mouse using only your eyes? For most, this might simply seem like a cool gimmick;
-									however, for individuals with locked-in syndrome — a type of paralysis in which individuals can only move their eyes —
-									it is a necessity to restore human-computer interaction and communication. Electrooculography (EOG) extracts electrical
-									signals from the eyes during eye movement or blinking, and thus can be used for eye tracking and blink detection.
-								</p>
-
-								<span class="section-badge">Methodology</span>
-								<h4>Initial Steps &amp; Approach</h4>
-								<p>
-									My team and I began by integrating eye tracking and blink detection only on the vertical axis. 
-									We first determined the optimal electrode placement, which was just above and below the eye. We acquired and filtered 
-									the EOG signal using an arduino, biosignal amplifier, and a bandpass filter between 0.1hz and 30hz. We then researched
-									the relationship between the EOG signal magnitude and gaze angle, and found a linear relationship (i.e., the more you move your eyes, the higher the peak is in the signal).
-									Because of this, we could easily run a linear regression on the incoming EOG signal peaks to control cursor movement. 
-									Additionally, we found that the peak of the EOG signal for blinks were significantly higher than those for eye movements.
-									Because of this, we could easily apply thresholding to the incoming EOG signal to determing whether it is a blink or eye movement, and
-									then use blinks to control clicks. 
-								</p>
-								<p>
-									Due to individual physiological differences, each user will have slightly different eye movement vs. signal magnitude slope, or blink vs. eye movement thresholds.
-									Because of this, we created calibration programs to tune linear regression models and thresholds. For eye movement calibration, we 
-									have users play an eye-tracking game where they press a button on the keyboard to move the next point and follow it with their eyes.
-									The software records the EOG signal in the background during the game and establishes the linear relationship between EOG signal magnitude
-									and the distance between the points once the game is finished. For blink calibration, we simply ask the users to blink several times, while the 
-									software records the EOG signal in the background and establishes the average EOG signal peak value once the game is finished.
-								</p>
-								<div class="inline-gallery">
-									<figure>
-										<img src="images/eog-electrode-placement.jpg" alt="Hardware setup" />
-										<figcaption>Electrode placement</figcaption>
-									</figure>
-									<figure>
-										<img src="images/calibration.gif" alt="Hardware setup" />
-										<figcaption>Eye movement calibration</figcaption>
-									</figure>
-								</div>
-
-								<span class="section-badge">Results &amp; Progress</span>
-								<h4>Where It Stands &amp; Where It's Going</h4>
-								<p>
-									Our current results show reliable blink detection, whereas reliable eye-tracking is more challenging. We have recently updated
-									our algorithm for eye tracking, it is as follows: 1) when the signal is flat (i.e., no eye movement) establish a baseline average value,
-									and an upper bound and lower bound, both symmetrical about the baseline. 2) When the signal is rising, and breaks through the upper bound,
-									watch for where the signal changes direction (inflection point) from rising to decreasing. This point is the peak value of the signal. 
-									3) Compare this peak value to the baseline (subtract the two), and use the linear regression to determine the corresponding movement 
-									of the mouse. 
-								</p>
-								<p>
-									Next steps include fine tuning certain parameters in the real-time algorithm, and implementing it for the horizontal axis as well. 
-									Additionally, collaboration will increase between the mechanical subteam, who are designing a wearable glasses form factor for the electrodes,
-									and electrical subteams, who are designing a custom PCB with enhanced amplification and signal filtering. 
-								</p>
-								<div class="inline-gallery">
-									<figure>
-										<video width="100%" controls autoplay muted loop>
-											<source src="images/EOG-demo.mp4" type="video/mp4">
-										</video>
-										<figcaption>Full software demo</figcaption>
-									</figure>
-								</div>
-
-							</div>
-						</div>
-
-					</div>
-				</section>
-			</article>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</body>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>&copy; 2026 Joshua Su</div>
+    <div class="social">
+      <a href="https://github.com/JoshuaSU7" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.3 8.65 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.21V21H9z"/></svg></a>
+      <a href="mailto:joshua.su@gatech.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg></a>
+    </div>
+  </div>
+</footer>
+</body>
 </html>

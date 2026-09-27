@@ -1,339 +1,192 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Embedded Crash Detection Device | Joshua Su</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<style>
-			/* ── Image gallery grid ── */
-			.img-gallery {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-				gap: 1.2em;
-				margin: 1.5em 0 2em 0;
-			}
-			.img-gallery figure {
-				margin: 0;
-				background: transparent;
-				border: none;
-				border-radius: 8px;
-				overflow: hidden;
-			}
-			.img-gallery figure img {
-				width: 100%;
-				height: 300px;
-				object-fit: cover;
-				display: block;
-				transition: transform 0.3s ease;
-			}
-			.img-gallery figure:hover img {
-				transform: scale(1.04);
-			}
-			.img-gallery figcaption {
-				padding: 0.7em 1em;
-				font-size: 0.85em;
-				opacity: 0.7;
-				line-height: 1.4;
-			}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Embedded Crash Detection Device — Joshua Su</title>
+<meta name="description" content="An ESP32 and MPU6050 crash and fall detection device with a multi-stage detection algorithm and Wi-Fi notification." />
+<meta name="author" content="Joshua Su" />
+<meta property="og:title" content="Embedded Crash Detection Device — Joshua Su" />
+<meta property="og:description" content="An ESP32 and MPU6050 crash and fall detection device with a multi-stage detection algorithm and Wi-Fi notification." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Joshua&nbsp;Su</a>
+    <button class="menu-btn" aria-label="Toggle menu">Menu</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="introduction.html">About</a>
+      <div class="nav-drop">
+        <button class="active">Projects <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="nav-drop-menu">
+          <a href="projects.html">All Projects</a>
+          <a href="radar.html">Phased Array RADAR</a>
+          <a href="eog.html">EOG Eye Tracking</a>
+          <a href="crash-detection.html">Crash Detection Device</a>
+          <a href="pll.html">PLL Feedback Divider</a>
+          <a href="racquet.html">Heated Racquet Grip</a>
+        </div>
+      </div>
+      <a href="resume.html">Resume</a>
+      <a href="career.html">Career</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle colour theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
 
-			/* ── Single wide image ── */
-			.img-wide {
-				width: 55%;
-				border-radius: 8px;
-				border: 1px solid rgba(255,255,255,0.08);
-				object-fit: cover;
-				max-height: 425px;
-				margin: 1em 0 1.5em 0;
-			}
 
-			/* ── Image placeholder (before you add real images) ── */
-			.img-placeholder {
-				width: 100%;
-				height: 200px;
-				background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-				border: 2px dashed rgba(255,255,255,0.15);
-				border-radius: 8px;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				color: rgba(255,255,255,0.3);
-				font-size: 0.85em;
-				gap: 0.5em;
-			}
-			.img-placeholder .icon { font-size: 2em; }
+<div class="page-head">
+  <div class="wrap">
+    <a class="backlink" href="projects.html">&larr; All projects</a>
+    <h1>Embedded Crash Detection Device</h1>
+    <p class="lede">A wearable ESP32 module that recognises falls and impacts in real time from accelerometer data, scores how likely a genuine crash is, and notifies a server over Wi-Fi.</p>
+    <div class="tags">
+      <span class="tag">Embedded Systems</span>
+      <span class="tag">C++</span>
+      <span class="tag">ESP32</span>
+      <span class="tag">I2C</span>
+      <span class="tag">Flask</span>
+    </div>
+    <div class="btn-row" style="margin-top:1.6rem">
+      <a class="btn" href="https://github.com/JoshuaSU7/Embedded-Crash-Detection-using-ESP32" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> View on GitHub</a>
+    </div>
+  </div>
+</div>
 
-			/* ── Section tag/badge ── */
-			.section-badge {
-				display: inline-block;
-				background: rgba(255,255,255,0.1);
-				border: 1px solid rgba(255,255,255,0.2);
-				border-radius: 4px;
-				padding: 0.2em 0.8em;
-				font-size: 0.75em;
-				text-transform: uppercase;
-				letter-spacing: 0.12em;
-				margin-bottom: 0.6em;
-			}
+<div class="article">
+  <div class="wrap wrap-narrow">
 
-			/* ── Key findings cards ── */
-			.findings-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-				gap: 1em;
-				margin: 1.5em 0;
-			}
-			.finding-card {
-				background: rgba(255,255,255,0.04);
-				border: 1px solid rgba(255,255,255,0.1);
-				border-radius: 8px;
-				padding: 1.4em;
-			}
-			.finding-card .number {
-				font-size: 2em;
-				font-weight: 700;
-				line-height: 1;
-				margin-bottom: 0.2em;
-			}
-			.finding-card p { margin: 0; font-size: 0.9em; opacity: 0.75; }
+    <div class="metrics">
+      <div class="metric"><div class="val">90%</div><div class="lbl">Detection accuracy</div></div>
+      <div class="metric"><div class="val">2%</div><div class="lbl">False positive rate</div></div>
+      <div class="metric"><div class="val">10 ft</div><div class="lbl">Drop test validation</div></div>
+    </div>
 
-			/* ── Projects dropdown submenu ── */
-			#menu .has-submenu summary {
-				cursor: pointer;
-				list-style: none;
-				display: block;
-			}
-			#menu .has-submenu summary::-webkit-details-marker { display: none; }
-			#menu .has-submenu summary::after {
-				content: '\25B8';
-				float: right;
-				opacity: 0.5;
-				transition: transform 0.2s;
-			}
-			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
-			#menu .submenu {
-				list-style: none;
-				margin: 0.3em 0 0.6em 1.4em;
-				padding: 0;
-			}
-			#menu .submenu li a {
-				font-size: 0.92em;
-				opacity: 0.85;
-			}
-		</style>
-	</head>
-	<body class="is-preload">
+    <h2>Overview</h2>
+    <p>
+      This project detects crashes and falls using an ESP32 paired with an accelerometer and gyroscope, then notifies a web
+      server over Wi-Fi. The goal was a deeper understanding of embedded systems, C++, and wireless networking &mdash; but the
+      end application is a wearable module that could genuinely help the elderly, cyclists and motorcyclists.
+    </p>
 
-		<!-- Page Wrapper -->
-		<div id="page-wrapper">
+    <h2>Why This Topic</h2>
+    <p>
+      What drew me in was the idea of a stroke detection and notification device &mdash; a fall detection module alongside other
+      biosensors. Given the project timeframe, focusing on the fall and crash detection half made more sense.
+    </p>
+    <p>
+      I am interested in wearable health monitoring generally, and several elderly members of my family have suffered strokes
+      or serious fall injuries. In many cases they were alone and went hours before anyone found them, which makes an enormous
+      difference to recovery and treatment.
+    </p>
 
-			<!-- Header -->
-			<header id="header">
-				<h1><a href="index.html">Joshua Su</a></h1>
-				<nav id="nav">
-					<ul>
-						<li class="special">
-							<a href="#menu" class="menuToggle"><span>Menu</span></a>
-							<div id="menu">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li><a href="introduction.html">About Me</a></li>
-									<li><a href="resume.html">Resume</a></li>
-									<li class="has-submenu">
-										<details open>
-											<summary>Projects</summary>
-											<ul class="submenu">
-												<li><a href="projects.html">All Projects</a></li>
-												<li><a href="radar.html">Phased Array RADAR</a></li>
-												<li><a href="eog.html">EOG Eye-Tracking</a></li>
-												<li><a href="crash-detection.html">Crash Detection Device</a></li>
-											</ul>
-										</details>
-									</li>
-									<li><a href="career.html">Career Goals</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</header>
+    <div class="fig-row">
+      <figure><img src="images/escooter.jpg" alt="E-scooter rider" /><figcaption>E-scooter and bicycle crashes are one target application &mdash; high impact, often unwitnessed.</figcaption></figure>
+      <figure><img src="images/stroke.jpg" alt="Fall and stroke detection context" /><figcaption>The original motivation: falls among elderly people who live alone, where time-to-discovery drives outcomes.</figcaption></figure>
+    </div>
 
-			<!-- Main -->
-			<article id="main">
-				<header>
-					<h2>Embedded Crash Detection Device</h2>
-					<p><a href="projects.html">&larr; All Projects</a></p>
-				</header>
-				<section class="wrapper style5">
-					<div class="inner">
+    <h2>Approach</h2>
+    <p>
+      I approached this from a thresholding perspective, researching what acceleration levels actually characterise a crash
+      on a bike or e-scooter &mdash; roughly 200&ndash;700&nbsp;m/s&sup2;. I set the threshold at the lower bound deliberately: a
+      false positive is far less costly than a missed crash.
+    </p>
+    <p>
+      Acceleration alone is not enough, though. Real crashes have a signature: <strong>free-fall before or after impact</strong>,
+      or <strong>abrupt stillness after impact</strong>. So the threshold trigger is coupled with pre-impact and post-impact
+      analysis. Each one that matches, plus how far past threshold the acceleration went, raises a
+      <strong>collision likelihood score</strong>. Once a crash is confirmed, a message goes to a Wi-Fi web server with the
+      timestamp and that score.
+    </p>
 
-						<!-- Project Overview -->
-						<span class="section-badge">Overview</span>
-						<h3>Embedded Crash Detection and Notification Device</h3>
-						<p>
-							This project explores crash detection and notification to a web server through using an ESP32, accelerometer, and gyroscope.
-							The goal was to gain a deeper understanding of embedded systems, programming in C++, and wireless
-							networking. Ideally the module would be integrated into a wearable form factor in order to detect falling or impact collisions
-							, which could especially benefit the elderly, cyclists, or motorcyclists.
-						</p>
+    <h2>Hardware</h2>
+    <p>
+      An ESP32 Dev module and an MPU6050 (accelerometer and gyroscope). I also considered a NEO-6M GPS and a SIM800L for
+      location reporting and cellular connectivity, but cost ruled both out for this build. Working hands-on here taught me
+      to read pinouts properly and gave me a working understanding of I2C.
+    </p>
 
-						<div class="img-gallery" style="grid-template-columns: 1fr 1fr;">
-						    <figure>
-						        <img class="img-wide" src="images/escooter.jpg" />
-						    </figure>
-						    <figure>
-						        <img class="img-wide" src="images/stroke.jpg" />
-						    </figure>
-						</div>
+    <div class="fig-row">
+      <figure><img src="images/esp32.jpg" alt="ESP32 development module" /><figcaption>ESP32 Dev module &mdash; Wi-Fi, enough compute for real-time analysis, and an I2C bus for the IMU.</figcaption></figure>
+      <figure><img src="images/Hardware-IRL.jpg" alt="Assembled hardware on a breadboard" /><figcaption>The assembled prototype: ESP32 and MPU6050 wired over I2C.</figcaption></figure>
+    </div>
 
-						<hr />
+    <h2>Software Architecture</h2>
+    <p>
+      The hardware was programmed in C++ through PlatformIO in VS Code. PlatformIO gave me an organised way to build and
+      flash, a choice of frameworks, and a library manager that already had MPU6050 drivers. I had Python experience but was
+      fairly new to C++, which is where I picked up file structure, OOP, and using pointers for memory management.
+    </p>
+    <p>
+      Rather than one monolithic file, I split the code into three programs that mirror the actual tasks:
+    </p>
+    <ul>
+      <li><strong>Data collection</strong> &mdash; uses the MPU6050 driver functions to keep the IMU object updated with current acceleration and gyro readings.</li>
+      <li><strong>Wi-Fi notification</strong> &mdash; uses the ESP32&rsquo;s built-in Wi-Fi and HTTP POST requests to reach a Flask server running on my computer, sending the crash message and likelihood score.</li>
+      <li><strong>Main</strong> &mdash; integrates the two and holds the detection algorithm.</li>
+    </ul>
 
-						<!-- Background / Motivation -->
-						<span class="section-badge">Background</span>
-						<h3>Why This Topic?</h3>
-						<p>
-							What initially drew me to this topic is the idea of a stroke detection and notification device. This device would have a fall
-							detection module, in addition to various other biosensors. For the timeframe of the project, I believed it would have been better to 
-							just focus on the fall/crash detection module. 
-						</p>
-						<p>
-							I am interested in wearable systems for health monitoring in general, and many elderly people in my family have suffered
-							from strokes or severe injuries from falling. Many times they were alone and were left for hours before they were found injured, 
-							which can make a massive difference in recovery and treatment. 
-						</p>
+    <h3>The detection loop</h3>
+    <p>
+      Main splits into setup and a real-time loop. Setup calibrates the MPU6050 by averaging the first ten readings and
+      subtracting that offset from everything after, which normalises the data and cancels the constant 1&nbsp;g of gravity.
+    </p>
+    <p>
+      In the loop, readings come in, get printed to the serial monitor, and the <em>magnitude</em> of acceleration is recorded &mdash;
+      magnitude rather than per-axis, so detection is independent of how the device is oriented. A rolling history of the
+      previous X magnitude values is kept so an impact can be analysed in context.
+    </p>
+    <p>
+      When magnitude exceeds the threshold, it is flagged as an impact. Pre-impact analysis checks whether the device was in
+      free-fall beforehand; if so, the likelihood score goes up. Then Y samples after the impact are analysed for free-fall or
+      stillness; again, a match raises the score. Once both analyses finish, the notification goes out.
+    </p>
 
-						<hr />
+    <h2>Demo</h2>
+    <p>
+      The clip below shows the system running: live acceleration data, impact detection, and the server notification. For
+      easy testing the ESP32 is dropped about three feet onto a hard surface &mdash; visible as the spike to roughly
+      23&nbsp;m/s&sup2; at 0:05 &mdash; against a 20&nbsp;m/s&sup2; threshold. In the real application that threshold would be far
+      higher, 100&nbsp;m/s&sup2; at minimum.
+    </p>
+    <figure>
+      <video controls muted loop playsinline preload="metadata">
+        <source src="images/ECE1100 Discovery Demo.mp4" type="video/mp4" />
+      </video>
+      <figcaption>Live demo &mdash; serial output, threshold crossing, likelihood scoring, and the Flask server receiving the alert.</figcaption>
+    </figure>
 
-						<!-- Process / Methods -->
-						<span class="section-badge">Process</span>
-						<h3>Overall Approach</h3>
-						<p>
-							I approached this project from a thresholding perspective, so I began researching what levels of acceleration denote
-							a fall or crash on a bike or e-scooter, which range from 200-700m/s^2. For this application, it is better to set the
-							threshold at the lower bound, as potential false positives are less dire than false negatives. Aside from just acceleration, 
-							crashes are characterized either by being in free-fall before or after impact, or abrupt stillness after impact (where impacts are characterized by high acceleration). 
-							To reflect this, I couple this acceleration thresholding with pre-impact and post-impact analyses, which is explained
-							later. The results of the pre and post analyses as well as the additional acceleration of the device past the 
-							threshold, can increase the crash likelihood score. Once a crash is confirmed, a message is sent to a web-server hosted over Wi-fi with the time of the crash and
-							the crash likelihood score. 
-						</p>
-						
-						<h3>Hardware</h3>
-						<p>
-							This project uses an ESP32 Dev module, and a MPU6050 (acclerometer and gyroscope). Additional hardware that were considered
-							were NEO-6M GPS and SIM800L modules, for location reporting and cellular wireless connection to a web server, but due to cost
-							constraints, they were ommitted for this project. Working hands-on with hardware helped me gain experience in reading
-							pinouts, and understanding I2C communication. 
-						</p>
+    <h2>What I Learned</h2>
+    <p>
+      I2C fundamentals, interfacing with hardware through PlatformIO, C++ beyond the basics, designing real-time detection
+      algorithms that have to make a decision on incomplete data, and the wireless networking to get that decision somewhere
+      useful. Validation came from 10-foot drop tests, bicycle impact testing and routine exercise as a negative control,
+      landing at 90% detection accuracy with a 2% false positive rate.
+    </p>
 
-						<div class="img-gallery">
-						    <figure>
-						        <img class="img-wide" src="images/esp32.jpg" />
-						    </figure>
-						    <figure>
-						        <img class="img-wide" src="images/Hardware-IRL.jpg" />
-						    </figure>
-						</div>
+    <div class="btn-row" style="margin-top:2.5rem">
+      <a class="btn btn-primary" href="projects.html">&larr; Back to projects</a>
+      <a class="btn" href="https://github.com/JoshuaSU7/Embedded-Crash-Detection-using-ESP32" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg> GitHub</a>
+    </div>
 
-						<h3>Software</h3>
-						<p>
-							The hardware was programmed using C++ via the PlatformIO application in VSCode. PlatformIO provides an organized and
-							efficient way to upload and flash code to the ESP32, and lets you choose different well-known programming 
-							frameworks. Its built-in library manager already contains drivers for the MPU6050, which was used later
-							during programming. I have experience programming in Python, but was decently new to programming in C++, 
-							which taught me concepts like file structure, OOP, and how to use pointers for effective memory management. 
-						</p>
-
-						<h3>Programming/Algorithm Design</h3>
-						<p>
-							Instead of putting all code into one file, I decided to break the code up into 3 C++ programs - data collection, 
-							main (which contains the detection algorithm), and wifi notification. This way the code is more organized and mirrors
-							the main programming tasks of the project. 
-							
-							The datacollection file uses functions within the MPU6050 drivers to update the
-							MPU object with its current acceleration and gyro readings.
-
-							The wifinotify file uses the built-in support for WiFi on ESP-32, and HTTP POST requests to connect to a server hosted
-							by my personal computer over WiFi, and send the crash detection message and collision likelihood score to the server.
-							The server is hosted using Flask, and is written in Python. 
-							
-							The main file uses the datacollection and wifinotify file to fully integrate real-time data collection, crash detection
-							, and notification. It is structured into 2 parts: initial setup, and a real-time loop. Setup contains initial calibration of the 
-							MPU6050, by taking the average of the first 10 readings, and subtracting that from any subsequent readings. This is done to normalize
-							the data and account for the constant acceleration of gravity. Setup is also used to initialize functions and variables that will
-							be used later in the real-time loop. In the real-time loop, data is collected using the function from datacollection.cpp,
-							printed to the Serial Monitor, and the magnitude of acceleration is recorded (use magnitude of acceleration to be independent of orientation).
-							In order for thorough analysis of an impact to be completed, a running history of X previous values of acceleration magnitude is kept.
-							Once acceleration magnitude exceeds a defined threshold, it is denoted as an impact and performs a pre-impact analysis, where it checks if the device was in free-fall before impact.
-							If it was, it adds onto the collision likelihood score. Afterwards, it analyses Y values after the impact to see if the device was in free-fall or if the device is still
-							after impact. If it is, then it adds onto the collision likelihood score. Once pre and post analyses are concluded, it sends the notification
-							and message to the web server. 
-						</p>
-
-						<hr />
-
-						<!-- Demo -->
-						<span class="section-badge">Demo</span>
-						<h3>Project Demo</h3>
-						<p>
-							A demonstration of the crash detection system in action, showing real-time acceleration data, impact detection, and server notification.
-							For the demo and easy testing, the ESP32 is dropped from around 3 feet above the ground onto a hard surface, which can be seen by the spike in acceleration up to
-							around 23m/s^2 (0:05). The threshold is set to 20m/s^2. For the actual application of the device, the threshold would be set much higher (100m/s^2 minimum).
-							
-						</p>
-
-						<video controls style="width:100%;border-radius:8px;"><source src="images/ECE1100 Discovery Demo.mp4" type="video/mp4"></video>
-
-						<hr />
-
-						<!-- Reflection -->
-						<span class="section-badge">Reflection</span>
-						<h3>What I Learned</h3>
-						<p>
-							Overall this project taught me fundamentals of I2C communication, how to interface with hardware using
-							PlatformIO, programming in C++, designing real-time detection algorithms, and wireless networking concepts.
-						</p>
-
-						<!-- Links / Resources -->
-						<hr />
-						<h3>Resources &amp; Links</h3>
-						<ul>
-							<li><a href="https://github.com/JoshuaSU7/Embedded-Crash-Detection-using-ESP32">Code and Repository</a></li>
-						</ul>
-
-					</div>
-				</section>
-			</article>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</body>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>&copy; 2026 Joshua Su</div>
+    <div class="social">
+      <a href="https://github.com/JoshuaSU7" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.3 8.65 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.21V21H9z"/></svg></a>
+      <a href="mailto:joshua.su@gatech.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg></a>
+    </div>
+  </div>
+</footer>
+</body>
 </html>

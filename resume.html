@@ -1,371 +1,178 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Resume | Joshua Su</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<style>
-			/* ── Resume page styles ── */
-			.resume-actions {
-				display: flex;
-				align-items: center;
-				gap: 1em;
-				flex-wrap: wrap;
-				margin-bottom: 2em;
-			}
-			.upload-label {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.5em;
-				cursor: pointer;
-				padding: 0.65em 1.5em;
-				border: 2px solid rgba(255,255,255,0.25);
-				border-radius: 4px;
-				font-size: 0.9em;
-				font-weight: 600;
-				letter-spacing: 0.1em;
-				text-transform: uppercase;
-				transition: border-color 0.2s, background 0.2s;
-			}
-			.upload-label:hover {
-				border-color: rgba(255,255,255,0.6);
-				background: rgba(255,255,255,0.05);
-			}
-			#pdf-upload {
-				display: none;
-			}
-			#upload-status {
-				font-size: 0.85em;
-				opacity: 0.7;
-			}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Resume — Joshua Su</title>
+<meta name="description" content="Resume of Joshua Su: electrical engineering student at Georgia Tech specializing in RF, antenna and PCB design." />
+<meta name="author" content="Joshua Su" />
+<meta property="og:title" content="Resume — Joshua Su" />
+<meta property="og:description" content="Resume of Joshua Su: electrical engineering student at Georgia Tech specializing in RF, antenna and PCB design." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Joshua&nbsp;Su</a>
+    <button class="menu-btn" aria-label="Toggle menu">Menu</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="introduction.html">About</a>
+      <div class="nav-drop">
+        <button>Projects <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="nav-drop-menu">
+          <a href="projects.html">All Projects</a>
+          <a href="radar.html">Phased Array RADAR</a>
+          <a href="eog.html">EOG Eye Tracking</a>
+          <a href="crash-detection.html">Crash Detection Device</a>
+          <a href="pll.html">PLL Feedback Divider</a>
+          <a href="racquet.html">Heated Racquet Grip</a>
+        </div>
+      </div>
+      <a href="resume.html" class="active">Resume</a>
+      <a href="career.html">Career</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle colour theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
 
-			/* PDF viewer area */
-			#pdf-container {
-				width: 100%;
-				background: rgba(0,0,0,0.3);
-				border: 1px solid rgba(255,255,255,0.1);
-				border-radius: 8px;
-				overflow: hidden;
-				position: relative;
-			}
 
-			/* Static embed (when resume.pdf exists in repo) */
-			#pdf-embed {
-				width: 100%;
-				height: 850px;
-				border: none;
-				display: block;
-			}
+<div class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">Updated September 2026</span>
+    <h1>Resume</h1>
+    <p class="lede">Education, experience, projects and skills at a glance. The full PDF is below &mdash; or download a copy.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="Joshua_Su_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M3.5 17v2.5A1.5 1.5 0 0 0 5 21h14a1.5 1.5 0 0 0 1.5-1.5V17"/></svg> Download PDF</a>
+      <a class="btn" href="Joshua_Su_Resume.pdf" target="_blank" rel="noopener">Open in new tab</a>
+    </div>
+  </div>
+</div>
 
-			/* Canvas-based viewer (for uploaded file) */
-			#pdf-canvas-wrapper {
-				display: none;
-				overflow-y: auto;
-				max-height: 900px;
-				padding: 1em;
-				box-sizing: border-box;
-			}
-			#pdf-canvas-wrapper canvas {
-				display: block;
-				margin: 0 auto 1em auto;
-				max-width: 100%;
-				box-shadow: 0 2px 16px rgba(0,0,0,0.4);
-			}
+<div class="article">
+  <div class="wrap">
 
-			/* No-PDF placeholder */
-			#pdf-placeholder {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				padding: 4em 2em;
-				text-align: center;
-				gap: 1em;
-			}
-			#pdf-placeholder .icon {
-				font-size: 3em;
-				opacity: 0.3;
-			}
-			#pdf-placeholder p {
-				opacity: 0.5;
-				margin: 0;
-			}
+    <h2 style="border:0;padding:0;margin:0 0 1.4rem">Summary</h2>
 
-			.pdf-nav {
-				display: none;
-				align-items: center;
-				justify-content: center;
-				gap: 1em;
-				padding: 0.75em;
-				background: rgba(0,0,0,0.2);
-				border-top: 1px solid rgba(255,255,255,0.08);
-			}
-			.pdf-nav.visible { display: flex; }
-			.pdf-nav button {
-				background: rgba(255,255,255,0.1);
-				border: 1px solid rgba(255,255,255,0.2);
-				color: #fff;
-				padding: 0.4em 1em;
-				border-radius: 4px;
-				cursor: pointer;
-				transition: background 0.2s;
-			}
-			.pdf-nav button:hover { background: rgba(255,255,255,0.2); }
-			.pdf-nav button:disabled { opacity: 0.3; cursor: default; }
-			#page-info { font-size: 0.9em; opacity: 0.7; }
+    <div class="fact-grid" style="margin-bottom:3rem">
+      <div class="fact"><h4>Education</h4><p>Georgia Institute of Technology<br />B.S. Electrical Engineering<br />Aug 2024 &ndash; May 2028 &middot; GPA 3.85</p></div>
+      <div class="fact"><h4>Location</h4><p>Atlanta, GA<br />US Citizen</p></div>
+      <div class="fact"><h4>Contact</h4><p><a class="tlink" href="mailto:joshua.su@gatech.edu">joshua.su@gatech.edu</a><br />770-309-4820</p></div>
+    </div>
 
-			/* Loading spinner */
-			#pdf-loading {
-				display: none;
-				position: absolute;
-				inset: 0;
-				background: rgba(0,0,0,0.5);
-				align-items: center;
-				justify-content: center;
-				font-size: 1em;
-				letter-spacing: 0.1em;
-				z-index: 10;
-			}
-			#pdf-loading.visible { display: flex; }
+    <div class="section-head"><h2 style="border:0;padding:0;margin:0">Experience</h2></div>
 
-			/* ── Projects dropdown submenu ── */
-			#menu .has-submenu summary {
-				cursor: pointer;
-				list-style: none;
-				display: block;
-			}
-			#menu .has-submenu summary::-webkit-details-marker { display: none; }
-			#menu .has-submenu summary::after {
-				content: '\25B8';
-				float: right;
-				opacity: 0.5;
-				transition: transform 0.2s;
-			}
-			#menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
-			#menu .submenu {
-				list-style: none;
-				margin: 0.3em 0 0.6em 1.4em;
-				padding: 0;
-			}
-			#menu .submenu li a {
-				font-size: 0.92em;
-				opacity: 0.85;
-			}
-		</style>
-	</head>
-	<body class="is-preload">
+    <div class="xp-item">
+      <div class="xp-when">Aug 2026 &mdash; Present</div>
+      <div class="xp-body">
+        <h3>Antenna / RF Design Engineer</h3>
+        <div class="xp-org">GT Experimental Rocketry &middot; Ground Systems &mdash; Antenna Design, Altair FEKO</div>
+        <ul>
+          <li>Engineered a two-way RF ground station system for rocket-to-mission-control telemetry, designed to eliminate prior-launch communication dropouts with a modeled +75&nbsp;dB link margin.</li>
+          <li>Validated antenna link performance ahead of fabrication, confirming far-field radiation patterns met mission link-budget requirements through full rocket 3D mesh and test-site topology simulations in Altair FEKO.</li>
+          <li>Determined external RF hardware architecture: receive antenna, 19&nbsp;dB-gain LNA, bias tee injector, SX1262 LoRa transceiver (440&nbsp;MHz / 62.5&nbsp;kbps), Orange Pi 5 UART-to-network bridge and WiFi point-to-point module.</li>
+        </ul>
+      </div>
+    </div>
 
-		<!-- Page Wrapper -->
-		<div id="page-wrapper">
+    <div class="xp-item">
+      <div class="xp-when">Aug 2026 &mdash; Present</div>
+      <div class="xp-body">
+        <h3>Hardware Engineer</h3>
+        <div class="xp-org">GT Yellow Jacket Space Program &middot; Avionics &mdash; PCB Design, Altium Designer</div>
+        <ul>
+          <li>Designed a 6-channel avionics sensor interface board in Altium Designer, implementing a 24&nbsp;V input protection stage (fuse, TVS diode, bulk capacitance) and a buck/LDO power tree delivering regulated 5&nbsp;V and 3.3&nbsp;V rails to downstream digital and analog circuitry.</li>
+          <li>Developed a hierarchical schematic and SPI-based signal chain connecting an STM32 microcontroller to an external ADC, enabling digitization of six 4&ndash;20&nbsp;mA current-loop sensor channels for pressure, temperature and force measurement.</li>
+          <li>Laid out PCB with room-based floorplanning, sizing power-rail trace widths for current capacity, isolating short analog sensor traces from noisy high-current paths, and stitching ground-pour copper for signal integrity.</li>
+        </ul>
+      </div>
+    </div>
 
-			<!-- Header -->
-			<header id="header">
-				<h1><a href="index.html">Joshua Su</a></h1>
-				<nav id="nav">
-					<ul>
-						<li class="special">
-							<a href="#menu" class="menuToggle"><span>Menu</span></a>
-							<div id="menu">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li><a href="introduction.html">About Me</a></li>
-									<li><a href="resume.html">Resume</a></li>
-									<li class="has-submenu">
-										<details>
-											<summary>Projects</summary>
-											<ul class="submenu">
-												<li><a href="projects.html">All Projects</a></li>
-												<li><a href="radar.html">Phased Array RADAR</a></li>
-												<li><a href="eog.html">EOG Eye-Tracking</a></li>
-												<li><a href="crash-detection.html">Crash Detection Device</a></li>
-											</ul>
-										</details>
-									</li>
-									<li><a href="career.html">Career Goals</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</header>
+    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Projects</h2></div>
 
-			<!-- Main -->
-			<article id="main">
-				<header>
-					<h2>Resume</h2>
-					<p>My experience, education, and skills at a glance.</p>
-				</header>
-				<section class="wrapper style5">
-					<div class="inner">
+    <div class="xp-item">
+      <div class="xp-when">Jul 2026 &mdash; Present</div>
+      <div class="xp-body">
+        <h3><a class="tlink" href="radar.html">X-Band Phased Array RADAR Board</a></h3>
+        <div class="xp-org">Antenna &amp; PCB Design &mdash; ANSYS Electronics, Altium Designer</div>
+        <ul>
+          <li>Designed a 10.5&nbsp;GHz 4&times;4 microstrip patch antenna phased array in ANSYS Electronics, achieving a peak realized gain of 17.3&nbsp;dBi at boresight, 3&nbsp;dB beamwidth of 13&deg;, and S11 return loss of &minus;24&nbsp;dB at 10.5&nbsp;GHz with a 700&nbsp;MHz (&minus;10&nbsp;dB) bandwidth.</li>
+          <li>Building the RF module PCB in Altium Designer to integrate antenna array, software-defined radio and microcontroller subsystems.</li>
+          <li>Achieved 60&deg; electronic beamsteering across all 16 array elements via 4 integrated beamformer ICs, supported by an 8-layer PCB stackup isolating RF, digital and power domains.</li>
+          <li>Designed impedance-matched, length-matched GCPW and symmetrical stripline traces for high-speed RF routing, minimizing crosstalk and coupling while eliminating phase delay discrepancies introduced by beamformer traces.</li>
+        </ul>
+      </div>
+    </div>
 
-						<!-- Action bar -->
-						<div class="resume-actions">
-							<!-- Download button: add resume.pdf to your repo root for this to work -->
-							<a href="resume.pdf" download class="button primary icon solid fa-download" id="download-btn">
-								Download PDF
-							</a>
-						</div>
+    <div class="xp-item">
+      <div class="xp-when">Dec 2025</div>
+      <div class="xp-body">
+        <h3><a class="tlink" href="crash-detection.html">Embedded Crash Detection Device</a></h3>
+        <div class="xp-org">Embedded Systems &mdash; ESP32, C++</div>
+        <ul>
+          <li>Engineered a wearable/mountable crash and fall detection device using ESP32 and MPU6050 accelerometer, capable of autonomously identifying high-impact events.</li>
+          <li>Designed a modular C++ architecture separating data collection, crash-detection logic and WiFi notification, implementing a multi-stage algorithm that analyzes pre-impact free-fall and post-impact motion stillness to compute a collision likelihood score.</li>
+          <li>Achieved 90% detection accuracy and 2% false positive rate, validated through 10-foot drop tests, bicycle impact testing and routine exercise.</li>
+        </ul>
+      </div>
+    </div>
 
-						<!--
-							HOW TO ADD YOUR RESUME:
-							1. Place your resume PDF in the root of your repo and name it "resume.pdf"
-							2. The <object> below will automatically display it.
-							3. Visitors can also click "Upload / Replace PDF" to preview any PDF locally.
+    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Skills</h2></div>
 
-							To use a different filename, update the "data" attribute of the <object> tag below.
-						-->
+    <div class="skill-grid">
+      <div class="skill-cell">
+        <h4>Engineering</h4>
+        <p>RADAR, antenna engineering, RF design, PCB design, signal processing, embedded systems, FPGAs, oscilloscopes, logic analyzers</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Software &amp; Tools</h4>
+        <p>ANSYS Electronics Desktop, Altium Designer, Altair FEKO, Cadence Virtuoso, KiCAD</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Programming</h4>
+        <p>Python, C/C++, MATLAB, VHDL</p>
+      </div>
+    </div>
 
-						<!-- PDF Viewer Container -->
-						<div id="pdf-container">
+    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Relevant Coursework</h2></div>
+    <p class="muted">
+      RADAR and Electromagnetic Sensing &middot; Electromagnetics and Microwave Applications &middot; Electromagnetics &middot;
+      Signals and Systems &middot; Signal Processing &middot; Microelectronic Circuits &middot; Programming HW/SW Systems &middot;
+      Digital Design Lab
+    </p>
 
-							<!-- Loading overlay -->
-							<div id="pdf-loading">Loading PDF&hellip;</div>
+    <div class="section-head" style="margin-top:3.5rem"><h2 style="border:0;padding:0;margin:0">Full PDF</h2></div>
 
-							<!-- Static embed — shows resume.pdf from your repo automatically -->
-							<object id="pdf-embed" data="Joshua_Su_Resume.pdf" type="application/pdf">
-								<!-- Fallback if browser can't embed PDF -->
-								<div id="pdf-placeholder">
-									<span class="icon solid fa-file-pdf"></span>
-									<p>No resume PDF found yet.</p>
-									<p>Add <strong>resume.pdf</strong> to your repository root,<br />
-									or use the <strong>Upload / Replace PDF</strong> button above to preview a file locally.</p>
-								</div>
-							</object>
+    <object class="pdf-frame" data="Joshua_Su_Resume.pdf" type="application/pdf">
+      <div class="pdf-fallback">
+        <p>Your browser can&rsquo;t display the PDF inline.</p>
+        <div class="btn-row" style="justify-content:center">
+          <a class="btn btn-primary" href="Joshua_Su_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M3.5 17v2.5A1.5 1.5 0 0 0 5 21h14a1.5 1.5 0 0 0 1.5-1.5V17"/></svg> Download the PDF</a>
+        </div>
+      </div>
+    </object>
 
-							<!-- Canvas-based viewer (used when a file is uploaded via the button) -->
-							<div id="pdf-canvas-wrapper"></div>
+    <div class="btn-row" style="margin-top:2rem">
+      <a class="btn btn-primary" href="Joshua_Su_Resume.pdf" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M3.5 17v2.5A1.5 1.5 0 0 0 5 21h14a1.5 1.5 0 0 0 1.5-1.5V17"/></svg> Download PDF</a>
+      <a class="btn btn-quiet" href="mailto:joshua.su@gatech.edu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg> Get in touch</a>
+    </div>
 
-						</div>
-
-						<!-- Page navigation (shown when using canvas viewer) -->
-						<div class="pdf-nav" id="pdf-nav">
-							<button id="prev-page" disabled>&#8592; Prev</button>
-							<span id="page-info">Page 1 of 1</span>
-							<button id="next-page" disabled>Next &#8594;</button>
-						</div>
-
-					</div>
-				</section>
-			</article>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
-					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-		<!-- PDF.js (Mozilla) for canvas-based rendering of uploaded PDFs -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-		<script>
-			// Configure PDF.js worker
-			pdfjsLib.GlobalWorkerOptions.workerSrc =
-				'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-			let pdfDoc      = null;
-			let currentPage = 1;
-			let totalPages  = 0;
-
-			const uploadInput    = document.getElementById('pdf-upload');
-			const uploadStatus   = document.getElementById('upload-status');
-			const pdfEmbed       = document.getElementById('pdf-embed');
-			const canvasWrapper  = document.getElementById('pdf-canvas-wrapper');
-			const pdfNav         = document.getElementById('pdf-nav');
-			const prevBtn        = document.getElementById('prev-page');
-			const nextBtn        = document.getElementById('next-page');
-			const pageInfo       = document.getElementById('page-info');
-			const pdfLoading     = document.getElementById('pdf-loading');
-			const downloadBtn    = document.getElementById('download-btn');
-
-			function showLoading(show) {
-				pdfLoading.classList.toggle('visible', show);
-			}
-
-			async function renderPage(num) {
-				showLoading(true);
-				const page    = await pdfDoc.getPage(num);
-				const scale   = Math.min(canvasWrapper.clientWidth / page.getViewport({ scale: 1 }).width, 1.8);
-				const viewport = page.getViewport({ scale });
-
-				const canvas  = document.createElement('canvas');
-				canvas.width  = viewport.width;
-				canvas.height = viewport.height;
-				const ctx     = canvas.getContext('2d');
-
-				// Clear old canvases and render new
-				canvasWrapper.innerHTML = '';
-				canvasWrapper.appendChild(canvas);
-
-				await page.render({ canvasContext: ctx, viewport }).promise;
-				pageInfo.textContent = `Page ${num} of ${totalPages}`;
-				prevBtn.disabled = num <= 1;
-				nextBtn.disabled = num >= totalPages;
-				showLoading(false);
-			}
-
-			async function loadPdfFromArrayBuffer(buffer, filename) {
-				showLoading(true);
-				pdfEmbed.style.display    = 'none';
-				canvasWrapper.style.display = 'block';
-				pdfNav.classList.add('visible');
-				uploadStatus.textContent  = filename;
-
-				pdfDoc       = await pdfjsLib.getDocument({ data: buffer }).promise;
-				totalPages   = pdfDoc.numPages;
-				currentPage  = 1;
-
-				await renderPage(currentPage);
-			}
-
-			uploadInput.addEventListener('change', async (e) => {
-				const file = e.target.files[0];
-				if (!file || file.type !== 'application/pdf') return;
-
-				const reader = new FileReader();
-				reader.onload = async (ev) => {
-					await loadPdfFromArrayBuffer(ev.target.result, file.name);
-
-					// Update download link to local blob
-					const blob = new Blob([ev.target.result], { type: 'application/pdf' });
-					downloadBtn.href = URL.createObjectURL(blob);
-					downloadBtn.download = file.name;
-				};
-				reader.readAsArrayBuffer(file);
-			});
-
-			prevBtn.addEventListener('click', async () => {
-				if (currentPage > 1) { currentPage--; await renderPage(currentPage); }
-			});
-			nextBtn.addEventListener('click', async () => {
-				if (currentPage < totalPages) { currentPage++; await renderPage(currentPage); }
-			});
-
-			// Check if resume.pdf exists in the repo; if not, the <object> shows the placeholder
-			// No extra JS needed — the <object> tag handles it natively.
-		</script>
-
-	</body>
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>&copy; 2026 Joshua Su</div>
+    <div class="social">
+      <a href="https://github.com/JoshuaSU7" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.3 8.65 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.21V21H9z"/></svg></a>
+      <a href="mailto:joshua.su@gatech.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg></a>
+    </div>
+  </div>
+</footer>
+</body>
 </html>

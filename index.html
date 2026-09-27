@@ -1,333 +1,193 @@
-<!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-		<title>Joshua Su | Portfolio</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Joshua Su — Electrical Engineer</title>
+<meta name="description" content="Electrical engineering student at Georgia Tech working on RF and antenna design, PCB design, embedded systems and signal processing." />
+<meta name="author" content="Joshua Su" />
+<meta property="og:title" content="Joshua Su — Electrical Engineer" />
+<meta property="og:description" content="Electrical engineering student at Georgia Tech working on RF and antenna design, PCB design, embedded systems and signal processing." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Joshua&nbsp;Su</a>
+    <button class="menu-btn" aria-label="Toggle menu">Menu</button>
+    <nav class="nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="introduction.html">About</a>
+      <div class="nav-drop">
+        <button>Projects <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="nav-drop-menu">
+          <a href="projects.html">All Projects</a>
+          <a href="radar.html">Phased Array RADAR</a>
+          <a href="eog.html">EOG Eye Tracking</a>
+          <a href="crash-detection.html">Crash Detection Device</a>
+          <a href="pll.html">PLL Feedback Divider</a>
+          <a href="racquet.html">Heated Racquet Grip</a>
+        </div>
+      </div>
+      <a href="resume.html">Resume</a>
+      <a href="career.html">Career</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle colour theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
 
-		<style>
-		  #two .spotlight .image img {
-		    object-fit: cover;
-		    object-position: center center;
-		    width: 100%;
-		    height: 100%;
-		  }
 
-		  /* ── Featured projects thumbnail grid ── */
-		  .featured-projects-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-			gap: 2em;
-			margin-top: 2em;
-		  }
-		  .featured-project-card {
-			background: rgba(255,255,255,0.03);
-			border: 1px solid rgba(255,255,255,0.1);
-			border-radius: 10px;
-			overflow: hidden;
-			text-align: left;
-			transition: border-color 0.2s, transform 0.2s;
-			display: flex;
-			flex-direction: column;
-		  }
-		  .featured-project-card:hover {
-			border-color: rgba(255,255,255,0.3);
-			transform: translateY(-4px);
-		  }
-		  .featured-project-card img {
-			width: 100%;
-			height: 170px;
-			object-fit: cover;
-			display: block;
-		  }
-		  .featured-project-card .fp-body {
-			padding: 1.2em 1.4em 1.4em 1.4em;
-			display: flex;
-			flex-direction: column;
-			gap: 0.5em;
-			flex: 1;
-		  }
-		  .featured-project-card h4 {
-			margin: 0;
-			font-size: 1.05em;
-		  }
-		  .featured-project-card p {
-			margin: 0;
-			font-size: 0.88em;
-			opacity: 0.75;
-			line-height: 1.6;
-			flex: 1;
-		  }
-		  .featured-project-card a.fp-link {
-			font-size: 0.8em;
-			font-weight: 600;
-			letter-spacing: 0.08em;
-			text-transform: uppercase;
-			opacity: 0.85;
-		  }
-		  .featured-project-card a.fp-link:hover { opacity: 1; }
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Electrical Engineering &middot; Georgia Tech</span>
+    <h1>Joshua Su</h1>
+    <p class="tagline">I design RF and antenna hardware, circuit boards, and embedded systems &mdash; from a 10.5&nbsp;GHz phased array radar board to wearable sensing devices that work in the real world.</p>
+    <div class="hero-meta">
+      <span>Atlanta, GA</span>
+      <span>B.S. Electrical Engineering &rsquo;28</span>
+      <span>GPA 3.85</span>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="projects.html">View Projects</a>
+      <a class="btn" href="resume.html">Resume</a>
+      <a class="btn btn-quiet" href="mailto:joshua.su@gatech.edu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg> Get in touch</a>
+    </div>
+  </div>
+</section>
 
-		  /* ── Projects dropdown submenu ── */
-		  #menu .has-submenu summary {
-			cursor: pointer;
-			list-style: none;
-			display: block;
-		  }
-		  #menu .has-submenu summary::-webkit-details-marker { display: none; }
-		  #menu .has-submenu summary::after {
-			content: '\25B8';
-			float: right;
-			opacity: 0.5;
-			transition: transform 0.2s;
-		  }
-		  #menu .has-submenu details[open] summary::after { transform: rotate(90deg); }
-		  #menu .submenu {
-			list-style: none;
-			margin: 0.3em 0 0.6em 1.4em;
-			padding: 0;
-		  }
-		  #menu .submenu li a {
-			font-size: 0.92em;
-			opacity: 0.85;
-		  }
-		</style>
-	</head>
-	<body class="landing is-preload">
+<section class="tight">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Featured Work</h2>
+      <p>Three projects that best represent what I build.</p>
+    </div>
+    <div class="card-grid">
+      <a class="pcard" href="radar.html">
+        <div class="thumb"><img src="images/radar/array-model-ansys.png" alt="4x4 patch antenna array model" loading="lazy" /></div>
+        <div class="body">
+          <div class="tags"><span class="tag">RF / Microwave</span><span class="tag">Antenna Design</span><span class="tag">PCB</span></div>
+          <h3>X-Band Phased Array RADAR Board</h3>
+          <p>A 10.5&nbsp;GHz 4&times;4 microstrip patch array that steers its beam electronically across 60&deg; with no moving parts, fed by a custom RF transverter chain.</p>
+          <div class="go">View project <span>&rarr;</span></div>
+        </div>
+      </a>
+      <a class="pcard" href="eog.html">
+        <div class="thumb"><img src="images/eog-project.jpg" alt="EOG eye tracking setup" loading="lazy" /></div>
+        <div class="body">
+          <div class="tags"><span class="tag">Python</span><span class="tag">Signal Processing</span><span class="tag">Arduino</span></div>
+          <h3>EOG Eye Tracking &amp; Blink Detection</h3>
+          <p>Electrooculography-based cursor control, built to give people with locked-in syndrome a way to operate a computer using only their eyes.</p>
+          <div class="go">View project <span>&rarr;</span></div>
+        </div>
+      </a>
+      <a class="pcard" href="crash-detection.html">
+        <div class="thumb"><img src="images/crash-detection.jpg" alt="Crash detection device" loading="lazy" /></div>
+        <div class="body">
+          <div class="tags"><span class="tag">Embedded</span><span class="tag">C++</span><span class="tag">ESP32</span></div>
+          <h3>Embedded Crash Detection Device</h3>
+          <p>An ESP32 and MPU6050 wearable that scores impact events in real time from pre- and post-impact motion, then notifies a server over Wi-Fi.</p>
+          <div class="go">View project <span>&rarr;</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
-		<!-- Page Wrapper -->
-		<div id="page-wrapper">
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Experience</h2>
+      <p>Hardware teams I currently design for.</p>
+    </div>
 
-			<!-- Header -->
-			<header id="header" class="alt">
-				<h1><a href="index.html">Joshua Su</a></h1>
-				<nav id="nav">
-					<ul>
-						<li class="special">
-							<a href="#menu" class="menuToggle"><span>Menu</span></a>
-							<div id="menu">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li><a href="introduction.html">About Me</a></li>
-									<li><a href="resume.html">Resume</a></li>
-									<li class="has-submenu">
-										<details>
-											<summary>Projects</summary>
-											<ul class="submenu">
-												<li><a href="projects.html">All Projects</a></li>
-												<li><a href="radar.html">Phased Array RADAR</a></li>
-												<li><a href="eog.html">EOG Eye-Tracking</a></li>
-												<li><a href="crash-detection.html">Crash Detection Device</a></li>
-											</ul>
-										</details>
-									</li>
-									<li><a href="career.html">Career Goals</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</nav>
-			</header>
+    <div class="xp-item">
+      <div class="xp-when">Aug 2026 &mdash; Present</div>
+      <div class="xp-body">
+        <h3>Antenna / RF Design Engineer</h3>
+        <div class="xp-org">GT Experimental Rocketry &middot; Ground Systems &mdash; Antenna Design, Altair FEKO</div>
+        <ul>
+          <li>Engineered a two-way RF ground station for rocket-to-mission-control telemetry, designed to eliminate prior-launch communication dropouts with a modeled +75&nbsp;dB link margin.</li>
+          <li>Validated antenna link performance ahead of fabrication, confirming far-field radiation patterns met mission link-budget requirements through full rocket 3D mesh and test-site topology simulations in Altair FEKO.</li>
+          <li>Determined the external RF hardware architecture: receive antenna, 19&nbsp;dB-gain LNA, bias tee injector, SX1262 LoRa transceiver (440&nbsp;MHz / 62.5&nbsp;kbps), Orange Pi 5 UART-to-network bridge and a WiFi point-to-point module.</li>
+        </ul>
+      </div>
+    </div>
 
-			<!-- Banner -->
-			<section id="banner">
-				<div class="inner">
-					<h2>Joshua Su</h2>
-					<p>Student &bull; Engineer &bull; Builder<br />
-					Welcome to my personal portfolio.</p>
-					<ul class="actions special">
-						<li><a href="introduction.html" class="button primary">About Me</a></li>
-					</ul>
-				</div>
-				<a href="#one" class="more scrolly">Learn More</a>
-			</section>
+    <div class="xp-item">
+      <div class="xp-when">Aug 2026 &mdash; Present</div>
+      <div class="xp-body">
+        <h3>Hardware Engineer</h3>
+        <div class="xp-org">GT Yellow Jacket Space Program &middot; Avionics &mdash; PCB Design, Altium Designer</div>
+        <ul>
+          <li>Designed a 6-channel avionics sensor interface board in Altium Designer, implementing a 24&nbsp;V input protection stage (fuse, TVS diode, bulk capacitance) and a buck/LDO power tree delivering regulated 5&nbsp;V and 3.3&nbsp;V rails.</li>
+          <li>Developed a hierarchical schematic and SPI-based signal chain connecting an STM32 microcontroller to an external ADC, digitizing six 4&ndash;20&nbsp;mA current-loop sensor channels for pressure, temperature and force measurement.</li>
+          <li>Laid out the PCB with room-based floorplanning, sizing power-rail trace widths for current capacity, isolating short analog sensor traces from noisy high-current paths, and stitching ground-pour copper for signal integrity.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
 
-			<!-- One: "What I'm Working On" -->
-			<section id="one" class="wrapper style1 special">
-				<div class="inner">
-					<header class="major">
-						<h2>What I'm Working On</h2>
-						<p>From hardware to human interfaces, here's a snapshot<br />
-						of the problems I'm exploring and building solutions for.</p>
-					</header>
-					<div style="display:flex; justify-content:center; gap:3em; flex-wrap:wrap; margin-top:1em;">
-						<div style="text-align:center; max-width:180px;">
-							<span class="icon solid fa-shield-alt major style1" style="display:inline-block; margin-bottom:0.6em;"></span>
-							<p style="margin:0;"><strong>Wearable Technology</strong><br />
-							<span style="font-size:0.9em; opacity:0.75;">for Crash Detection</span></p>
-						</div>
-						<div style="text-align:center; max-width:180px;">
-							<span class="icon solid fa-hand-paper major style2" style="display:inline-block; margin-bottom:0.6em;"></span>
-							<p style="margin:0;"><strong>Human Computer Interfaces</strong><br />
-							<span style="font-size:0.9em; opacity:0.75;">for Paralyzed Individuals</span></p>
-						</div>
-						<div style="text-align:center; max-width:180px;">
-							<span class="icon solid fa-microchip major style3" style="display:inline-block; margin-bottom:0.6em;"></span>
-							<p style="margin:0;"><strong>Analog Mixed-Signal</strong><br />
-							<span style="font-size:0.9em; opacity:0.75;">Module Design</span></p>
-						</div>
-					</div>
-				</div>
-			</section>
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <p>Tools and domains I work in day to day.</p>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-cell">
+        <h4>RF &amp; Antenna</h4>
+        <p>RADAR, antenna engineering, phased arrays, RF design, link budgets, S-parameter analysis</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Hardware</h4>
+        <p>PCB design, multi-layer stackups, power trees, embedded systems, FPGAs</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Signals</h4>
+        <p>Signal processing, real-time detection algorithms, sensing and instrumentation</p>
+      </div>
+      <div class="skill-cell">
+        <h4>EDA &amp; Simulation</h4>
+        <p>ANSYS Electronics Desktop, Altium Designer, Altair FEKO, Cadence Virtuoso, KiCAD</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Programming</h4>
+        <p>Python, C/C++, MATLAB, VHDL</p>
+      </div>
+      <div class="skill-cell">
+        <h4>Lab</h4>
+        <p>Oscilloscopes, logic analyzers, spectrum measurement, bring-up and board validation</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-			<!-- Featured Projects -->
-			<section id="featured-projects" class="wrapper style3 special">
-				<div class="inner">
-					<header class="major">
-						<h2>Featured Projects</h2>
-						<p>A few of the things I've been building lately.</p>
-					</header>
-					<div class="featured-projects-grid">
-						<a class="featured-project-card" href="radar.html">
-							<img src="https://www.image2url.com/r2/default/gifs/1790184984795-0963f042-9a39-4b33-8685-8def3a184876.gif" alt="Phased array beamsteering simulation" />
-							<div class="fp-body">
-								<h4>Phased Array RADAR Board</h4>
-								<p>An X-band phased array antenna designed to electronically steer a beam without any moving parts.</p>
-								<span class="fp-link">View Project &rarr;</span>
-							</div>
-						</a>
-						<a class="featured-project-card" href="eog.html">
-							<img src="images/eog-project.jpg" alt="EOG project" />
-							<div class="fp-body">
-								<h4>EOG Eye Tracking Project</h4>
-								<p>Electrooculography-based eye tracking and blink detection, built for hands-free mouse control.</p>
-								<span class="fp-link">View Project &rarr;</span>
-							</div>
-						</a>
-						<a class="featured-project-card" href="crash-detection.html">
-							<img src="images/crash-detection.jpg" alt="Crash detection project" />
-							<div class="fp-body">
-								<h4>Embedded Crash Detection Device</h4>
-								<p>An ESP32-based fall/crash detection module with real-time wireless notification.</p>
-								<span class="fp-link">View Project &rarr;</span>
-							</div>
-						</a>
-					</div>
-				</div>
-			</section>
-
-			<!-- Two: Spotlight sections -->
-			<!--
-				HOW TO CHANGE THE SPOTLIGHT IMAGES:
-				Each spotlight below has a line like:
-				    <div class="image"><img src="images/pic01.jpg" alt="" /></div>
-				To replace an image:
-				  1. Add your new image file to the /images folder in your repo.
-				  2. Change the src value — e.g. src="images/my-photo.jpg"
-				  3. The image displays at a fixed size set by the theme CSS, so
-				     landscape/rectangular photos work best (roughly 16:9 or 4:3).
-			-->
-			<section id="two" class="wrapper alt style2">
-				<section class="spotlight">
-					<div class="image"><img src="images/about-me-index-real.jpg" alt="About Me" style="object-fit: cover; object-position: center top;" /></div>
-					<div class="content">
-						<h2>About Me</h2>
-						<p>Get to know my background, interests, and what motivates me.</p>
-						<ul class="actions">
-							<li><a href="introduction.html" class="button">Learn More</a></li>
-						</ul>
-					</div>
-				</section>
-				<section class="spotlight">
-					<div class="image"><img src="images/eog-for-index.jpg" alt="Projects" /></div>
-					<div class="content">
-						<h2>Projects</h2>
-						<p>Projects I've been working on, in and out of the classroom. Topics range from bioengineering to RF and antenna design.</p>
-						<ul class="actions">
-							<li><a href="projects.html" class="button">Learn More</a></li>
-						</ul>
-					</div>
-				</section>
-				<section class="spotlight">
-					<div class="image"><img src="images/emory-internship.jpg" alt="Career Goals" /></div>
-					<div class="content">
-						<h2>Career Goals</h2>
-						<p>My long-term vision is to design technology that improves human lives, from assistive devices to safety systems at the intersection of hardware and bioengineering.</p>
-						<ul class="actions">
-							<li><a href="career.html" class="button">Learn More</a></li>
-						</ul>
-					</div>
-				</section>
-			</section>
-
-			<!-- Three -->
-			<section id="three" class="wrapper style3 special">
-				<div class="inner">
-					<header class="major">
-						<h2>Skills &amp; Interests</h2>
-						<p>A few things I've picked up along the way.</p>
-					</header>
-					<ul class="features">
-						<li class="icon solid fa-microchip">
-							<h3>Embedded Systems</h3>
-							<p>Designing and programming hardware for real-world sensing and control applications.</p>
-						</li>
-						<li class="icon solid fa-laptop">
-							<h3>Software Development</h3>
-							<p>Building applications and tools in Python and C++.</p>
-						</li>
-						<li class="icon solid fa-wave-square">
-							<h3>Circuit Design</h3>
-							<p>Analog and mixed-signal design for precision electronics and signal processing.</p>
-						</li>
-						<li class="icon solid fa-users">
-							<h3>Human-Centered Design</h3>
-							<p>Creating interfaces and systems that work for those with disabilities.</p>
-						</li>
-						<li class="icon fa-lightbulb">
-							<h3>Problem Solving</h3>
-							<p>Breaking down complex engineering challenges into clear, actionable solutions.</p>
-						</li>
-						<li class="icon solid fa-flask">
-							<h3>Research</h3>
-							<p>Curious about how things work and driven to explore new ideas through hands-on experimentation.</p>
-						</li>
-					</ul>
-				</div>
-			</section>
-
-			<!-- CTA -->
-			<section id="cta" class="wrapper style4">
-				<div class="inner">
-					<header>
-						<h2>Get In Touch</h2>
-						<p>Interested in connecting or collaborating? Feel free to reach out.</p>
-					</header>
-					<ul class="actions stacked">
-						<li><a href="resume.html" class="button fit primary">View My Resume</a></li>
-						<li><a href="introduction.html" class="button fit">About Me</a></li>
-					</ul>
-				</div>
-			</section>
-
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="icons">
-					<li><a href="https://github.com/JoshuaSU7" class="icon brands fa-github" target="_blank"><span class="label">GitHub</span></a></li>
-					<li><a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" class="icon brands fa-linkedin" target="_blank"><span class="label">LinkedIn</span></a></li>
-					<li><a href="mailto:joshua.su@gatech.edu" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
-				</ul>
-				<ul class="copyright">
-					<li>&copy; Joshua Su</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-				</ul>
-			</footer>
-
-		</div>
-
-		<!-- Scripts -->
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/jquery.scrollex.min.js"></script>
-		<script src="assets/js/jquery.scrolly.min.js"></script>
-		<script src="assets/js/browser.min.js"></script>
-		<script src="assets/js/breakpoints.min.js"></script>
-		<script src="assets/js/util.js"></script>
-		<script src="assets/js/main.js"></script>
-
-	</body>
+<section class="cta">
+  <div class="wrap">
+    <h2>Let&rsquo;s build something</h2>
+    <p class="lede">I&rsquo;m always open to conversations about RF, hardware, and anything at the intersection of electronics and human impact.</p>
+    <div class="btn-row" style="margin-top:1.6rem">
+      <a class="btn btn-primary" href="mailto:joshua.su@gatech.edu">Email me</a>
+      <a class="btn" href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/JoshuaSU7" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>&copy; 2026 Joshua Su</div>
+    <div class="social">
+      <a href="https://github.com/JoshuaSU7" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.3 8.65 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.21V21H9z"/></svg></a>
+      <a href="mailto:joshua.su@gatech.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg></a>
+    </div>
+  </div>
+</footer>
+</body>
 </html>
