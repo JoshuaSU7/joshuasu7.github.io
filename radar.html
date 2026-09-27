@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>X-Band Phased Array RADAR Board — Joshua Su</title>
-<meta name="description" content="A 10.5 GHz 4x4 microstrip patch phased array with 60 degrees of electronic beamsteering, 17.3 dBi peak gain, and a custom RF transverter chain." />
+<meta name="description" content="A 10.5 GHz 4x4 microstrip patch phased array with 60 degrees of electronic beamsteering, 17.3 dBi peak gain, and a custom RF transceiver PCB." />
 <meta name="author" content="Joshua Su" />
 <meta property="og:title" content="X-Band Phased Array RADAR Board — Joshua Su" />
-<meta property="og:description" content="A 10.5 GHz 4x4 microstrip patch phased array with 60 degrees of electronic beamsteering, 17.3 dBi peak gain, and a custom RF transverter chain." />
+<meta property="og:description" content="A 10.5 GHz 4x4 microstrip patch phased array with 60 degrees of electronic beamsteering, 17.3 dBi peak gain, and a custom RF transceiver PCB." />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -45,7 +45,7 @@
   <div class="wrap">
     <a class="backlink" href="projects.html">&larr; All projects</a>
     <h1>X-Band Phased Array RADAR Board</h1>
-    <p class="lede">A 10.5&nbsp;GHz 4&times;4 microstrip patch array that steers its beam electronically across 60&deg; &mdash; no moving parts &mdash; fed by a custom RF transverter chain and integrated onto an 8-layer PCB.</p>
+    <p class="lede">A 10.5&nbsp;GHz 4&times;4 microstrip patch array that steers its beam electronically across 60&deg; &mdash; no moving parts &mdash; integrated with a custom RF transceiver PCB on an 8-layer stackup.</p>
     <div class="tags">
       <span class="tag">ANSYS Electronics</span>
       <span class="tag">Altium Designer</span>
@@ -194,7 +194,7 @@
     <h3>Radiation pattern at boresight</h3>
     <figure class="shot">
       <img src="images/radar/gain-pattern-boresight.png" alt="3D total gain radiation pattern at boresight, 17.30 dBi peak" />
-      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a 3&nbsp;dB beamwidth of about 13&deg; &ndash; a narrow-to-medium beam. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
+      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a 3&nbsp;dB beamwidth of about 13&deg;, a narrow-to-medium beam. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
     </figure>
 
     <h3>Radiation pattern with the beam steered</h3>
@@ -225,7 +225,7 @@
 
     <h3>System efficiency across the scan</h3>
     <p>
-      System efficiency is radiated power over accepted power &ndash; how much of what goes in actually leaves the antenna
+      System efficiency is radiated power over accepted power. How much of what goes in actually leaves the antenna
       rather than being lost to reflection and coupling.
     </p>
     <div class="fig-row">
