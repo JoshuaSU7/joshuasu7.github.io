@@ -249,7 +249,7 @@
       <figcaption><b>Electronic beamsteering across the full scan volume.</b> The main lobe sweeps through azimuth and elevation purely by varying the per-element phase, while the array stays fixed. The gradual broadening and gain loss at wide angles is the aperture foreshortening effect visible in the gain-versus-scan plot above.</figcaption>
     </figure>
 
-    <h2>RF Front End</h2>
+    <h2>RF Front End PCB</h2>
     <p>
       The array is fed by a custom RF transceiver board that sits between a software-defined radio and the antenna
       elements. On transmit it takes a 2.5&nbsp;GHz IF from the SDR, converts it up to 10.5&nbsp;GHz, filters and amplifies
@@ -374,24 +374,7 @@
       </table>
     </div>
 
-    <h3>Cleaning up the local oscillator</h3>
-    <p>
-      A synthesizer is only as clean as its supply and its loop filter. The LO&rsquo;s regulator is bypassed with a
-      three-capacitor bank chosen to cover different noise bands. 0.1&nbsp;&micro;F for 20&ndash;50&nbsp;MHz harmonics,
-      1&nbsp;&micro;F for 10&ndash;20&nbsp;MHz, and 10&nbsp;&micro;F for everything below 10&nbsp;MHz. Digital blocks inside the
-      part switch fast and draw current in spikes; without that filtering the spikes ride on the internal LDO rail, the DC
-      bias on the VCO gets noisy, and the phase noise of the whole chain suffers.
-    </p>
-    <p>
-      The charge pump needs the same treatment on its output. Its job is to turn switching pulses into a clean DC tuning
-      voltage for the VCO, and the loop filter below is what makes that happen.
-    </p>
-    <figure class="shot">
-      <img src="images/radar/charge-pump-loop-filter.png" alt="Charge pump DC tuning loop filter schematic" />
-      <figcaption><b>Charge pump loop filter.</b> The 1.2&nbsp;nF cap on the left absorbs the charge pump&rsquo;s current spikes so they never show up on the voltage line. The 180&nbsp;&Omega; resistor in series with 18&nbsp;nF adds phase margin. Without it the loop hits 180&deg; of phase delay and the PLL never locks. The final 180&nbsp;&Omega; / 1&nbsp;nF RC stage low-passes what is left before it reaches the VCO tuning pin (Vtune).</figcaption>
-    </figure>
-
-    <h2>PCB Integration</h2>
+    <h2>Layer Stackup and RF Routing Choices</h2>
     <p>
       The antenna array, RF transceiver and microcontroller subsystems are being integrated onto a single board in
       Altium Designer. The stackup is 8 layers, arranged to keep the RF, digital and power domains isolated from each other.
