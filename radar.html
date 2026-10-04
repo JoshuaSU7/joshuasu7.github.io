@@ -73,8 +73,8 @@
     <p>
       This project is a complete small X-band RADAR front end. A custom RF transceiver generates a clean 10.5&nbsp;GHz
       carrier, filters and amplifies it, and routes it through a transmit/receive switch into the antenna array. The
-      frequency conversion itself is done by a transverter stage inside that chain, mixing a 7.5&nbsp;GHz local oscillator
-      with a 3&nbsp;GHz IF up to 10.5&nbsp;GHz. The array itself is sixteen microstrip patches driven through four
+      frequency conversion itself is done by a transverter stage inside that chain, mixing an 8&nbsp;GHz local oscillator
+      with a 2.5&nbsp;GHz IF up to 10.5&nbsp;GHz. The array itself is sixteen microstrip patches driven through four
       beamformer ICs, which apply the per-element phase shifts that do the steering.
     </p>
 
@@ -251,12 +251,23 @@
 
     <h2>RF Front End</h2>
     <p>
-      The array is fed by a transceiver chain that builds the 10.5&nbsp;GHz carrier, cleans it up, and amplifies it to a
-      usable transmit level. The local oscillator and mixer together make up the transverter stage that does the frequency
-      conversion; everything after it filters, amplifies, switches and distributes. Each stage below was selected and
-      specified as part of the RF PCB design.
+      The array is fed by a custom RF transceiver board that sits between a software-defined radio and the antenna
+      elements. On transmit it takes a 2.5&nbsp;GHz IF from the SDR, converts it up to 10.5&nbsp;GHz, filters and amplifies
+      it, and distributes it to the four beamformer ICs. On receive it runs the same path in reverse, bringing the
+      10.5&nbsp;GHz echo back down to a 2.5&nbsp;GHz IF for the SDR to digitize.
+    </p>
+    <p>
+      The local oscillator, its reference clock and the mixer make up the transverter stage: the part that actually does the
+      frequency conversion, mixing an 8&nbsp;GHz LO with the 2.5&nbsp;GHz IF. Everything around it filters, amplifies,
+      switches and distributes.
     </p>
 
+    <figure class="shot">
+      <img src="images/radar/pcb-3d-render.png" alt="3D render of the RF transceiver PCB with the 4x4 patch array on the right" />
+      <figcaption><b>Current 3D render of the board in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain runs through the middle of the board, the ESP32 module and USB-C power and programming sit along the top edge, and three SMA connectors break out the TX and RX IF ports to the SDR and the control voltage for the tunable bandpass filter. Silkscreen labels mark the separate power domains: a 5&nbsp;V input feeding an isolated digital 3.3&nbsp;V rail, four independent RF 3.3&nbsp;V rails, and &minus;5&nbsp;V, &minus;2.5&nbsp;V and 1.8&nbsp;V supplies.</figcaption>
+    </figure>
+
+    <h3>Transverter stage</h3>
     <div class="table-wrap">
       <table class="data">
         <thead>
@@ -265,45 +276,99 @@
         <tbody>
           <tr>
             <td>Local oscillator</td>
-            <td><code>LMX2592RHAT</code><br />PLL / frequency synthesizer</td>
-            <td>Generates a 7.5 GHz tone for mixing with the 3 GHz IF. Runs on 3.3 V, covers 20 MHz&ndash;9.8 GHz with 32-bit fractional division, and delivers 49 fs RMS jitter with &minus;134.5 dBc/Hz VCO phase noise at 1 MHz offset.</td>
+            <td><a class="tlink" href="https://www.ti.com/lit/ds/symlink/lmx2592.pdf" target="_blank" rel="noopener"><code>LMX2592RHAT</code></a><br />PLL / frequency synthesizer</td>
+            <td>Generates the 8&nbsp;GHz LO that mixes with the 2.5&nbsp;GHz IF. Runs on 3.3&nbsp;V and covers 20&nbsp;MHz&ndash;9.8&nbsp;GHz with 32-bit fractional division. Delivers 49&nbsp;fs RMS jitter, &minus;134.5&nbsp;dBc/Hz VCO phase noise at 1&nbsp;MHz offset, and a &minus;231&nbsp;dBc/Hz normalized PLL noise floor.</td>
             <td>&minus;8.5 dB</td>
           </tr>
           <tr>
             <td>Reference clock</td>
-            <td><code>SIT5358AI-FR-33E0</code><br />TCXO</td>
-            <td>Supplies a stable temperature-compensated 10 MHz reference to the LO, so the synthesized carrier does not drift with board temperature.</td>
+            <td><a class="tlink" href="https://www.digikey.com/en/products/detail/sitime/SIT5358AI-FR-33E0-10-000000/13996960" target="_blank" rel="noopener"><code>SIT5358AI-FR-33E0</code></a><br />TCXO</td>
+            <td>Supplies a stable, temperature-compensated 10&nbsp;MHz reference to the LO, so the synthesized carrier does not drift with board temperature. 3.3&nbsp;V.</td>
             <td>&mdash;</td>
           </tr>
           <tr>
             <td>Mixer</td>
-            <td><code>LTC5548IUDB</code><br />double-balanced passive mixer</td>
-            <td>Mixes the 7.5 GHz LO against the 3 GHz IF to produce the 10.5 GHz output. Microwave double-balanced topology for good port-to-port isolation.</td>
+            <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/5548f.pdf" target="_blank" rel="noopener"><code>LTC5548IUDB</code></a><br />double-balanced passive mixer</td>
+            <td>Mixes the 8&nbsp;GHz LO with the 2.5&nbsp;GHz IF to produce 10.5&nbsp;GHz on transmit, and mixes the 10.5&nbsp;GHz return back down to 2.5&nbsp;GHz on receive. Double-balanced topology for good port-to-port isolation.</td>
             <td>&mdash;</td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Signal chain</h3>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Stage</th><th>Part</th><th>Function</th><th>Gain / Loss</th></tr>
+        </thead>
+        <tbody>
           <tr>
             <td>Bandpass filter</td>
-            <td><code>ADMV8416</code><br />tunable BPF (MMIC)</td>
-            <td>Strips the mixer&rsquo;s unwanted products and leaves only the 10.5 GHz signal. 5 V part with a selectable band, so the passband can be tuned rather than fixed at layout time.</td>
+            <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/admv8416.pdf" target="_blank" rel="noopener"><code>ADMV8416</code></a><br />tunable BPF (MMIC)</td>
+            <td>Strips the mixer&rsquo;s unwanted products and leaves only the 10.5&nbsp;GHz signal. 5&nbsp;V part with selectable bands, so the passband can be tuned through its SMA control input rather than fixed at layout time.</td>
             <td>&minus;8 dB</td>
           </tr>
           <tr>
             <td>Power amplifier</td>
-            <td><code>HMC451LC3</code><br />GaAs PHEMT</td>
-            <td>Recovers all the conversion and filter loss &mdash; the signal is net negative up to this point &mdash; and drives the array at a usable transmit level.</td>
-            <td>+19 dB</td>
+            <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/hmc451lc3.pdf" target="_blank" rel="noopener"><code>HMC451LC3</code></a><br />GaAs PHEMT</td>
+            <td>Recovers the conversion and filter loss, since the signal is net negative up to this point, and drives the array at a usable transmit level. Maximum input power +10&nbsp;dBm.</td>
+            <td>+19 dB<br />NF 7 dB</td>
+          </tr>
+          <tr>
+            <td>Low-noise amplifier</td>
+            <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/HMC564LC4.pdf" target="_blank" rel="noopener"><code>HMC564LC4</code></a><br />GaAs MMIC LNA</td>
+            <td>Adds gain on the receive side while keeping the overall system noise figure low. Covers 6&ndash;14&nbsp;GHz with a P1dB of 13&nbsp;dBm and a maximum input of +20&nbsp;dBm.</td>
+            <td>+17 dB<br />NF 1.8 dB</td>
           </tr>
           <tr>
             <td>T/R switch</td>
-            <td><code>ADRF5019BCPZN</code></td>
-            <td>Switches the shared antenna array between the transmit and receive chains.</td>
+            <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/ADRF5019.pdf" target="_blank" rel="noopener"><code>ADRF5019BCPZN</code></a></td>
+            <td>Switches the shared antenna array between the transmit and receive paths. Rated 100&nbsp;MHz&ndash;13&nbsp;GHz with a maximum input power of 27&nbsp;dBm.</td>
             <td>&minus;1.25 dB</td>
           </tr>
           <tr>
-            <td>Distribution</td>
-            <td>1&rarr;4 splitter / combiner</td>
-            <td>Fans the single RF path out to the four beamformer ICs, which in turn each drive four antenna elements.</td>
-            <td>&mdash;</td>
+            <td>Splitter / combiner</td>
+            <td><a class="tlink" href="https://www.minicircuits.com/pdfs/EP4RKU+.pdf" target="_blank" rel="noopener"><code>EP4RKU+</code></a><br />Mini-Circuits 4-way, GaAs MMIC</td>
+            <td>Splits the transmit signal equally four ways to the beamformer ICs, and combines the four receive paths back into one. DC&ndash;18&nbsp;GHz with a VSWR of 1.4; handles 3.1&nbsp;W as a splitter and 1.5&nbsp;W as a combiner.</td>
+            <td>&minus;10 dB<br />(6 dB is the ideal 4-way split)</td>
+          </tr>
+          <tr>
+            <td>Low-pass filter (RX only)</td>
+            <td><code>LFL182G45TC1A108</code></td>
+            <td>Cleans up the mixer output on receive, passing the 2.5&nbsp;GHz IF to the SDR and rejecting the higher-frequency mixing products and LO leakage.</td>
+            <td>&minus;0.37 dB</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Control &amp; interfaces</h3>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Block</th><th>Part</th><th>Function</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Microcontroller</td>
+            <td><a class="tlink" href="https://documentation.espressif.com/esp32-wroom-32_datasheet_en.pdf" target="_blank" rel="noopener"><code>ESP32-WROOM-32</code></a></td>
+            <td>Programs and controls the board over SPI, including the LO synthesizer and the beamformer ICs that set each element&rsquo;s phase.</td>
+          </tr>
+          <tr>
+            <td>USB&ndash;UART bridge</td>
+            <td><a class="tlink" href="https://ftdichip.com/wp-content/uploads/2021/10/DS_FT231X.pdf" target="_blank" rel="noopener"><code>FT231X</code></a></td>
+            <td>Converts USB to UART so the ESP32 can be programmed directly over the USB-C port.</td>
+          </tr>
+          <tr>
+            <td>USB-C connector</td>
+            <td><a class="tlink" href="https://www.digikey.com/en/products/detail/hirose-electric-co-ltd/CX90B-16P/13176897" target="_blank" rel="noopener"><code>CX90B-16P</code></a><br />Hirose</td>
+            <td>Power and programming connection for the USB module.</td>
+          </tr>
+          <tr>
+            <td>SMA connectors</td>
+            <td>50&nbsp;&Omega; coax</td>
+            <td>RF connections to the software-defined radio for the TX and RX IF paths, plus the control voltage for the tunable bandpass filter.</td>
           </tr>
         </tbody>
       </table>
@@ -328,7 +393,7 @@
 
     <h2>PCB Integration</h2>
     <p>
-      The antenna array, software-defined radio and microcontroller subsystems are being integrated onto a single board in
+      The antenna array, RF transceiver and microcontroller subsystems are being integrated onto a single board in
       Altium Designer. The stackup is 8 layers, arranged to keep the RF, digital and power domains isolated from each other.
     </p>
     <p>
@@ -337,6 +402,10 @@
       between channels shows up directly as a pointing error in the steered beam. Symmetrical stripline keeps crosstalk and
       coupling down between the sixteen closely spaced feed lines.
     </p>
+    <figure class="shot">
+      <img src="images/radar/pcb-layout-routing.png" alt="Altium 2D layout view of the board showing length-matched serpentine feed lines" />
+      <figcaption><b>Layout view of the same board.</b> The four beamformers (U_Beamformer1&ndash;4) on the right each fan out to a row of four patch elements. The serpentine meanders on those feed lines are the length matching: every path from a beamformer to its element is tuned to the same electrical length, so the only phase difference between elements is the one the beamformer deliberately applies. The dense grid of stitching vias ties the ground pours together across layers for isolation and a clean return path.</figcaption>
+    </figure>
 
     <h2>Where It&rsquo;s Going</h2>
     <p>
