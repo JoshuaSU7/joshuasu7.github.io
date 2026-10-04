@@ -809,3 +809,32 @@ table.data code {
 	.site-header, .site-footer, .cta { display: none; }
 	body { color: #000; background: #fff; }
 }
+
+/* ---------- Block diagrams, formulas ---------- */
+figure.diagram { background: var(--bg); }
+figure.diagram svg { display: block; width: 100%; height: auto; padding: 0.9rem 0.8rem 0.4rem; }
+.formula {
+	font-family: var(--mono);
+	font-size: 0.95rem;
+	text-align: center;
+	padding: 1rem 1.2rem;
+	margin: 1.6rem 0;
+	border: 1px solid var(--rule);
+	border-radius: var(--radius);
+	background: var(--bg-inset);
+	color: var(--fg);
+	overflow-x: auto;
+	white-space: nowrap;
+}
+.article p.fineprint { font-size: 0.8rem; color: var(--fg-faint); margin-top: -0.8rem; }
+table.data.budget td:nth-child(2),
+table.data.budget td:nth-child(3) { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; color: var(--fg); }
+@media (min-width: 900px) {
+	figure.diagram { width: min(1020px, calc(100vw - 4rem)); margin-left: 50%; transform: translateX(-50%); }
+}
+@media (max-width: 720px) {
+	figure.diagram { overflow-x: auto; }
+	figure.diagram svg { min-width: 720px; }
+}
+.metrics.three { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 560px) { .metrics.three { grid-template-columns: repeat(2, 1fr); } }

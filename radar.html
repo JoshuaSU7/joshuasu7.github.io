@@ -251,7 +251,7 @@
 
     <h2>RF Front End PCB</h2>
     <p>
-      The array is fed by a custom RF transceiver board that sits between a software-defined radio and the antenna
+      The array is fed by a custom RF transceiver board that sits between an ADALM-PLUTO software-defined radio and the antenna
       elements. On transmit it takes a 2.5&nbsp;GHz IF from the SDR, converts it up to 10.5&nbsp;GHz, filters and amplifies
       it, and distributes it to the four beamformer ICs. On receive it runs the same path in reverse, bringing the
       10.5&nbsp;GHz echo back down to a 2.5&nbsp;GHz IF for the SDR to digitize.
@@ -336,8 +336,8 @@
           <tr>
             <td>Beamformer ICs (&times;4)</td>
             <td><a class="tlink" href="https://www.analog.com/en/products/adar1000.html" target="_blank" rel="noopener"><code>ADAR1000</code></a><br />Analog Devices 4-channel X/Ku-band beamformer</td>
-            <td>Sets the phase and amplitude of every antenna element, which is what actually steers the beam. Each IC drives four elements, so four of them cover the 4&times;4 array. Covers 8&ndash;16&nbsp;GHz in half-duplex transmit/receive with 360&deg; of phase adjustment at 2.8&deg; resolution and &ge;31&nbsp;dB of gain adjustment at &le;0.5&nbsp;dB resolution. Programmed by the ESP32 over 4-wire SPI, with memory for 121 prestored beam positions, built-in power detectors and a temperature sensor.</td>
-            <td>Adjustable<br />(&ge;31 dB range)</td>
+            <td>Sets the phase and amplitude of every antenna element, which is what actually steers the beam. Each IC drives four elements, so four of them cover the 4&times;4 array. Covers 8&ndash;16&nbsp;GHz in half-duplex transmit/receive with 360&deg; of phase adjustment at 2.8&deg; resolution. On transmit, gain is variable from 0 to 20&nbsp;dB at 10.5&nbsp;GHz and is set so each channel sits at its 10&nbsp;dBm output P1dB (saturated output is 14&nbsp;dBm). On receive it provides 21&nbsp;dB of coherent gain, with an input P1dB of &minus;16&nbsp;dBm. Programmed by the ESP32 over 4-wire SPI, with memory for 121 prestored beam positions.</td>
+            <td>TX +19.5 dB<br />(0&ndash;20 dB var.)<br />NF 22 dB<br /><br />RX +21 dB<br />NF 8 dB</td>
           </tr>
           <tr>
             <td>Low-pass filter (RX only)</td>
@@ -395,6 +395,236 @@
       <img src="images/radar/pcb-layout-routing.png" alt="Altium 2D layout view of the board showing length-matched serpentine feed lines" />
       <figcaption><b>Layout view of the same board.</b> The four beamformers (U_Beamformer1&ndash;4) on the right each fan out to a row of four patch elements. The serpentine meanders on those feed lines are the length matching: every path from a beamformer to its element is tuned to the same electrical length, so the only phase difference between elements is the one the beamformer deliberately applies. The dense grid of stitching vias ties the ground pours together across layers for isolation and a clean return path.</figcaption>
     </figure>
+
+    <h2>Power Budget Analysis</h2>
+    <p>
+      The power budget follows the signal through every stage in both directions. It confirms that no component is driven
+      past its limits, shows how much margin the receive chain has, and sets the transmit and receive levels that the range
+      analysis below depends on. Both directions share the transverter, bandpass filter, splitter/combiner, beamformers
+      and array, with T/R switches routing the signal through the power amplifier on transmit and the low-noise amplifier on
+      receive.
+    </p>
+
+    <figure class="diagram">
+      <svg class="blockdiag" viewBox="0 0 996 290" role="img" aria-label="Block diagram of the transmit and receive signal paths with the gain of each stage" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .blockdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .blockdiag .tr{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg,#0b0b0b);stroke-width:1.1}
+  .blockdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .blockdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .blockdiag .p{fill:var(--fg-muted,#555);font:400 10px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .blockdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .blockdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .blockdiag .ar{fill:var(--fg,#0b0b0b)}
+</style>
+<defs><marker id="bdarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="22">TX PATH  →   stage gain (dB) · endpoints are power (dBm)</text>
+<text class="lab" x="12" y="282">←  RX PATH   stage gain (dB) · endpoints are power (dBm)</text>
+<rect class="bx" x="12" y="78" width="80" height="162" rx="3"/>
+<text class="t" x="52.0" y="149.0">ADALM-</text>
+<text class="t" x="52.0" y="163.0">PLUTO</text>
+<text class="t" x="52.0" y="177.0">SDR</text>
+<text class="g" x="52.0" y="66">+3 dBm</text>
+<text class="g" x="52.0" y="260">−75.9 dBm</text>
+<rect class="bx" x="112" y="190.0" width="66" height="48" rx="3"/>
+<text class="t" x="145.0" y="211.0">LPF</text>
+<text class="p" x="145.0" y="225.0">2.5 GHz</text>
+<text class="g" x="145.0" y="256.0">−0.4</text>
+<rect class="tr" x="198" y="92" width="30" height="134" rx="3"/>
+<text class="p" x="213.0" y="162.0" transform="rotate(-90 213.0 159.0)">T/R switch</text>
+<text class="g" x="213.0" y="66">−1.25</text>
+<text class="g" x="213.0" y="260">−1.25</text>
+<rect class="bx" x="248" y="78" width="92" height="162" rx="3"/>
+<text class="t" x="294.0" y="156.0">Transverter</text>
+<text class="p" x="294.0" y="170.0">8 GHz LO + mixer</text>
+<text class="g" x="294.0" y="66">−8.5</text>
+<text class="g" x="294.0" y="260">−8.5</text>
+<rect class="tr" x="360" y="92" width="30" height="134" rx="3"/>
+<text class="p" x="375.0" y="162.0" transform="rotate(-90 375.0 159.0)">T/R switch</text>
+<text class="g" x="375.0" y="66">−1.25</text>
+<text class="g" x="375.0" y="260">−1.25</text>
+<rect class="bx" x="410" y="78" width="76" height="162" rx="3"/>
+<text class="t" x="448.0" y="149.0">Bandpass</text>
+<text class="t" x="448.0" y="163.0">filter</text>
+<text class="p" x="448.0" y="177.0">ADMV8416</text>
+<text class="g" x="448.0" y="66">−8</text>
+<text class="g" x="448.0" y="260">−8</text>
+<rect class="tr" x="506" y="92" width="30" height="134" rx="3"/>
+<text class="p" x="521.0" y="162.0" transform="rotate(-90 521.0 159.0)">T/R switch</text>
+<text class="g" x="521.0" y="66">−1.25</text>
+<text class="g" x="521.0" y="260">−1.25</text>
+<rect class="bx" x="556" y="80.0" width="74" height="48" rx="3"/>
+<text class="t" x="593.0" y="101.0">PA</text>
+<text class="p" x="593.0" y="115.0">HMC451LC3</text>
+<rect class="bx" x="556" y="190.0" width="74" height="48" rx="3"/>
+<text class="t" x="593.0" y="211.0">LNA</text>
+<text class="p" x="593.0" y="225.0">HMC564LC4</text>
+<text class="g" x="593.0" y="70.0">+19</text>
+<text class="g" x="593.0" y="256.0">+17</text>
+<rect class="tr" x="650" y="92" width="30" height="134" rx="3"/>
+<text class="p" x="665.0" y="162.0" transform="rotate(-90 665.0 159.0)">T/R switch</text>
+<text class="g" x="665.0" y="66">−1.25</text>
+<text class="g" x="665.0" y="260">−1.25</text>
+<rect class="bx" x="700" y="78" width="86" height="162" rx="3"/>
+<text class="t" x="743.0" y="149.0">1:4 Splitter</text>
+<text class="t" x="743.0" y="163.0">4:1 Combiner</text>
+<text class="p" x="743.0" y="177.0">EP4RKU+</text>
+<text class="g" x="743.0" y="66">−10</text>
+<text class="g" x="743.0" y="260">+8</text>
+<rect class="bx" x="806" y="78" width="86" height="162" rx="3"/>
+<text class="t" x="849.0" y="149.0">ADAR1000</text>
+<text class="t" x="849.0" y="163.0">×4</text>
+<text class="p" x="849.0" y="177.0">beamformers</text>
+<text class="g" x="849.0" y="66">+19.5</text>
+<text class="g" x="849.0" y="260">+21</text>
+<rect class="bx" x="912" y="78" width="72" height="162" rx="3"/>
+<text class="t" x="948.0" y="149.0">4×4</text>
+<text class="t" x="948.0" y="163.0">patch</text>
+<text class="t" x="948.0" y="177.0">array</text>
+<text class="g" x="948.0" y="66">+10 dBm</text>
+<text class="g" x="948.0" y="260">−100 dBm</text>
+<line class="ln" x1="92" y1="104" x2="197" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="228" y1="104" x2="247" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="340" y1="104" x2="359" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="390" y1="104" x2="409" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="486" y1="104" x2="505" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="536" y1="104" x2="555" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="630" y1="104" x2="649" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="680" y1="104" x2="699" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="786" y1="104" x2="805" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="892" y1="104" x2="911" y2="104" marker-end="url(#bdarr)"/>
+<line class="ln" x1="912" y1="214" x2="893" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="806" y1="214" x2="787" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="700" y1="214" x2="681" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="650" y1="214" x2="631" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="556" y1="214" x2="537" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="506" y1="214" x2="487" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="410" y1="214" x2="391" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="360" y1="214" x2="341" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="248" y1="214" x2="229" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="198" y1="214" x2="179" y2="214" marker-end="url(#bdarr)"/>
+<line class="ln" x1="112" y1="214" x2="93" y2="214" marker-end="url(#bdarr)"/>
+</svg>
+      <figcaption><b>Transmit and receive signal paths.</b> TX runs left to right along the top lane and RX right to left along the bottom. Blocks that span both lanes are shared hardware; the PA, LNA and receive low-pass filter sit in only one path. Each stage is labeled with its gain in dB (TX above, RX below), and the end labels give the power level in dBm entering and leaving the board.</figcaption>
+    </figure>
+
+    <h3>Transmit path</h3>
+    <p>
+      The ADALM-PLUTO puts out +3&nbsp;dBm at the 2.5&nbsp;GHz IF. The signal loses ground through the transverter, filter and
+      switches, dropping to &minus;17.25&nbsp;dBm before the power amplifier lifts it back up. That input is far below the
+      PA&rsquo;s +10&nbsp;dBm limit. The beamformer gain is then set so each channel lands exactly at the ADAR1000&rsquo;s
+      10&nbsp;dBm output P1dB. That is the most power each element can radiate while staying linear, without pushing toward
+      the 14&nbsp;dBm saturation point.
+    </p>
+    <div class="table-wrap">
+      <table class="data budget">
+        <thead>
+          <tr><th>Stage</th><th>Gain / loss (dB)</th><th>Power after stage</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ADALM-PLUTO SDR (TX)</td><td>&mdash;</td><td>+3 dBm</td><td>Source, at the 2.5&nbsp;GHz IF</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>+1.75 dBm</td><td></td></tr>
+          <tr><td>Transverter stage</td><td>&minus;8.5</td><td>&minus;6.75 dBm</td><td>Up-conversion to 10.5&nbsp;GHz</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;8 dBm</td><td></td></tr>
+          <tr><td>Bandpass filter</td><td>&minus;8</td><td>&minus;16 dBm</td><td></td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;17.25 dBm</td><td></td></tr>
+          <tr><td>Power amplifier</td><td>+19</td><td>+1.75 dBm</td><td>Max input +10&nbsp;dBm; actual input &minus;17.25&nbsp;dBm</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>+0.5 dBm</td><td></td></tr>
+          <tr><td>1:4 splitter</td><td>&minus;10</td><td>&minus;9.5 dBm per line</td><td></td></tr>
+          <tr><td>ADAR1000 beamformer</td><td>+19.5</td><td>+10 dBm</td><td>Output P1dB of 10&nbsp;dBm sets the maximum output power</td></tr>
+          <tr><td>Antenna pin</td><td></td><td><b>+10 dBm per channel</b></td><td>Net TX gain <b>+7&nbsp;dB</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Receive path</h3>
+    <p>
+      Assuming an echo of &minus;100&nbsp;dBm reaches each antenna element, the chain delivers &minus;75.9&nbsp;dBm to the
+      SDR, a net gain of 24.1&nbsp;dB with a system noise figure of 8&nbsp;dB. The minimum usable power at the SDR is set at
+      &minus;80&nbsp;dBm, which corresponds to an SNR of roughly 13&ndash;15&nbsp;dB over a bandwidth of about 10&nbsp;MHz, so
+      this echo clears it with about 4&nbsp;dB to spare. At the other extreme, the ADAR1000&rsquo;s input P1dB of
+      &minus;16&nbsp;dBm sets the strongest echo the front end can take without compressing.
+    </p>
+    <div class="table-wrap">
+      <table class="data budget">
+        <thead>
+          <tr><th>Stage</th><th>Gain / loss (dB)</th><th>Power after stage</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Antenna pin</td><td></td><td>&minus;100 dBm</td><td>Estimated received echo per element</td></tr>
+          <tr><td>ADAR1000 beamformer</td><td>+21</td><td>&minus;79 dBm</td><td>Input P1dB &minus;16&nbsp;dBm; received power must stay below it</td></tr>
+          <tr><td>4:1 combiner</td><td>+8</td><td>&minus;71 dBm</td><td>Coherent combining of the four beamformer outputs</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;72.25 dBm</td><td></td></tr>
+          <tr><td>Low-noise amplifier</td><td>+17</td><td>&minus;55.25 dBm</td><td>Max input +20&nbsp;dBm</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;56.5 dBm</td><td></td></tr>
+          <tr><td>Bandpass filter</td><td>&minus;8</td><td>&minus;64.5 dBm</td><td></td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;65.75 dBm</td><td></td></tr>
+          <tr><td>Transverter stage</td><td>&minus;8.5</td><td>&minus;74.25 dBm</td><td>Down-conversion to the 2.5&nbsp;GHz IF</td></tr>
+          <tr><td>T/R switch</td><td>&minus;1.25</td><td>&minus;75.5 dBm</td><td></td></tr>
+          <tr><td>Low-pass filter</td><td>&minus;0.4</td><td>&minus;75.9 dBm</td><td></td></tr>
+          <tr><td>ADALM-PLUTO SDR (RX)</td><td></td><td><b>&minus;75.9 dBm</b></td><td>Net RX gain <b>+24.1&nbsp;dB</b>; above the &minus;80&nbsp;dBm minimum</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="metrics three">
+      <div class="metric"><div class="val">+7 dB</div><div class="lbl">Net TX gain</div></div>
+      <div class="metric"><div class="val">+10 dBm</div><div class="lbl">Per antenna pin</div></div>
+      <div class="metric"><div class="val">+24.1 dB</div><div class="lbl">Net RX gain</div></div>
+      <div class="metric"><div class="val">8 dB</div><div class="lbl">System noise figure</div></div>
+      <div class="metric"><div class="val">&minus;80 dBm</div><div class="lbl">Min. received power at SDR</div></div>
+      <div class="metric"><div class="val">&minus;16 dBm</div><div class="lbl">Max. input before compression</div></div>
+    </div>
+
+    <h2>Idealistic Target Range Analysis and Applications</h2>
+    <p>
+      With the transmit power and receive sensitivity fixed by the power budget, the radar range equation gives the
+      farthest distance at which a target of a given radar cross-section (RCS) still returns enough power to detect. This is
+      an idealized free-space estimate. It assumes the full radiated power below, no atmospheric or cable losses, and no
+      extra signal-processing gain.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Parameter</th><th>Per port</th><th>Total (16 elements)</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Transmit power</td><td>10 dBm</td><td>22.04 dBm</td><td>Sixteen channels add 12.04&nbsp;dB</td></tr>
+          <tr><td>Antenna gain</td><td colspan="2">17.3 dBi</td><td>Simulated boresight gain, used on transmit and receive</td></tr>
+          <tr><td>EIRP</td><td colspan="2">39.34 dBm</td><td>Total transmit power plus antenna gain</td></tr>
+          <tr><td>Minimum received power</td><td>&minus;100 dBm</td><td>&minus;87.96 dBm</td><td>Detection threshold used for maximum range</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="formula">
+      R<sub>max</sub> = [ P<sub>t</sub> G<sup>2</sup> &lambda;<sup>2</sup> &sigma; / ( (4&pi;)<sup>3</sup> P<sub>min</sub> ) ]<sup>1/4</sup>
+    </div>
+    <p>
+      Here P<sub>t</sub> is the total transmit power, G the antenna gain, &lambda; = 2.86&nbsp;cm at 10.5&nbsp;GHz,
+      &sigma; the target&rsquo;s radar cross-section, and P<sub>min</sub> the minimum detectable received power. Because range
+      grows with the fourth root of RCS, a target 10,000 times larger is only detectable 10 times farther away.
+    </p>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Radar cross-section</th><th>Maximum range</th><th>Typical target</th><th>Application</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>0.01&nbsp;m&sup2;</td><td>33&nbsp;m</td><td>Bird</td><td>Bird and small-drone detection at short range</td></tr>
+          <tr><td>1&nbsp;m&sup2;</td><td>104&nbsp;m</td><td>Person</td><td>Perimeter security and pedestrian detection</td></tr>
+          <tr><td>5&nbsp;m&sup2;</td><td>156&nbsp;m</td><td>Intermediate, between a person and a cabin cruiser</td><td>Larger slow-moving objects in open areas</td></tr>
+          <tr><td>10&nbsp;m&sup2;</td><td>186&nbsp;m</td><td>Cabin cruiser</td><td>Harbor and near-shore maritime monitoring</td></tr>
+          <tr><td>100&nbsp;m&sup2;</td><td>330&nbsp;m</td><td>Automobile</td><td>Roadside traffic and vehicle detection</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fineprint">
+      Typical target RCS values are representative microwave figures (Britannica; GlobalSecurity.org). Real targets vary by
+      a factor of 10 to 1,000 depending on the angle they are viewed from.
+    </p>
 
     <h2>Where It&rsquo;s Going</h2>
     <p>
