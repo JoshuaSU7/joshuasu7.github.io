@@ -45,7 +45,7 @@
   <div class="wrap">
     <a class="backlink" href="projects.html">&larr; All projects</a>
     <h1>X-Band Phased Array RADAR Board</h1>
-    <p class="lede">A 10.5&nbsp;GHz 4&times;4 microstrip patch array that steers its beam electronically across 60&deg; &mdash; no moving parts &mdash; integrated with a custom RF transceiver PCB on an 8-layer stackup.</p>
+    <p class="lede">A 10.5&nbsp;GHz 4&times;4 microstrip patch array that steers its beam electronically, integrated with a custom RF transceiver PCB on an 8-layer stackup.</p>
     <div class="tags">
       <span class="tag">ANSYS Electronics</span>
       <span class="tag">Altium Designer</span>
@@ -68,7 +68,7 @@
     <p>
       A phased array steers its beam by controlling the <em>relative phase</em> of the signal driving each radiating element,
       rather than by physically rotating a dish. Feed the elements in phase and the beam points straight ahead at boresight;
-      apply a progressive phase shift across the array and the beam tilts &mdash; instantly, electronically, and with nothing moving.
+      apply a progressive phase shift across the array and the beam tilts instantly and electronically.
     </p>
     <p>
       This project is a complete small X-band RADAR front end. A custom RF transceiver generates a clean 10.5&nbsp;GHz
@@ -122,7 +122,7 @@
           <tr>
             <td>Feed method</td>
             <td>Coax feed pins</td>
-            <td>Low loss, well shielded, and modular &mdash; the array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth.</td>
+            <td>Low loss, well shielded, and modular. The array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth.</td>
           </tr>
           <tr>
             <td>Beamsteering parameters</td>
@@ -148,7 +148,7 @@
     <p>
       Grating lobes are the failure mode that limits how far a phased array can steer. Space the elements too far apart and
       the array radiates duplicate beams in unwanted directions. The criterion below sets the maximum spacing for a given
-      maximum scan angle &mdash; designing for &theta;<sub>max</sub> = 90&deg; drives spacing to &lambda;/2.
+      maximum scan angle. Designing for &theta;<sub>max</sub> = 90&deg; drives spacing to &lambda;/2.
     </p>
     <figure class="eq">
       <img src="images/radar/element-spacing-equation.png" alt="Grating lobe element spacing criterion" />
@@ -162,7 +162,7 @@
     </p>
     <figure class="eq">
       <img src="images/radar/directivity-equation.png" alt="Array directivity approximation equation" />
-      <figcaption><b>Directivity estimate.</b> D<sub>0</sub> &asymp; 4&pi;(M&middot;d<sub>x</sub>)(N&middot;d<sub>y</sub>) / &lambda;&sup2; &mdash; the aperture area of the M&times;N grid over wavelength squared. For this 4&times;4 array it predicts roughly the 17 dBi the simulation later confirmed.</figcaption>
+      <figcaption><b>Directivity estimate.</b> D<sub>0</sub> &asymp; 4&pi;(M&middot;d<sub>x</sub>)(N&middot;d<sub>y</sub>) / &lambda;&sup2;. This is the aperture area of the M&times;N grid over wavelength squared. For this 4&times;4 array it predicts roughly the 17 dBi the simulation later confirmed.</figcaption>
     </figure>
 
     <h3>Steering the beam</h3>
@@ -182,14 +182,14 @@
       steers away from boresight.
     </p>
 
-    <h3>Return loss &mdash; is the antenna actually accepting power?</h3>
+    <h3>Return loss. Is the antenna actually accepting power?</h3>
     <p>
       S11 measures how much power injected into a port reflects straight back out. Lower is better: a deep dip means the
       element is well matched and radiating rather than reflecting.
     </p>
     <figure class="shot">
       <img src="images/radar/s11-return-loss.png" alt="Self return loss S11 of all sixteen antenna elements versus frequency" />
-      <figcaption><b>Self return loss of all 16 elements.</b> Every element dips sharply toward the 10.5 GHz operating frequency, bottoming out around &minus;24.5&nbsp;dB at 10.39&nbsp;GHz, and rises steeply either side. That is exactly the desired behaviour &mdash; the antennas accept power at 10.5 GHz and reject it everywhere else. The tight grouping of all sixteen traces also confirms the elements are well matched to each other.</figcaption>
+      <figcaption><b>Self return loss of all 16 elements.</b> Every element dips sharply toward the 10.5 GHz operating frequency, bottoming out around &minus;24.5&nbsp;dB at 10.39&nbsp;GHz, and rises steeply either side. That is exactly the desired behaviour. The antennas accept power at 10.5 GHz and reject it everywhere else. The tight grouping of all sixteen traces also confirms the elements are well matched to each other.</figcaption>
     </figure>
 
     <h3>Radiation pattern at boresight</h3>
@@ -332,6 +332,12 @@
             <td><a class="tlink" href="https://www.minicircuits.com/pdfs/EP4RKU+.pdf" target="_blank" rel="noopener"><code>EP4RKU+</code></a><br />Mini-Circuits 4-way, GaAs MMIC</td>
             <td>Splits the transmit signal equally four ways to the beamformer ICs, and combines the four receive paths back into one. DC&ndash;18&nbsp;GHz with a VSWR of 1.4; handles 3.1&nbsp;W as a splitter and 1.5&nbsp;W as a combiner.</td>
             <td>&minus;10 dB<br />(6 dB is the ideal 4-way split)</td>
+          </tr>
+          <tr>
+            <td>Beamformer ICs (&times;4)</td>
+            <td><a class="tlink" href="https://www.analog.com/en/products/adar1000.html" target="_blank" rel="noopener"><code>ADAR1000</code></a><br />Analog Devices 4-channel X/Ku-band beamformer</td>
+            <td>Sets the phase and amplitude of every antenna element, which is what actually steers the beam. Each IC drives four elements, so four of them cover the 4&times;4 array. Covers 8&ndash;16&nbsp;GHz in half-duplex transmit/receive with 360&deg; of phase adjustment at 2.8&deg; resolution and &ge;31&nbsp;dB of gain adjustment at &le;0.5&nbsp;dB resolution. Programmed by the ESP32 over 4-wire SPI, with memory for 121 prestored beam positions, built-in power detectors and a temperature sensor.</td>
+            <td>Adjustable<br />(&ge;31 dB range)</td>
           </tr>
           <tr>
             <td>Low-pass filter (RX only)</td>
