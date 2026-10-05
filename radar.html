@@ -298,7 +298,7 @@
 <text class="t" x="71.0" y="228.0">USB-C</text>
 <text class="p" x="71.0" y="244.0">5 V · 3 A input</text>
 <text class="p" x="71.0" y="260.0">P5V rail</text>
-<text class="g" x="71.0" y="278.0">2.39 A load</text>
+<text class="g" x="71.0" y="278.0">2.4 A load</text>
 <text class="p" x="71.0" y="294.0">60 mil traces</text>
 <line class="ln" x1="130" y1="250.0" x2="160" y2="250.0"/>
 <line class="bus" x1="160" y1="75.0" x2="160" y2="425.0"/>
@@ -337,7 +337,7 @@
 <text class="g" x="462.0" y="277.0">P1V8 · 1.8 V</text>
 <rect class="bx" x="560" y="258.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="282.0">4× ADAR1000 ADDR0 / ADDR1 logic pins</text>
-<text class="p" x="772.0" y="298.0">≈0 A  ·  signal-width traces</text>
+<text class="p" x="772.0" y="298.0">≈0 A  ·  5 mil traces</text>
 <line class="ln" x1="160" y1="355.0" x2="195" y2="355.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="328.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="352.0">LM2776</text>
@@ -351,7 +351,7 @@
 <text class="g" x="360.0" y="417.0">P5V · 5 V direct</text>
 <rect class="bx" x="560" y="398.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="422.0">Power amplifier, bandpass filter (VDD), FT231X</text>
-<text class="p" x="772.0" y="438.0">123.4 mA  ·  60 mil traces</text>
+<text class="p" x="772.0" y="438.0">2.4 A  ·  60 mil traces</text>
 </svg>
       <figcaption><b>Power tree.</b> The 5&nbsp;V USB-C input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. A resistor divider off the digital 3.3&nbsp;V rail sets the 1.8&nbsp;V logic level on the ADAR1000 address pins. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum width of its PCB traces.</figcaption>
     </figure>
@@ -405,7 +405,7 @@
           <tr><td>P3V3_RF2</td><td>LO, mixer, LNA, TCXO, T/R switches</td><td>518&nbsp;mA</td><td>777&nbsp;mA</td><td>0.033&nbsp;V</td><td>10&nbsp;&deg;C</td><td>25&nbsp;mil</td></tr>
           <tr><td>P3V3_DIG</td><td>ESP32</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.1&nbsp;V</td><td>10&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
           <tr><td>PM5V</td><td>Bandpass filter (VEE)</td><td>0.7&nbsp;mA</td><td>10.5&nbsp;mA</td><td>0.05&nbsp;V</td><td>10&nbsp;&deg;C</td><td>5&nbsp;mil</td></tr>
-          <tr><td>P1V8</td><td>4&times; ADAR1000 ADDR0/ADDR1 (CMOS logic inputs), via 10&nbsp;k&Omega; / 12&nbsp;k&Omega; divider from P3V3_DIG</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>P1V8</td><td>4&times; ADAR1000 ADDR0/ADDR1 (CMOS logic inputs), via 10&nbsp;k&Omega; / 12&nbsp;k&Omega; divider from P3V3_DIG</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>5&nbsp;mil</td></tr>
         </tbody>
       </table>
     </div>
