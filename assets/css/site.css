@@ -838,3 +838,7 @@ table.data.budget td:nth-child(3) { font-family: var(--mono); font-size: 0.82rem
 }
 .metrics.three { grid-template-columns: repeat(3, 1fr); }
 @media (max-width: 560px) { .metrics.three { grid-template-columns: repeat(2, 1fr); } }
+math { font-family: "Latin Modern Math", "STIX Two Math", "Cambria Math", math; }
+.formula { font-family: inherit; padding: 1.2rem 1.2rem; }
+.formula math { font-size: 1.45rem; }
+.article p math { font-size: 1.08em; }

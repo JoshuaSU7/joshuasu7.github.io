@@ -599,11 +599,22 @@
     </div>
 
     <div class="formula">
-      R<sub>max</sub> = [ P<sub>t</sub> G<sup>2</sup> &lambda;<sup>2</sup> &sigma; / ( (4&pi;)<sup>3</sup> P<sub>min</sub> ) ]<sup>1/4</sup>
+      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML" aria-label="R max equals the fourth root of P t G squared lambda squared sigma over 4 pi cubed P min">
+        <msub><mi>R</mi><mtext>max</mtext></msub>
+        <mo>=</mo>
+        <mroot>
+          <mfrac>
+            <mrow><msub><mi>P</mi><mi>t</mi></msub><msup><mi>G</mi><mn>2</mn></msup><msup><mi>&lambda;</mi><mn>2</mn></msup><mi>&sigma;</mi></mrow>
+            <mrow><msup><mrow><mo stretchy="false" lspace="0" rspace="0">(</mo><mn>4</mn><mi>&pi;</mi><mo stretchy="false" lspace="0" rspace="0">)</mo></mrow><mn>3</mn></msup><msub><mi>P</mi><mtext>min</mtext></msub></mrow>
+          </mfrac>
+          <mn>4</mn>
+        </mroot>
+      </math>
     </div>
     <p>
-      Here P<sub>t</sub> is the total transmit power, G the antenna gain, &lambda; = 2.86&nbsp;cm at 10.5&nbsp;GHz,
-      &sigma; the target&rsquo;s radar cross-section, and P<sub>min</sub> the minimum detectable received power. Because range
+      Here <math><msub><mi>P</mi><mi>t</mi></msub></math> is the total transmit power, <math><mi>G</mi></math> the antenna gain,
+      <math><mi>&lambda;</mi></math> = 2.86&nbsp;cm at 10.5&nbsp;GHz, <math><mi>&sigma;</mi></math> the target&rsquo;s radar cross-section,
+      and <math><msub><mi>P</mi><mtext>min</mtext></msub></math> the minimum detectable received power. Because range
       grows with the fourth root of RCS, a target 10,000 times larger is only detectable 10 times farther away.
     </p>
 
