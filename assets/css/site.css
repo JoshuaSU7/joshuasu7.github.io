@@ -842,3 +842,16 @@ math { font-family: "Latin Modern Math", "STIX Two Math", "Cambria Math", math; 
 .formula { font-family: inherit; padding: 1.2rem 1.2rem; }
 .formula math { font-size: 1.45rem; }
 .article p math { font-size: 1.08em; }
+
+/* ---------- Typeset equations inside framed figures ---------- */
+figure.eq, [data-theme="dark"] figure.eq { background: var(--bg); }
+figure.eq .eqbody {
+	padding: 1.6rem 1.2rem 1.4rem;
+	background: var(--bg-inset);
+	color: var(--fg);
+	text-align: center;
+	overflow-x: auto;
+}
+figure.eq .eqbody math { font-size: 1.3rem; }
+figure.eq mtable { margin: 0 auto; }
+figure.eq mtd { padding: 0.45em 0.18em; }
