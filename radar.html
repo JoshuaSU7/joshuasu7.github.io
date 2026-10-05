@@ -272,12 +272,13 @@
       Everything on the board runs from a single +5&nbsp;V input. Rather than one shared 3.3&nbsp;V supply, the board splits
       the load into separate rails so that noisy circuitry never shares a supply with sensitive RF parts. The four
       beamformers get their own high-current low-noise regulator, the local oscillator chain gets an ultra-low-noise one,
-      and the ESP32 is isolated on a digital rail. A charge-pump inverter makes the &minus;5&nbsp;V the bandpass filter needs,
+      and the ESP32 is isolated on a digital rail. That digital rail also supplies the beamformers&rsquo; 1.8&nbsp;V through a
+      simple 10&nbsp;k&Omega; / 12&nbsp;k&Omega; resistor divider, which works because those pins draw almost no current. A charge-pump inverter makes the &minus;5&nbsp;V the bandpass filter needs,
       and the power amplifier, filter and USB&ndash;UART bridge run straight off 5&nbsp;V.
     </p>
 
     <figure class="diagram">
-      <svg class="blockdiag" viewBox="0 0 996 416" role="img" aria-label="Power tree: the 5 volt input feeds three 3.3 volt LDOs, a minus 5 volt charge pump, and several loads directly" xmlns="http://www.w3.org/2000/svg">
+      <svg class="blockdiag" viewBox="0 0 996 486" role="img" aria-label="Power tree: the 5 volt input feeds three 3.3 volt LDOs, a minus 5 volt charge pump, and several loads directly" xmlns="http://www.w3.org/2000/svg">
 <style>
   .blockdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
   .blockdiag .src{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
@@ -291,13 +292,13 @@
 </style>
 <defs><marker id="ptarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <text class="lab" x="12" y="22">POWER TREE  ·  rail and load current</text>
-<rect class="src" x="12" y="48" width="118" height="334.0" rx="3"/>
-<text class="t" x="71.0" y="209.0">+5 V input</text>
-<text class="p" x="71.0" y="225.0">P5V rail</text>
-<text class="g" x="71.0" y="243.0">2.39 A total</text>
-<text class="p" x="71.0" y="259.0">60 mil trace</text>
-<line class="ln" x1="130" y1="215.0" x2="160" y2="215.0"/>
-<line class="bus" x1="160" y1="75.0" x2="160" y2="355.0"/>
+<rect class="src" x="12" y="48" width="118" height="404.0" rx="3"/>
+<text class="t" x="71.0" y="244.0">+5 V input</text>
+<text class="p" x="71.0" y="260.0">P5V rail</text>
+<text class="g" x="71.0" y="278.0">2.39 A total</text>
+<text class="p" x="71.0" y="294.0">60 mil trace</text>
+<line class="ln" x1="130" y1="250.0" x2="160" y2="250.0"/>
+<line class="bus" x1="160" y1="75.0" x2="160" y2="425.0"/>
 <line class="ln" x1="160" y1="75.0" x2="195" y2="75.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="48.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="72.0">TPS7A85</text>
@@ -325,22 +326,31 @@
 <rect class="bx" x="560" y="188.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="212.0">ESP32-WROOM-32</text>
 <text class="p" x="772.0" y="228.0">350 mA  ·  15 mil trace</text>
-<line class="ln" x1="160" y1="285.0" x2="195" y2="285.0" marker-end="url(#ptarr)"/>
+<line class="ln" x1="280.0" y1="242.0" x2="280.0" y2="257.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="258.0" width="168" height="54" rx="3"/>
-<text class="t" x="280.0" y="282.0">LM2776</text>
-<text class="p" x="280.0" y="298.0">charge-pump inverter · 200 mA</text>
+<text class="t" x="280.0" y="282.0">Resistor divider</text>
+<text class="p" x="280.0" y="298.0">10 kΩ / 12 kΩ off P3V3_DIG</text>
 <line class="ln" x1="364" y1="285.0" x2="559" y2="285.0" marker-end="url(#ptarr)"/>
-<text class="g" x="462.0" y="277.0">PM5V · −5 V</text>
+<text class="g" x="462.0" y="277.0">P1V8 · 1.8 V</text>
 <rect class="bx" x="560" y="258.0" width="424" height="54" rx="3"/>
-<text class="t" x="772.0" y="282.0">Bandpass filter negative supply (VEE)</text>
-<text class="p" x="772.0" y="298.0">0.7 mA  ·  5 mil trace</text>
-<line class="ln" x1="160" y1="355.0" x2="559" y2="355.0" marker-end="url(#ptarr)"/>
-<text class="g" x="360.0" y="347.0">P5V · 5 V direct</text>
+<text class="t" x="772.0" y="282.0">4× ADAR1000 (1.8 V supply)</text>
+<text class="p" x="772.0" y="298.0">≈0 A load  ·  divider draws ~150 µA</text>
+<line class="ln" x1="160" y1="355.0" x2="195" y2="355.0" marker-end="url(#ptarr)"/>
+<rect class="bx" x="196" y="328.0" width="168" height="54" rx="3"/>
+<text class="t" x="280.0" y="352.0">LM2776</text>
+<text class="p" x="280.0" y="368.0">charge-pump inverter · 200 mA</text>
+<line class="ln" x1="364" y1="355.0" x2="559" y2="355.0" marker-end="url(#ptarr)"/>
+<text class="g" x="462.0" y="347.0">PM5V · −5 V</text>
 <rect class="bx" x="560" y="328.0" width="424" height="54" rx="3"/>
-<text class="t" x="772.0" y="352.0">Power amplifier, bandpass filter (VDD), FT231X</text>
-<text class="p" x="772.0" y="368.0">114 + 1 + 8.4 mA</text>
+<text class="t" x="772.0" y="352.0">Bandpass filter negative supply (VEE)</text>
+<text class="p" x="772.0" y="368.0">0.7 mA  ·  5 mil trace</text>
+<line class="ln" x1="160" y1="425.0" x2="559" y2="425.0" marker-end="url(#ptarr)"/>
+<text class="g" x="360.0" y="417.0">P5V · 5 V direct</text>
+<rect class="bx" x="560" y="398.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="422.0">Power amplifier, bandpass filter (VDD), FT231X</text>
+<text class="p" x="772.0" y="438.0">114 + 1 + 8.4 mA</text>
 </svg>
-      <figcaption><b>Power tree.</b> The +5&nbsp;V input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum PCB trace width it was sized for.</figcaption>
+      <figcaption><b>Power tree.</b> The +5&nbsp;V input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. A resistor divider off the digital 3.3&nbsp;V rail makes the 1.8&nbsp;V for the beamformers. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum PCB trace width it was sized for.</figcaption>
     </figure>
 
     <div class="table-wrap">
@@ -392,7 +402,7 @@
           <tr><td>P3V3_RF2</td><td>LO, mixer, LNA, TCXO, T/R switches</td><td>518&nbsp;mA</td><td>777&nbsp;mA</td><td>0.033&nbsp;V</td><td>10&nbsp;&deg;C</td><td>25&nbsp;mil</td></tr>
           <tr><td>P3V3_DIG</td><td>ESP32</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.1&nbsp;V</td><td>10&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
           <tr><td>PM5V</td><td>Bandpass filter (VEE)</td><td>0.7&nbsp;mA</td><td>10.5&nbsp;mA</td><td>0.05&nbsp;V</td><td>10&nbsp;&deg;C</td><td>5&nbsp;mil</td></tr>
-          <tr><td>P1V8</td><td>4&times; ADAR1000</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>P1V8</td><td>4&times; ADAR1000, via 10&nbsp;k&Omega; / 12&nbsp;k&Omega; divider from P3V3_DIG</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
         </tbody>
       </table>
     </div>
