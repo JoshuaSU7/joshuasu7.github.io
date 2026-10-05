@@ -264,7 +264,7 @@
 
     <figure class="shot">
       <img src="images/radar/pcb-3d-render.png" alt="3D render of the RF transceiver PCB with the 4x4 patch array on the right" />
-      <figcaption><b>Current 3D render of the board in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain runs through the middle of the board, the ESP32 module and USB-C power and programming sit along the top edge, and three SMA connectors break out the TX and RX IF ports to the SDR and the control voltage for the tunable bandpass filter. Silkscreen labels mark the separate power domains: a 5&nbsp;V USB-C input feeding an isolated digital 3.3&nbsp;V rail, four independent RF 3.3&nbsp;V rails, and &minus;5&nbsp;V, &minus;2.5&nbsp;V and 1.8&nbsp;V supplies.</figcaption>
+      <figcaption><b>Current 3D render of the board in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain runs through the middle of the board, the ESP32 module and USB-C power and programming sit along the top edge, and three SMA connectors break out the TX and RX IF ports to the SDR and the control voltage for the tunable bandpass filter. Silkscreen labels mark the separate power domains: a 5&nbsp;V USB-C input feeding an isolated digital 3.3&nbsp;V rail, four independent RF 3.3&nbsp;V rails, and &minus;5&nbsp;V, &minus;2.5&nbsp;V and 1.8&nbsp;V rails.</figcaption>
     </figure>
 
     <h3>Power tree</h3>
@@ -273,8 +273,9 @@
       leaving about 0.6&nbsp;A of headroom. Rather than one shared 3.3&nbsp;V supply, the board splits
       the load into separate rails so that noisy circuitry never shares a supply with sensitive RF parts. The four
       beamformers get their own high-current low-noise regulator, the local oscillator chain gets an ultra-low-noise one,
-      and the ESP32 is isolated on a digital rail. That digital rail also supplies the beamformers&rsquo; 1.8&nbsp;V through a
-      simple 10&nbsp;k&Omega; / 12&nbsp;k&Omega; resistor divider, which works because those pins draw almost no current. A charge-pump inverter makes the &minus;5&nbsp;V the bandpass filter needs,
+      and the ESP32 is isolated on a digital rail. That digital rail also feeds a 10&nbsp;k&Omega; / 12&nbsp;k&Omega; resistor divider,
+      which sets a 1.8&nbsp;V logic level on the ADAR1000s&rsquo; ADDR0 and ADDR1 pins. Those are CMOS logic inputs rather than
+      supply pins, so they draw essentially no current and a simple divider is all they need. A charge-pump inverter makes the &minus;5&nbsp;V the bandpass filter needs,
       and the power amplifier, filter and USB&ndash;UART bridge run straight off 5&nbsp;V.
     </p>
 
@@ -298,7 +299,7 @@
 <text class="p" x="71.0" y="244.0">5 V · 3 A input</text>
 <text class="p" x="71.0" y="260.0">P5V rail</text>
 <text class="g" x="71.0" y="278.0">2.39 A load</text>
-<text class="p" x="71.0" y="294.0">60 mil trace</text>
+<text class="p" x="71.0" y="294.0">60 mil traces</text>
 <line class="ln" x1="130" y1="250.0" x2="160" y2="250.0"/>
 <line class="bus" x1="160" y1="75.0" x2="160" y2="425.0"/>
 <line class="ln" x1="160" y1="75.0" x2="195" y2="75.0" marker-end="url(#ptarr)"/>
@@ -309,7 +310,7 @@
 <text class="g" x="462.0" y="67.0">P3V3_RF1 · 3.3 V</text>
 <rect class="bx" x="560" y="48.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="72.0">4× ADAR1000 beamformers</text>
-<text class="p" x="772.0" y="88.0">1.4 A  ·  50 mil trace</text>
+<text class="p" x="772.0" y="88.0">1.4 A  ·  50 mil traces</text>
 <line class="ln" x1="160" y1="145.0" x2="195" y2="145.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="118.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="142.0">ADM7150</text>
@@ -318,7 +319,7 @@
 <text class="g" x="462.0" y="137.0">P3V3_RF2 · 3.3 V</text>
 <rect class="bx" x="560" y="118.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="142.0">LO, TCXO, mixer, LNA, 5× T/R switches</text>
-<text class="p" x="772.0" y="158.0">518 mA  ·  25 mil trace</text>
+<text class="p" x="772.0" y="158.0">518 mA  ·  25 mil traces</text>
 <line class="ln" x1="160" y1="215.0" x2="195" y2="215.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="188.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="212.0">MCP1827S</text>
@@ -327,7 +328,7 @@
 <text class="g" x="462.0" y="207.0">P3V3_DIG · 3.3 V</text>
 <rect class="bx" x="560" y="188.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="212.0">ESP32-WROOM-32</text>
-<text class="p" x="772.0" y="228.0">350 mA  ·  15 mil trace</text>
+<text class="p" x="772.0" y="228.0">350 mA  ·  15 mil traces</text>
 <line class="ln" x1="280.0" y1="242.0" x2="280.0" y2="257.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="258.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="282.0">Resistor divider</text>
@@ -335,8 +336,8 @@
 <line class="ln" x1="364" y1="285.0" x2="559" y2="285.0" marker-end="url(#ptarr)"/>
 <text class="g" x="462.0" y="277.0">P1V8 · 1.8 V</text>
 <rect class="bx" x="560" y="258.0" width="424" height="54" rx="3"/>
-<text class="t" x="772.0" y="282.0">4× ADAR1000 (1.8 V supply)</text>
-<text class="p" x="772.0" y="298.0">≈0 A load  ·  divider draws ~150 µA</text>
+<text class="t" x="772.0" y="282.0">4× ADAR1000 ADDR0 / ADDR1 logic pins</text>
+<text class="p" x="772.0" y="298.0">≈0 A  ·  signal-width traces</text>
 <line class="ln" x1="160" y1="355.0" x2="195" y2="355.0" marker-end="url(#ptarr)"/>
 <rect class="bx" x="196" y="328.0" width="168" height="54" rx="3"/>
 <text class="t" x="280.0" y="352.0">LM2776</text>
@@ -345,14 +346,14 @@
 <text class="g" x="462.0" y="347.0">PM5V · −5 V</text>
 <rect class="bx" x="560" y="328.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="352.0">Bandpass filter negative supply (VEE)</text>
-<text class="p" x="772.0" y="368.0">0.7 mA  ·  5 mil trace</text>
+<text class="p" x="772.0" y="368.0">0.7 mA  ·  5 mil traces</text>
 <line class="ln" x1="160" y1="425.0" x2="559" y2="425.0" marker-end="url(#ptarr)"/>
 <text class="g" x="360.0" y="417.0">P5V · 5 V direct</text>
 <rect class="bx" x="560" y="398.0" width="424" height="54" rx="3"/>
 <text class="t" x="772.0" y="422.0">Power amplifier, bandpass filter (VDD), FT231X</text>
-<text class="p" x="772.0" y="438.0">114 + 1 + 8.4 mA</text>
+<text class="p" x="772.0" y="438.0">123.4 mA  ·  60 mil traces</text>
 </svg>
-      <figcaption><b>Power tree.</b> The 5&nbsp;V USB-C input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. A resistor divider off the digital 3.3&nbsp;V rail makes the 1.8&nbsp;V for the beamformers. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum PCB trace width it was sized for.</figcaption>
+      <figcaption><b>Power tree.</b> The 5&nbsp;V USB-C input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. A resistor divider off the digital 3.3&nbsp;V rail sets the 1.8&nbsp;V logic level on the ADAR1000 address pins. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum width of its PCB traces.</figcaption>
     </figure>
 
     <div class="table-wrap">
@@ -390,13 +391,13 @@
     </div>
 
     <p>
-      Each rail&rsquo;s trace was sized for 1.5&times; its calculated current, within a voltage-drop and temperature-rise
+      Each rail&rsquo;s traces were sized for 1.5&times; its calculated current, within a voltage-drop and temperature-rise
       budget. The 5&nbsp;V USB-C input rail is the widest at 60&nbsp;mil, since it carries the whole board&rsquo;s 2.39&nbsp;A.
     </p>
     <div class="table-wrap">
       <table class="data rails">
         <thead>
-          <tr><th>Rail</th><th>Loads</th><th>Current</th><th>Design 1.5&times;</th><th>Max &Delta;V</th><th>Max &Delta;T</th><th>Min. trace</th></tr>
+          <tr><th>Rail</th><th>Loads</th><th>Current</th><th>Design 1.5&times;</th><th>Max &Delta;V</th><th>Max &Delta;T</th><th>Min. trace width</th></tr>
         </thead>
         <tbody>
           <tr><td>P5V</td><td>PA, filter (VDD), FT231X, all regulator inputs</td><td>2.39&nbsp;A</td><td>3.6&nbsp;A</td><td>0.05&nbsp;V</td><td>20&nbsp;&deg;C</td><td>60&nbsp;mil</td></tr>
@@ -404,7 +405,7 @@
           <tr><td>P3V3_RF2</td><td>LO, mixer, LNA, TCXO, T/R switches</td><td>518&nbsp;mA</td><td>777&nbsp;mA</td><td>0.033&nbsp;V</td><td>10&nbsp;&deg;C</td><td>25&nbsp;mil</td></tr>
           <tr><td>P3V3_DIG</td><td>ESP32</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.1&nbsp;V</td><td>10&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
           <tr><td>PM5V</td><td>Bandpass filter (VEE)</td><td>0.7&nbsp;mA</td><td>10.5&nbsp;mA</td><td>0.05&nbsp;V</td><td>10&nbsp;&deg;C</td><td>5&nbsp;mil</td></tr>
-          <tr><td>P1V8</td><td>4&times; ADAR1000, via 10&nbsp;k&Omega; / 12&nbsp;k&Omega; divider from P3V3_DIG</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+          <tr><td>P1V8</td><td>4&times; ADAR1000 ADDR0/ADDR1 (CMOS logic inputs), via 10&nbsp;k&Omega; / 12&nbsp;k&Omega; divider from P3V3_DIG</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
         </tbody>
       </table>
     </div>
