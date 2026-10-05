@@ -267,6 +267,136 @@
       <figcaption><b>Current 3D render of the board in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain runs through the middle of the board, the ESP32 module and USB-C power and programming sit along the top edge, and three SMA connectors break out the TX and RX IF ports to the SDR and the control voltage for the tunable bandpass filter. Silkscreen labels mark the separate power domains: a 5&nbsp;V input feeding an isolated digital 3.3&nbsp;V rail, four independent RF 3.3&nbsp;V rails, and &minus;5&nbsp;V, &minus;2.5&nbsp;V and 1.8&nbsp;V supplies.</figcaption>
     </figure>
 
+    <h3>Power tree</h3>
+    <p>
+      Everything on the board runs from a single +5&nbsp;V input. Rather than one shared 3.3&nbsp;V supply, the board splits
+      the load into separate rails so that noisy circuitry never shares a supply with sensitive RF parts. The four
+      beamformers get their own high-current low-noise regulator, the local oscillator chain gets an ultra-low-noise one,
+      and the ESP32 is isolated on a digital rail. A charge-pump inverter makes the &minus;5&nbsp;V the bandpass filter needs,
+      and the power amplifier, filter and USB&ndash;UART bridge run straight off 5&nbsp;V.
+    </p>
+
+    <figure class="diagram">
+      <svg class="blockdiag" viewBox="0 0 996 416" role="img" aria-label="Power tree: the 5 volt input feeds three 3.3 volt LDOs, a minus 5 volt charge pump, and several loads directly" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .blockdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .blockdiag .src{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .blockdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .blockdiag .bus{stroke:var(--fg,#0b0b0b);stroke-width:2.6;fill:none}
+  .blockdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .blockdiag .p{fill:var(--fg-muted,#555);font:400 10px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .blockdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .blockdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .blockdiag .ar{fill:var(--fg,#0b0b0b)}
+</style>
+<defs><marker id="ptarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="22">POWER TREE  ·  rail and load current</text>
+<rect class="src" x="12" y="48" width="118" height="334.0" rx="3"/>
+<text class="t" x="71.0" y="209.0">+5 V input</text>
+<text class="p" x="71.0" y="225.0">P5V rail</text>
+<text class="g" x="71.0" y="243.0">2.39 A total</text>
+<text class="p" x="71.0" y="259.0">60 mil trace</text>
+<line class="ln" x1="130" y1="215.0" x2="160" y2="215.0"/>
+<line class="bus" x1="160" y1="75.0" x2="160" y2="355.0"/>
+<line class="ln" x1="160" y1="75.0" x2="195" y2="75.0" marker-end="url(#ptarr)"/>
+<rect class="bx" x="196" y="48.0" width="168" height="54" rx="3"/>
+<text class="t" x="280.0" y="72.0">TPS7A85</text>
+<text class="p" x="280.0" y="88.0">low-noise LDO · 4 A</text>
+<line class="ln" x1="364" y1="75.0" x2="559" y2="75.0" marker-end="url(#ptarr)"/>
+<text class="g" x="462.0" y="67.0">P3V3_RF1 · 3.3 V</text>
+<rect class="bx" x="560" y="48.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="72.0">4× ADAR1000 beamformers</text>
+<text class="p" x="772.0" y="88.0">1.4 A  ·  50 mil trace</text>
+<line class="ln" x1="160" y1="145.0" x2="195" y2="145.0" marker-end="url(#ptarr)"/>
+<rect class="bx" x="196" y="118.0" width="168" height="54" rx="3"/>
+<text class="t" x="280.0" y="142.0">ADM7150</text>
+<text class="p" x="280.0" y="158.0">ultra-low-noise LDO · 800 mA</text>
+<line class="ln" x1="364" y1="145.0" x2="559" y2="145.0" marker-end="url(#ptarr)"/>
+<text class="g" x="462.0" y="137.0">P3V3_RF2 · 3.3 V</text>
+<rect class="bx" x="560" y="118.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="142.0">LO, TCXO, mixer, LNA, 5× T/R switches</text>
+<text class="p" x="772.0" y="158.0">518 mA  ·  25 mil trace</text>
+<line class="ln" x1="160" y1="215.0" x2="195" y2="215.0" marker-end="url(#ptarr)"/>
+<rect class="bx" x="196" y="188.0" width="168" height="54" rx="3"/>
+<text class="t" x="280.0" y="212.0">MCP1827S</text>
+<text class="p" x="280.0" y="228.0">LDO · 1.5 A</text>
+<line class="ln" x1="364" y1="215.0" x2="559" y2="215.0" marker-end="url(#ptarr)"/>
+<text class="g" x="462.0" y="207.0">P3V3_DIG · 3.3 V</text>
+<rect class="bx" x="560" y="188.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="212.0">ESP32-WROOM-32</text>
+<text class="p" x="772.0" y="228.0">350 mA  ·  15 mil trace</text>
+<line class="ln" x1="160" y1="285.0" x2="195" y2="285.0" marker-end="url(#ptarr)"/>
+<rect class="bx" x="196" y="258.0" width="168" height="54" rx="3"/>
+<text class="t" x="280.0" y="282.0">LM2776</text>
+<text class="p" x="280.0" y="298.0">charge-pump inverter · 200 mA</text>
+<line class="ln" x1="364" y1="285.0" x2="559" y2="285.0" marker-end="url(#ptarr)"/>
+<text class="g" x="462.0" y="277.0">PM5V · −5 V</text>
+<rect class="bx" x="560" y="258.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="282.0">Bandpass filter negative supply (VEE)</text>
+<text class="p" x="772.0" y="298.0">0.7 mA  ·  5 mil trace</text>
+<line class="ln" x1="160" y1="355.0" x2="559" y2="355.0" marker-end="url(#ptarr)"/>
+<text class="g" x="360.0" y="347.0">P5V · 5 V direct</text>
+<rect class="bx" x="560" y="328.0" width="424" height="54" rx="3"/>
+<text class="t" x="772.0" y="352.0">Power amplifier, bandpass filter (VDD), FT231X</text>
+<text class="p" x="772.0" y="368.0">114 + 1 + 8.4 mA</text>
+</svg>
+      <figcaption><b>Power tree.</b> The +5&nbsp;V input feeds three 3.3&nbsp;V LDOs and a &minus;5&nbsp;V charge pump, plus a few loads directly. Each branch is labeled with its rail name and voltage, the current it carries, and the minimum PCB trace width it was sized for.</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Rail</th><th>Regulator</th><th>Type and key specs</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>P3V3_RF1</td>
+            <td><a class="tlink" href="https://www.ti.com/product/TPS7A85" target="_blank" rel="noopener"><code>TPS7A85</code></a><br />Texas Instruments</td>
+            <td><b>Low-noise LDO, 5&nbsp;V &rarr; 3.3&nbsp;V.</b> 4&nbsp;A output, 4.4&ndash;8.4&nbsp;&micro;V<sub>RMS</sub> output noise, 150&nbsp;mV dropout at 4&nbsp;A, 1% accuracy over line, load and temperature.</td>
+            <td>Carries the heaviest load on the board, the four ADAR1000s at 1.4&nbsp;A, with plenty of headroom and the low noise the beamformers need.</td>
+          </tr>
+          <tr>
+            <td>P3V3_RF2</td>
+            <td><a class="tlink" href="https://www.analog.com/en/products/adm7150.html" target="_blank" rel="noopener"><code>ADM7150</code></a><br />Analog Devices</td>
+            <td><b>Ultra-low-noise LDO, 5&nbsp;V &rarr; 3.3&nbsp;V.</b> 800&nbsp;mA output, 1.0&nbsp;&micro;V<sub>RMS</sub> integrated noise (100&nbsp;Hz&ndash;100&nbsp;kHz), PSRR above 90&nbsp;dB from 1 to 100&nbsp;kHz.</td>
+            <td>Feeds the most noise-sensitive parts: the LO synthesizer, TCXO, mixer and LNA, plus the T/R switches. Supply noise here would show up directly as phase noise on the carrier.</td>
+          </tr>
+          <tr>
+            <td>P3V3_DIG</td>
+            <td><a class="tlink" href="https://www.microchip.com/en-us/product/mcp1827s" target="_blank" rel="noopener"><code>MCP1827S</code></a><br />Microchip</td>
+            <td><b>LDO, 5&nbsp;V &rarr; 3.3&nbsp;V.</b> 1.5&nbsp;A output, low dropout, stable with ceramic output capacitors.</td>
+            <td>Gives the ESP32 its own digital rail, so its switching current spikes stay off the RF supplies.</td>
+          </tr>
+          <tr>
+            <td>PM5V</td>
+            <td><a class="tlink" href="https://www.ti.com/product/LM2776" target="_blank" rel="noopener"><code>LM2776</code></a><br />Texas Instruments</td>
+            <td><b>Switched-capacitor inverter, 5&nbsp;V &rarr; &minus;5&nbsp;V.</b> 200&nbsp;mA output, 2.7&ndash;5.5&nbsp;V input, 2&nbsp;MHz switching, above 90% efficiency, needs only three capacitors and no inductor.</td>
+            <td>Supplies the negative rail for the bandpass filter, which draws under a milliamp.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      Each rail&rsquo;s trace was sized for 1.5&times; its calculated current, within a voltage-drop and temperature-rise
+      budget. The 5&nbsp;V input is the widest at 60&nbsp;mil, since it carries the whole board&rsquo;s 2.39&nbsp;A.
+    </p>
+    <div class="table-wrap">
+      <table class="data rails">
+        <thead>
+          <tr><th>Rail</th><th>Loads</th><th>Current</th><th>Design 1.5&times;</th><th>Max &Delta;V</th><th>Max &Delta;T</th><th>Min. trace</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>P5V</td><td>PA, filter (VDD), FT231X, all regulator inputs</td><td>2.39&nbsp;A</td><td>3.6&nbsp;A</td><td>0.05&nbsp;V</td><td>20&nbsp;&deg;C</td><td>60&nbsp;mil</td></tr>
+          <tr><td>P3V3_RF1</td><td>4&times; ADAR1000 (350&nbsp;mA each)</td><td>1.4&nbsp;A</td><td>2.1&nbsp;A</td><td>0.033&nbsp;V</td><td>10&nbsp;&deg;C</td><td>50&nbsp;mil</td></tr>
+          <tr><td>P3V3_RF2</td><td>LO, mixer, LNA, TCXO, T/R switches</td><td>518&nbsp;mA</td><td>777&nbsp;mA</td><td>0.033&nbsp;V</td><td>10&nbsp;&deg;C</td><td>25&nbsp;mil</td></tr>
+          <tr><td>P3V3_DIG</td><td>ESP32</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.1&nbsp;V</td><td>10&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
+          <tr><td>PM5V</td><td>Bandpass filter (VEE)</td><td>0.7&nbsp;mA</td><td>10.5&nbsp;mA</td><td>0.05&nbsp;V</td><td>10&nbsp;&deg;C</td><td>5&nbsp;mil</td></tr>
+          <tr><td>P1V8</td><td>4&times; ADAR1000</td><td>&asymp;0&nbsp;A</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <h3>Transverter stage</h3>
     <div class="table-wrap">
       <table class="data">
