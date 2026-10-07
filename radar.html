@@ -258,10 +258,28 @@
       switches and distributes.
     </p>
 
+    <p>
+      The board layout is now complete, with the final power tree in place and every power trace sized for the current it
+      carries (see the trace-width table below).
+    </p>
+
     <figure class="shot">
-      <img src="images/radar/pcb-3d-render.png" alt="3D render of the RF transceiver PCB with the 4x4 patch array on the right" />
-      <figcaption><b>Current 3D render of the board in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain runs through the middle of the board, the ESP32 module and USB-C power and programming sit along the top edge, and three SMA connectors break out the TX and RX IF ports to the SDR and the control voltage for the tunable bandpass filter. Silkscreen labels mark the separate power domains: a 5&nbsp;V USB-C input feeding an isolated digital 3.3&nbsp;V rail, four independent RF 3.3&nbsp;V rails, and &minus;5&nbsp;V, &minus;2.5&nbsp;V and 1.8&nbsp;V rails.</figcaption>
+      <img src="images/radar/pcb-3d-render.png" alt="Top-down 3D render of the completed RF transceiver PCB with the 4x4 patch array on the right" />
+      <figcaption><b>Completed board, top-down 3D render in Altium Designer.</b> The 4&times;4 patch array occupies the right side, with the four Analog Devices beamformer ICs lined up just to its left, one per row of elements. The RF chain (TCXO, LO, mixer, T/R switches, bandpass filter, PA, LNA and 4-way splitter/combiner) runs through the middle, and the ESP32 module, USB-C connector and LDOs sit along the top edge. The two SMA connectors on the left edge carry the TX and RX IF to the SDR; the SMA on the bottom edge, labeled BPF, is the tuning-voltage input for the bandpass filter. Silkscreen labels mark the power domains: the +5&nbsp;V input, 3V3_BMFRM for the beamformers, and 3V3_RF for the rest of the RF chain.</figcaption>
     </figure>
+
+    <figure class="shot">
+      <img src="images/radar/pcb-3d-angled.png" alt="Angled 3D render of the completed RF transceiver PCB showing the SMA connectors and component heights" />
+      <figcaption><b>Angled view of the same board.</b> Shows component heights and the three edge-launch SMA connectors: RX and TX on the left, and the BPF tuning input on the bottom edge where an external adjustable DC supply plugs in. The patch array layer sits on top of the beamformer section on the right.</figcaption>
+    </figure>
+
+    <h3>Tunable bandpass filter control</h3>
+    <p>
+      The ADMV8416 bandpass filter is voltage tunable: its center frequency is set by a DC control voltage rather than
+      fixed at layout time. That control voltage comes from an external adjustable DC supply of up to 12&nbsp;V, which
+      connects through the SMA connector on the bottom edge of the board. Keeping it external means the passband can be
+      trimmed onto 10.5&nbsp;GHz on the bench, and retuned later without changing the board.
+    </p>
 
     <h3>Power tree</h3>
     <p>
@@ -445,7 +463,7 @@
           <tr>
             <td>Bandpass filter</td>
             <td><a class="tlink" href="https://www.analog.com/media/en/technical-documentation/data-sheets/admv8416.pdf" target="_blank" rel="noopener"><code>ADMV8416</code></a><br />tunable BPF (MMIC)</td>
-            <td>Strips the mixer&rsquo;s unwanted products and leaves only the 10.5&nbsp;GHz signal. 5&nbsp;V part with selectable bands, so the passband can be tuned through its SMA control input rather than fixed at layout time.</td>
+            <td>Strips the mixer&rsquo;s unwanted products and leaves only the 10.5&nbsp;GHz signal. 5&nbsp;V part with selectable bands. It is voltage tunable: an external adjustable DC supply (up to 12&nbsp;V) on the bottom-edge SMA connector sets the center frequency, so the passband is tuned on the bench rather than fixed at layout time.</td>
             <td>&minus;8 dB</td>
           </tr>
           <tr>
@@ -513,7 +531,7 @@
           <tr>
             <td>SMA connectors</td>
             <td>50&nbsp;&Omega; coax</td>
-            <td>RF connections to the software-defined radio for the TX and RX IF paths, plus the control voltage for the tunable bandpass filter.</td>
+            <td>RF connections to the software-defined radio for the TX and RX IF paths (left edge), plus the bottom-edge SMA that brings in the bandpass filter&rsquo;s tuning voltage from an external adjustable DC supply of up to 12&nbsp;V.</td>
           </tr>
         </tbody>
       </table>
@@ -521,7 +539,7 @@
 
     <h2>Layer Stackup and RF Routing Choices</h2>
     <p>
-      The antenna array, RF transceiver and microcontroller subsystems are being integrated onto a single board in
+      The antenna array, RF transceiver and microcontroller subsystems are integrated onto a single, now-complete board in
       Altium Designer. The stackup is 8 layers, arranged to keep the RF, digital and power domains isolated from each other.
     </p>
     <p>
@@ -532,7 +550,7 @@
     </p>
     <figure class="shot">
       <img src="images/radar/pcb-layout-routing.png" alt="Altium 2D layout view of the board showing length-matched serpentine feed lines" />
-      <figcaption><b>Layout view of the same board.</b> The four beamformers (U_Beamformer1&ndash;4) on the right each fan out to a row of four patch elements. The serpentine meanders on those feed lines are the length matching: every path from a beamformer to its element is tuned to the same electrical length, so the only phase difference between elements is the one the beamformer deliberately applies. The dense grid of stitching vias ties the ground pours together across layers for isolation and a clean return path.</figcaption>
+      <figcaption><b>Completed 2D layout of the same board.</b> The four beamformers (U_Beamformer1&ndash;4) on the right each fan out to a row of four patch elements. The serpentine meanders on those feed lines are the length matching: every path from a beamformer to its element is tuned to the same electrical length, so the only phase difference between elements is the one the beamformer deliberately applies. The dense grid of stitching vias ties the ground pours together across layers for isolation and a clean return path. On the left, the labeled RF chain runs from the TX/RX connectors through U_TR_Switch_5, the LO/mixer, the 10.5&nbsp;GHz bandpass filter (U_BPF), the PA and LNA and on to the combiner; the BPF connector footprint sits on the bottom edge.</figcaption>
     </figure>
 
     <h2>Power Budget Analysis</h2>
@@ -778,7 +796,7 @@
 
     <h2>Where It&rsquo;s Going</h2>
     <p>
-      Next steps are finishing the Altium layout for fabrication, then validating the simulated patterns against bench
+      With the layout, power tree and trace-width sizing complete, next steps are sending the board out for fabrication and assembly, then validating the simulated patterns against bench
       measurements in an anechoic chamber. After that, testing the RF PCB with measurement tools such as VNAs and spectrum
       analyzers. Then, integrating the array with the transceiver board to characterize the full transmit and receive chain
       end to end.
