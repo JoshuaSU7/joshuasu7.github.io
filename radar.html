@@ -93,6 +93,11 @@
       pitch in each direction. That is small enough to fit in the palm of your hand.
     </p>
 
+    <figure class="shot">
+      <img src="images/radar/conn-faddm-unit-cell.png" alt="ANSYS finite-array domain decomposition setup showing one unit cell replicated into a 4x4 grid" loading="lazy" />
+      <figcaption><b>How the array was simulated.</b> Adding sixteen detailed array elements makes a full-array mesh much heavier, so the array was simulated with ANSYS&rsquo;s finite-array domain decomposition (FADDM). A single unit cell (highlighted at [1,1]) is meshed once and replicated across the 4&times;4 grid, indexed [1,1] through [4,4]. The solver still captures coupling between neighbouring cells, but at a fraction of the compute cost.</figcaption>
+    </figure>
+
     <div class="table-wrap">
       <table class="data">
         <thead>
@@ -558,7 +563,7 @@
           <tr><th>Layer</th><th>Name</th><th>Type</th><th>What it carries</th></tr>
         </thead>
         <tbody>
-          <tr><td>L1</td><td><b>Top layer</b></td><td>Signal</td><td>Main RF routing as grounded coplanar waveguide (GCPW): the beamformer-to-antenna feed lines, plus all component placement.</td></tr>
+          <tr><td>L1</td><td><b>Top layer</b></td><td>Signal</td><td>Main RF routing as grounded coplanar waveguide (GCPW): the beamformer-to-antenna feed lines, plus most component placement.</td></tr>
           <tr><td>L2</td><td><b>GND1</b></td><td>Ground</td><td>Solid reference plane directly under the top layer, which sets the GCPW impedance and gives the RF traces a short return path.</td></tr>
           <tr><td>L3</td><td><b>Analog signal</b></td><td>Signal</td><td>Stripline RF, such as the splitter-to-ADAR1000 lines, plus other sensitive analog signals like the T/R switch control lines.</td></tr>
           <tr><td>L4</td><td><b>GND2</b></td><td>Ground</td><td>Second reference plane. With GND1 it sandwiches L3, making those traces symmetrical stripline.</td></tr>
@@ -864,11 +869,6 @@
     <figure class="shot">
       <img src="images/radar/conn-array-model.png" alt="ANSYS model of the full 4x4 patch array with an MHF 4L connector on every element" loading="lazy" />
       <figcaption><b>The connectorized 4&times;4 array.</b> All sixteen elements now terminate in an MHF&nbsp;4L receptacle instead of a bare solder pin. Patch size, spacing (1.428&nbsp;cm) and substrate are identical to the soldered design, so any change in the results comes from the connectors themselves.</figcaption>
-    </figure>
-
-    <figure class="shot">
-      <img src="images/radar/conn-faddm-unit-cell.png" alt="ANSYS finite-array domain decomposition setup showing one connectorized unit cell replicated into a 4x4 grid" loading="lazy" />
-      <figcaption><b>How the connectorized array was simulated.</b> Adding sixteen detailed connectors makes a full-array mesh much heavier, so the array was revalidated with ANSYS&rsquo;s finite-array domain decomposition (FADDM). A single connectorized unit cell (highlighted at [1,1]) is meshed once and replicated across the 4&times;4 grid, indexed [1,1] through [4,4]. The solver still captures coupling between neighbouring cells, but at a fraction of the compute cost.</figcaption>
     </figure>
 
     <h3>The trade: modularity for a little loss</h3>
