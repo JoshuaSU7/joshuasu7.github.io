@@ -93,11 +93,6 @@
       pitch in each direction. That is small enough to fit in the palm of your hand.
     </p>
 
-    <figure class="shot">
-      <img src="images/radar/conn-faddm-unit-cell.png" alt="ANSYS finite-array domain decomposition setup showing one unit cell replicated into a 4x4 grid" loading="lazy" />
-      <figcaption><b>How the array was simulated.</b> Adding sixteen detailed array elements makes a full-array mesh much heavier, so the array was simulated with ANSYS&rsquo;s finite-array domain decomposition (FADDM). A single unit cell (highlighted at [1,1]) is meshed once and replicated across the 4&times;4 grid, indexed [1,1] through [4,4]. The solver still captures coupling between neighbouring cells, but at a fraction of the compute cost.</figcaption>
-    </figure>
-
     <div class="table-wrap">
       <table class="data">
         <thead>
@@ -178,6 +173,11 @@
     <figure class="eq">
       <div class="eqbody"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML" aria-label="Free-space wavenumber and the x and y per-element phase shifts"><mtable><mtr><mtd style="text-align:right"><mrow displaystyle="true"><msub><mi>k</mi><mn>0</mn></msub></mrow></mtd><mtd style="text-align:center"><mo>=</mo></mtd><mtd style="text-align:left"><mrow displaystyle="true"><mfrac><mrow><mrow><mn>2</mn><mi>&pi;</mi><mi>f</mi></mrow></mrow><mrow><msub><mi>c</mi><mn>0</mn></msub></mrow></mfrac></mrow></mtd></mtr><mtr><mtd style="text-align:right"><mrow displaystyle="true"><msub><mrow><mi>&Delta;</mi><mi>&Phi;</mi></mrow><mi>x</mi></msub></mrow></mtd><mtd style="text-align:center"><mo>=</mo></mtd><mtd style="text-align:left"><mrow displaystyle="true"><mrow><mo>&minus;</mo><msub><mi>k</mi><mn>0</mn></msub><mo>&middot;</mo><msub><mi>d</mi><mi>x</mi></msub><mo>&middot;</mo><mi>sin</mi><mrow><mo lspace="0" rspace="0">(</mo><msub><mi>&theta;</mi><mtext>scan</mtext></msub><mo>&middot;</mo><mfrac><mrow><mi>&pi;</mi></mrow><mrow><mn>180</mn></mrow></mfrac><mo lspace="0" rspace="0">)</mo></mrow><mo>&middot;</mo><mi>cos</mi><mrow><mo lspace="0" rspace="0">(</mo><msub><mi>&phi;</mi><mtext>scan</mtext></msub><mo>&middot;</mo><mfrac><mrow><mi>&pi;</mi></mrow><mrow><mn>180</mn></mrow></mfrac><mo lspace="0" rspace="0">)</mo></mrow></mrow></mrow></mtd></mtr><mtr><mtd style="text-align:right"><mrow displaystyle="true"><msub><mrow><mi>&Delta;</mi><mi>&Phi;</mi></mrow><mi>y</mi></msub></mrow></mtd><mtd style="text-align:center"><mo>=</mo></mtd><mtd style="text-align:left"><mrow displaystyle="true"><mrow><mo>&minus;</mo><msub><mi>k</mi><mn>0</mn></msub><mo>&middot;</mo><msub><mi>d</mi><mi>y</mi></msub><mo>&middot;</mo><mi>sin</mi><mrow><mo lspace="0" rspace="0">(</mo><msub><mi>&theta;</mi><mtext>scan</mtext></msub><mo>&middot;</mo><mfrac><mrow><mi>&pi;</mi></mrow><mrow><mn>180</mn></mrow></mfrac><mo lspace="0" rspace="0">)</mo></mrow><mo>&middot;</mo><mi>sin</mi><mrow><mo lspace="0" rspace="0">(</mo><msub><mi>&phi;</mi><mtext>scan</mtext></msub><mo>&middot;</mo><mfrac><mrow><mi>&pi;</mi></mrow><mrow><mn>180</mn></mrow></mfrac><mo lspace="0" rspace="0">)</mo></mrow></mrow></mrow></mtd></mtr></mtable></math></div>
       <figcaption><b>Per-element phase shifts.</b> With wavenumber k<sub>0</sub> = 2&pi;f/c<sub>0</sub>, the x and y phase increments &Delta;&Phi;<sub>x</sub> and &Delta;&Phi;<sub>y</sub> are derived from Theta_Scan and Phi_Scan. Applying these progressively across the 4&times;4 grid tilts the main lobe to the requested angle.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="images/radar/conn-faddm-unit-cell.png" alt="ANSYS finite-array domain decomposition setup showing one unit cell replicated into a 4x4 grid" loading="lazy" />
+      <figcaption><b>How the array was simulated.</b> Adding sixteen detailed array elements makes a full-array mesh much heavier, so the array was simulated with ANSYS&rsquo;s finite-array domain decomposition (FADDM). A single unit cell (highlighted at [1,1]) is meshed once and replicated across the 4&times;4 grid, indexed [1,1] through [4,4]. The solver still captures coupling between neighbouring cells, but at a fraction of the compute cost.</figcaption>
     </figure>
 
     <h2>Simulation Results</h2>
