@@ -456,11 +456,6 @@
         </tbody>
       </table>
     </div>
-    <figure class="shot">
-      <img src="images/radar/mixer-ac-characteristics.png" alt="LTC5548 mixer datasheet AC electrical characteristics table" loading="lazy" />
-      <figcaption><b>Why the LTC5548 fits this transverter.</b> From its datasheet: the LO port covers 1&ndash;12&nbsp;GHz and the RF port 2&ndash;14&nbsp;GHz, so the 8&nbsp;GHz LO and the 10.5&nbsp;GHz RF signal both sit well inside the operating range, while the IF port runs from DC to 6&nbsp;GHz, easily covering the 2.5&nbsp;GHz IF. RF return loss stays better than 9&nbsp;dB and LO return loss better than 10&nbsp;dB in a 50&nbsp;&Omega; system, and the LO only needs about 0&nbsp;dBm of drive (&minus;6 to +6&nbsp;dBm).</figcaption>
-    </figure>
-
     <h3>Signal chain</h3>
     <div class="table-wrap">
       <table class="data">
@@ -550,6 +545,32 @@
       The antenna array, RF transceiver and microcontroller subsystems are integrated onto a single, now-complete board in
       Altium Designer. The stackup is 8 layers, arranged to keep the RF, digital and power domains isolated from each other.
     </p>
+
+    <h3>Layer stackup</h3>
+    <p>
+      Every signal layer sits next to a solid ground plane, so each trace has a defined impedance and a short return path.
+      The layers are grouped from top to bottom by how sensitive their signals are: RF closest to the surface, then
+      analog, power, and digital. The noisiest layers end up furthest from the RF ones, with a ground plane between each group.
+    </p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Layer</th><th>Name</th><th>Type</th><th>What it carries</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L1</td><td><b>Top layer</b></td><td>Signal</td><td>Main RF routing as grounded coplanar waveguide (GCPW): the beamformer-to-antenna feed lines, plus all component placement.</td></tr>
+          <tr><td>L2</td><td><b>GND1</b></td><td>Ground</td><td>Solid reference plane directly under the top layer, which sets the GCPW impedance and gives the RF traces a short return path.</td></tr>
+          <tr><td>L3</td><td><b>Analog signal</b></td><td>Signal</td><td>Stripline RF, such as the splitter-to-ADAR1000 lines, plus other sensitive analog signals like the T/R switch control lines.</td></tr>
+          <tr><td>L4</td><td><b>GND2</b></td><td>Ground</td><td>Second reference plane. With GND1 it sandwiches L3, making those traces symmetrical stripline.</td></tr>
+          <tr><td>L5</td><td><b>Power plane</b></td><td>Power</td><td>Distributes the 5&nbsp;V and 3.3&nbsp;V rails, kept away from the RF layers by GND2.</td></tr>
+          <tr><td>L6</td><td><b>Digital signal</b></td><td>Signal</td><td>SPI lines from the ESP32 to the beamformers and LO, kept off the analog layer.</td></tr>
+          <tr><td>L7</td><td><b>GND3</b></td><td>Ground</td><td>Shields the digital layer from the bottom side and gives it its own return path.</td></tr>
+          <tr><td>L8</td><td><b>Bottom routing</b></td><td>Signal</td><td>General-purpose routing and fan-out.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>RF routing</h3>
     <p>
       RF routing uses impedance-matched, length-matched grounded coplanar waveguide and symmetrical stripline. Length
       matching matters more than usual here: the beamformer traces introduce their own phase delays, and any mismatch
@@ -906,7 +927,7 @@
     <p>
       On the RF board the change is just as contained. The four beamformers, length-matched feed lines, power tree and RF
       chain are untouched; only the sixteen points where the array was soldered now carry MHF&nbsp;4L receptacles instead.
-      Because the meandered feed lines still terminate at the same coordinates, the length matching between channels is preserved
+      Because the feed lines still terminate at the same coordinates, the length matching between channels is preserved
       right up to the connector.
     </p>
     <figure class="shot">
