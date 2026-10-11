@@ -122,7 +122,7 @@
           <tr>
             <td>Feed method</td>
             <td>Coax feed pins</td>
-            <td>Low loss, well shielded, and modular. The array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth.</td>
+            <td>Low loss, well shielded, and modular. The array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth. A second revision terminates each pin in an I-PEX MHF&nbsp;4L connector instead of soldering it (see <a class="tlink" href="#connectorization">Connectorization</a>).</td>
           </tr>
           <tr>
             <td>Beamsteering parameters</td>
@@ -456,6 +456,10 @@
         </tbody>
       </table>
     </div>
+    <figure class="shot">
+      <img src="images/radar/mixer-ac-characteristics.png" alt="LTC5548 mixer datasheet AC electrical characteristics table" loading="lazy" />
+      <figcaption><b>Why the LTC5548 fits this transverter.</b> From its datasheet: the LO port covers 1&ndash;12&nbsp;GHz and the RF port 2&ndash;14&nbsp;GHz, so the 8&nbsp;GHz LO and the 10.5&nbsp;GHz RF signal both sit well inside the operating range, while the IF port runs from DC to 6&nbsp;GHz, easily covering the 2.5&nbsp;GHz IF. RF return loss stays better than 9&nbsp;dB and LO return loss better than 10&nbsp;dB in a 50&nbsp;&Omega; system, and the LO only needs about 0&nbsp;dBm of drive (&minus;6 to +6&nbsp;dBm).</figcaption>
+    </figure>
 
     <h3>Signal chain</h3>
     <div class="table-wrap">
@@ -809,10 +813,116 @@
       a factor of 10 to 1,000 depending on the angle they are viewed from.
     </p>
 
+    <h2 id="connectorization">Connectorization</h2>
+    <p>
+      Everything above assumes the antenna array is <em>directly soldered</em> to the RF board: each patch&rsquo;s coax feed
+      pin lands straight on its beamformer output pad. That gives the lowest possible loss, but it also welds the two boards
+      together permanently. If one patch is damaged, or I want to measure the array on its own in a chamber, or try a new array
+      design against the same transceiver, a soldered joint makes all of that slow or impossible.
+    </p>
+    <p>
+      So I built a second version of both boards that uses <b>I-PEX MHF&nbsp;4L</b> micro-coaxial RF connectors. The
+      connectors simply sit in the positions where the board would otherwise be soldered: sixteen receptacles on the
+      antenna board, one per patch feed, and sixteen matching receptacles on the RF PCB where the array used to attach. Short
+      coax jumpers link the two. The connectors are rated to 12&nbsp;GHz, comfortably above the 10.5&nbsp;GHz operating
+      frequency, with a VSWR of 1.6 or better, which means about 94% of the incident power is transferred through each mated
+      interface.
+    </p>
+
+    <div class="fig-row">
+      <figure class="shot">
+        <img src="images/radar/conn-footprint-top.png" alt="Top view of a single MHF 4L connector modeled on one antenna element in ANSYS" loading="lazy" />
+        <figcaption><b>One element&rsquo;s connector, top view.</b> The MHF&nbsp;4L receptacle modeled in ANSYS at the feed point of a single patch cell. The center contact sits exactly where the soldered feed pin used to land, and the outer shield ring and ground tabs bond to the surrounding ground.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="images/radar/conn-feed-side.png" alt="Side view of the MHF 4L connector seated on the coax feed pin of one antenna element" loading="lazy" />
+        <figcaption><b>Same connector, side view.</b> The receptacle seated on the board with the coax feed pin running down through the substrate beneath it. The feed geometry of the patch is unchanged; only the termination is different.</figcaption>
+      </figure>
+    </div>
+
+    <figure class="shot">
+      <img src="images/radar/conn-array-model.png" alt="ANSYS model of the full 4x4 patch array with an MHF 4L connector on every element" loading="lazy" />
+      <figcaption><b>The connectorized 4&times;4 array.</b> All sixteen elements now terminate in an MHF&nbsp;4L receptacle instead of a bare solder pin. Patch size, spacing (1.428&nbsp;cm) and substrate are identical to the soldered design, so any change in the results comes from the connectors themselves.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="images/radar/conn-faddm-unit-cell.png" alt="ANSYS finite-array domain decomposition setup showing one connectorized unit cell replicated into a 4x4 grid" loading="lazy" />
+      <figcaption><b>How the connectorized array was simulated.</b> Adding sixteen detailed connectors makes a full-array mesh much heavier, so the array was revalidated with ANSYS&rsquo;s finite-array domain decomposition (FADDM). A single connectorized unit cell (highlighted at [1,1]) is meshed once and replicated across the 4&times;4 grid, indexed [1,1] through [4,4]. The solver still captures coupling between neighbouring cells, but at a fraction of the compute cost.</figcaption>
+    </figure>
+
+    <h3>The trade: modularity for a little loss</h3>
+    <p>
+      Connectors are not free. Every path from a beamformer to a patch now passes through two mated connector interfaces
+      (one on the RF board, one on the antenna board) plus a length of coax, and each of those adds loss:
+    </p>
+    <ul>
+      <li><b>Connector mismatch.</b> A VSWR of 1.6 corresponds to a reflection coefficient of about 0.23, so roughly
+        5% of the power reflects at each interface (about 0.24&nbsp;dB). With two interfaces per path, that adds up.</li>
+      <li><b>Connector insertion loss.</b> On top of reflection, a small amount of power is dissipated in the contacts
+        and dielectric of each connector pair.</li>
+      <li><b>Coax cable loss.</b> This is usually the biggest contributor. The micro-coax cable that mates with these
+        connectors is very thin, and its loss per unit length climbs steeply with frequency, so at 10.5&nbsp;GHz even a
+        short jumper costs a measurable fraction of a dB. Keeping the jumpers as short as possible matters.</li>
+      <li><b>Phase matching.</b> Not a loss, but just as important for a phased array: every jumper must be the same
+        length, or the extra electrical length shows up as a phase error that mis-points the beam. Any small residual
+        differences can be calibrated out with the beamformer phase settings.</li>
+    </ul>
+    <p>
+      In return, the array can be unplugged, swapped, measured on its own with a VNA or in a chamber, and reconnected
+      without touching a soldering iron. For a board that is still being characterised, that flexibility is worth a
+      fraction of a dB. The power budget and range analysis above use the directly soldered numbers, so the connectorized
+      build should be read as having slightly less margin on both transmit and receive.
+    </p>
+
+    <h3>Revalidated antenna results</h3>
+    <p>
+      The connectorized array was re-simulated to confirm the connectors do not break the match or the pattern.
+    </p>
+    <figure class="shot">
+      <img src="images/radar/conn-s11-all.png" alt="Self return loss of all sixteen connectorized antenna elements versus frequency" loading="lazy" />
+      <figcaption><b>Self return loss of every element, measured at the connector.</b> Each trace is S11 looking into one MHF&nbsp;4L port (WHF4L_conn1&ndash;16 in the simulation). Every element still dips at 10.5&nbsp;GHz, now landing between about &minus;12 and &minus;27&nbsp;dB, and rises back toward &minus;2 to &minus;5&nbsp;dB away from the band. All sixteen remain below the usual &minus;10&nbsp;dB threshold, so the array is still well matched through the connectors. The spread between elements is wider than in the soldered version, because the connector transition adds its own small reflection that combines differently with each element&rsquo;s coupling environment. The frequency sweep here uses coarse 0.5&nbsp;GHz steps, which is why the traces look piecewise-linear.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="images/radar/conn-s11-element1.png" alt="Return loss of connectorized element 1 with a marker at 10.5 GHz reading -23.67 dB" loading="lazy" />
+      <figcaption><b>Element 1 in isolation.</b> The marker reads <b>&minus;23.67&nbsp;dB at exactly 10.5&nbsp;GHz</b>, essentially the same depth as the soldered array&rsquo;s best match (about &minus;24.5&nbsp;dB). In other words, less than 0.5% of the power is reflected back from this port. The connector has not detuned the patch.</figcaption>
+    </figure>
+
+    <figure class="shot">
+      <img src="images/radar/conn-gain-pattern.png" alt="3D total gain pattern of the connectorized array with a 16.4 dBi peak" loading="lazy" />
+      <figcaption><b>3D gain pattern of the connectorized array.</b> Peak gain is <b>16.4&nbsp;dBi</b>, compared with 17.30&nbsp;dBi for the soldered array: about 0.9&nbsp;dB lower, which is the connector and transition loss described above showing up in the pattern. The main lobe still points at boresight and the sidelobe structure is very similar, so the connectors cost a little gain but do not distort the beam.</figcaption>
+    </figure>
+
+    <div class="metrics">
+      <div class="metric"><div class="val">12 GHz</div><div class="lbl">Connector rating</div></div>
+      <div class="metric"><div class="val">&le; 1.6</div><div class="lbl">Connector VSWR</div></div>
+      <div class="metric"><div class="val">~94%</div><div class="lbl">Power transfer per interface</div></div>
+      <div class="metric"><div class="val">&minus;23.7 dB</div><div class="lbl">S11, element 1 at 10.5&nbsp;GHz</div></div>
+      <div class="metric"><div class="val">16.4 dBi</div><div class="lbl">Peak gain (vs 17.3 soldered)</div></div>
+      <div class="metric"><div class="val">&lt; &minus;10 dB</div><div class="lbl">All 16 elements at f<sub>0</sub></div></div>
+    </div>
+
+    <h3>Connectorized RF PCB</h3>
+    <p>
+      On the RF board the change is just as contained. The four beamformers, length-matched feed lines, power tree and RF
+      chain are untouched; only the sixteen points where the array was soldered now carry MHF&nbsp;4L receptacles instead.
+      Because the meandered feed lines still terminate at the same coordinates, the length matching between channels is preserved
+      right up to the connector.
+    </p>
+    <figure class="shot">
+      <img src="images/radar/conn-pcb-3d-render.png" alt="Top-down 3D render of the connectorized RF PCB with sixteen MHF 4L receptacles where the array attaches" loading="lazy" />
+      <figcaption><b>Connectorized RF PCB, top-down render in Altium Designer.</b> The sixteen gold MHF&nbsp;4L receptacles on the right form a 4&times;4 grid on the same 1.428&nbsp;cm pitch as the patch elements, each fed by a length-matched serpentine line from one of the four beamformers (3V3_BMFRM domain). The rest of the board is the same as the soldered version: ESP32, USB-C and LDOs along the top, the 3V3_RF transceiver chain in the middle, the RX and TX SMA connectors on the left edge and the BPF tuning input on the bottom.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="images/radar/conn-pcb-3d-angled.png" alt="Angled 3D render of the connectorized RF PCB showing the low-profile MHF 4L receptacles" loading="lazy" />
+      <figcaption><b>Angled view of the connectorized board.</b> The MHF&nbsp;4L receptacles are very low profile, sitting roughly flush with the surrounding components, so they add almost no height to the stack. The three edge-launch SMA connectors (RX, TX and BPF) are visible along the edges.</figcaption>
+    </figure>
+
     <h2>Where It&rsquo;s Going</h2>
     <p>
       With the layout, power tree and trace-width sizing complete, next steps are sending the board out for fabrication and assembly, then validating the simulated patterns against bench
-      measurements in an anechoic chamber. After that, testing the RF PCB with measurement tools such as VNAs and spectrum
+      measurements in an anechoic chamber. The connectorized build makes that step much easier, since the array can be
+      unplugged and measured on its own, then reconnected to the transceiver. After that, testing the RF PCB with measurement tools such as VNAs and spectrum
       analyzers. Then, integrating the array with the transceiver board to characterize the full transmit and receive chain
       end to end.
     </p>
