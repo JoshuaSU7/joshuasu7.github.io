@@ -123,7 +123,7 @@
           <tr>
             <td>Feed method</td>
             <td>Coax feed pins</td>
-            <td>Low loss, well shielded, and modular. The array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth. A second revision terminates each pin in an I-PEX MHF&nbsp;4L connector instead of soldering it (see <a class="tlink" href="#connectorization">Connectorization</a>).</td>
+            <td>Low loss, well shielded, and modular. The array can be integrated onto the PCB or driven standalone. Holds a 50&nbsp;&Omega; impedance over a wide bandwidth. A second revision terminates each pin in an I-PEX MHF&nbsp;4L connector instead of soldering it (see <a class="tlink" href="#modularity">Modularity and Debug Prep</a>).</td>
           </tr>
           <tr>
             <td>Beamsteering parameters</td>
@@ -840,7 +840,14 @@
       a factor of 10 to 1,000 depending on the angle they are viewed from.
     </p>
 
-    <h2 id="connectorization">Connectorization</h2>
+    <h2 id="modularity">Modularity and Debug Prep</h2>
+    <p>
+      The second revision of the board is built to be taken apart, measured and debugged. It changes two things: the
+      antenna array now plugs into the RF board through connectors instead of being soldered, and every power rail has a
+      test point.
+    </p>
+
+    <h3>Connectorization</h3>
     <p>
       Everything above assumes the antenna array is <em>directly soldered</em> to the RF board: each patch&rsquo;s coax feed
       pin lands straight on its beamformer output pad. That gives the lowest possible loss, but it also welds the two boards
@@ -939,6 +946,30 @@
       <img src="images/radar/conn-pcb-3d-angled.png" alt="Angled 3D render of the connectorized RF PCB showing the low-profile MHF 4L receptacles" loading="lazy" />
       <figcaption><b>Angled view of the connectorized board.</b> The MHF&nbsp;4L receptacles are very low profile, sitting roughly flush with the surrounding components, so they add almost no height to the stack. The three edge-launch SMA connectors (RX, TX and BPF) are visible along the edges.</figcaption>
     </figure>
+
+    <h3>Power-rail test points</h3>
+    <p>
+      Each power rail also has its own test point: <code>TP_P5V</code>, <code>TP_P3V3_BMFRM</code>,
+      <code>TP_P3V3_RF</code>, <code>TP_P3V3_DIG</code> and <code>TP_P1V8</code>. During bring-up, these let me probe each
+      rail directly, so I can check its voltage and measure its current draw and power. That way I can confirm each regulator
+      and load behaves as the power budget predicts, before the RF chain is powered up as a whole. If a rail sags or draws more
+      than expected, the problem is isolated to one branch of the power tree straight away.
+    </p>
+    <figure class="shot">
+      <img src="images/radar/testpoints-top.png" alt="Top-down 3D render of the RF board showing test points on each power rail" loading="lazy" />
+      <figcaption><b>Test points on every rail.</b> The yellow loop test points sit next to the regulators and loads they monitor: TP_P5V on the 5&nbsp;V input, TP_P3V3_DIG by the digital LDO, TP_P3V3_BMFRM by the beamformer regulator, TP_P3V3_RF by the RF chain, and TP_P1V8 on the ADAR1000 logic-level rail.</figcaption>
+    </figure>
+    <figure class="shot">
+      <img src="images/radar/testpoints-angled.png" alt="Angled 3D render of the RF board with loop test points standing above the components" loading="lazy" />
+      <figcaption><b>Angled view.</b> The loop test points stand clear of the surrounding components, so a probe or clip lead can grab them while the board is running.</figcaption>
+    </figure>
+
+    <h3>Coming next: RF test points</h3>
+    <p>
+      A later revision will add impedance-matched stub test points on the most important RF lines. That will let me tap a
+      small, controlled sample of the signal at key stages of the chain (for example after the transverter, the filter and the
+      power amplifier) and check it on a spectrum analyzer without disturbing the 50&nbsp;&Omega; match of the main path.
+    </p>
 
     <h2>Where It&rsquo;s Going</h2>
     <p>
