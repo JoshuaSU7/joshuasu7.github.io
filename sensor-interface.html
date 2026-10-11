@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Six-Channel Sensor Interface PCB — Joshua Su</title>
+<meta name="description" content="A 24 V avionics test board that powers and reads six 4–20 mA current-loop sensors, digitizes them with an external ADC, and hands the data to an STM32 over SPI." />
+<meta name="author" content="Joshua Su" />
+<meta property="og:title" content="Six-Channel Sensor Interface PCB — Joshua Su" />
+<meta property="og:description" content="A 24 V avionics test board that powers and reads six 4–20 mA current-loop sensors, digitizes them with an external ADC, and hands the data to an STM32 over SPI." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/site.css" />
+<script src="assets/js/site.js"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">Joshua&nbsp;Su</a>
+    <button class="menu-btn" aria-label="Toggle menu">Menu</button>
+    <nav class="nav">
+      <a href="index.html">Home</a>
+      <a href="introduction.html">About</a>
+      <div class="nav-drop">
+        <button class="active">Projects <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5 6 8.5 10 4.5"/></svg></button>
+        <div class="nav-drop-menu">
+          <a href="projects.html">All Projects</a>
+          <a href="radar.html">Phased Array RADAR</a>
+          <a href="sensor-interface.html">Sensor Interface PCB</a>
+          <a href="eog.html">EOG Eye Tracking</a>
+          <a href="crash-detection.html">Crash Detection Device</a>
+          <a href="pll.html">PLL Feedback Divider</a>
+        </div>
+      </div>
+      <a href="resume.html">Resume</a>
+      <a href="career.html">Career</a>
+    </nav>
+    <button class="theme-toggle" aria-label="Toggle colour theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+
+<div class="page-head">
+  <div class="wrap">
+    <a class="backlink" href="projects.html">&larr; All projects</a>
+    <h1>Six-Channel Sensor Interface PCB</h1>
+    <p class="lede">A 24&nbsp;V avionics test board that powers and reads six 4&ndash;20&nbsp;mA current-loop sensors, digitizes them with an external ADC, and hands the data to an STM32 over SPI.</p>
+    <div class="tags">
+      <span class="tag">Altium Designer</span>
+      <span class="tag">PCB Design</span>
+      <span class="tag">Power Electronics</span>
+      <span class="tag">Mixed-Signal</span>
+      <span class="tag">GT Yellow Jacket Space Program</span>
+    </div>
+  </div>
+</div>
+
+<div class="article">
+  <div class="wrap wrap-narrow">
+
+    <figure class="shot">
+      <img src="images/rtb/pcb-3d.png" alt="3D render of the completed sensor interface PCB in Altium Designer" />
+      <figcaption><b>The finished board in Altium Designer.</b> The 24&nbsp;V input connector and protection sit on the left edge, the buck converter and LDO along the top, the STM32 in the centre-right, and the ADC with its six sensor channels across the lower half. The six two-pin sensor connectors (J3&ndash;J8) wrap around the bottom and sides.</figcaption>
+    </figure>
+
+    <h2>Overview</h2>
+    <p>
+      Rockets are full of sensors: tank pressure, chamber pressure, line pressure, temperature and thrust. Most of the
+      industrial transducers used for these report their reading as a <b>4&ndash;20&nbsp;mA current</b> rather than a voltage,
+      because a current survives long, noisy cable runs far better. This board is a smaller version of the sensor electronics on
+      the Yellow Jacket Space Program rocket. It takes a 24&nbsp;V supply, powers six current-loop sensors, measures each one
+      and turns the result into data a microcontroller can use.
+    </p>
+    <p>
+      I designed it end to end in Altium Designer, from schematic capture and component selection through current
+      budgeting, trace sizing, floorplanning and routing.
+    </p>
+
+    <div class="metrics">
+      <div class="metric"><div class="val">24 V</div><div class="lbl">Protected input</div></div>
+      <div class="metric"><div class="val">6</div><div class="lbl">4&ndash;20&nbsp;mA sensor channels</div></div>
+      <div class="metric"><div class="val">5 V / 3.3 V</div><div class="lbl">Buck + LDO rails</div></div>
+      <div class="metric"><div class="val">22 mA</div><div class="lbl">Per-channel current limit</div></div>
+      <div class="metric"><div class="val">ADS114S06</div><div class="lbl">16-bit, 6-input ADC</div></div>
+      <div class="metric"><div class="val">STM32H5</div><div class="lbl">Microcontroller over SPI</div></div>
+    </div>
+
+    <h2>System Architecture</h2>
+    <p>
+      The easiest way to read the board is to follow two paths. <b>Power</b> enters as 24&nbsp;V, is protected, then stepped
+      down to 5&nbsp;V and 3.3&nbsp;V for the electronics. <b>Data</b> starts at each sensor, becomes a voltage in its channel
+      circuit, is digitized by the ADC, and is read by the STM32.
+    </p>
+    <p>
+      The schematic is hierarchical. Each major function lives on its own sheet, and all six sensor channels are instances of a
+      single reviewed channel sheet. A fix to one channel applies to all six automatically, and the top level stays readable.
+    </p>
+    <figure class="shot">
+      <img src="images/rtb/top-level.png" alt="Top-level hierarchical schematic showing input connectors, power, STM32, ADC, output connectors and six sensor channel sheets" loading="lazy" />
+      <figcaption><b>Top-level schematic.</b> The output connector sheet feeds six identical <code>SensorCL</code> channel sheets (U0&ndash;U5) through harnesses. Each channel produces a filtered <code>SIG-PTx</code> voltage that lands on one ADC input (AIN0&ndash;AIN5). The STM32 and ADC are joined by a single SPI harness plus chip-select and data-ready lines. Input protection and power each have their own sheet, and the Power sheet holds the buck and LDO as sub-sheets.</figcaption>
+    </figure>
+
+    <h2>Input Protection</h2>
+    <p>
+      Power arrives on a keyed Molex 43045-0406 connector, with two contacts each for 24&nbsp;V and ground. Before it reaches
+      anything else, it passes through three protection parts, and each one guards against a different kind of fault:
+    </p>
+    <ul>
+      <li><b>Fuse (F1), in series:</b> opens the supply path if a short, failed part or solder bridge draws sustained excess current, before traces, connectors or wiring overheat.</li>
+      <li><b>TVS diode (D1, SMAJ26A), to ground:</b> stays off at normal voltage, then clamps short overvoltage spikes such as ESD from plugging in a cable. It sits on the fused side, so a TVS that conducts for too long will blow the fuse instead of burning up.</li>
+      <li><b>Bulk capacitor (C1, 10&nbsp;&micro;F / 50&nbsp;V):</b> local energy storage that steadies the input against harness resistance and inductance when the load changes quickly.</li>
+    </ul>
+    <p>The protected output is the <code>P24V_SAFE</code> rail, which feeds everything downstream.</p>
+    <figure class="shot">
+      <img src="images/rtb/input-protection.png" alt="Input connector schematic with fuse, TVS diode and bulk capacitor" loading="lazy" />
+      <figcaption><b>Input connector and protection.</b> VIN_24V comes in on J1, passes through fuse F1, and leaves as P24V_SAFE once TVS diode D1 and bulk capacitor C1 have been placed across it.</figcaption>
+    </figure>
+
+    <h2>Power Conversion</h2>
+    <p>
+      Power is converted in two stages. Going straight from 24&nbsp;V to 3.3&nbsp;V with a linear regulator would burn most of
+      the input power as heat, so a switching buck converter does the large step first, and a small LDO handles the last one.
+    </p>
+
+    <h3>Buck converter: 24 V &rarr; 5 V</h3>
+    <p>
+      A Maxim <b>MAX17503</b> synchronous buck converter switches the 24&nbsp;V input and filters it through a 22&nbsp;&micro;H
+      inductor into a regulated 5&nbsp;V rail. The supporting parts follow the datasheet&rsquo;s reference design:
+    </p>
+    <ul>
+      <li><b>Input capacitors</b> (3 &times; 1&nbsp;&micro;F, 100&nbsp;V) close to VIN supply the converter&rsquo;s fast switching current.</li>
+      <li><b>Output capacitors</b> (2 &times; 22&nbsp;&micro;F plus 1&nbsp;&micro;F) smooth the inductor current into a steady DC output.</li>
+      <li><b>Feedback divider</b> (143&nbsp;k&Omega; / 31.6&nbsp;k&Omega;, 0.1%) sets the output to 5&nbsp;V against the internal 0.9&nbsp;V reference.</li>
+      <li><b>Bootstrap capacitor</b> (100&nbsp;nF, BST to LX) drives the high-side switch, and a <b>soft-start capacitor</b> (22&nbsp;nF) ramps the output gently at power-up to limit inrush.</li>
+    </ul>
+    <figure class="shot">
+      <img src="images/rtb/buck.png" alt="MAX17503 buck converter schematic" loading="lazy" />
+      <figcaption><b>Buck converter.</b> P24V_SAFE enters on the left through the input capacitors. The switch node (LX) drives inductor L1 into the P5V output capacitors, and the R1/R2 divider closes the feedback loop.</figcaption>
+    </figure>
+
+    <h3>LDO: 5 V &rarr; 3.3 V</h3>
+    <p>
+      An ST <b>LDL1117S33R</b> fixed-output LDO makes the 3.3&nbsp;V rail for the STM32 and the ADC&rsquo;s digital side. The
+      step is only 1.7&nbsp;V, so a linear regulator is simple and quiet, and it needs just an input and an output capacitor
+      (1&nbsp;&micro;F and 4.7&nbsp;&micro;F) for stability.
+    </p>
+    <figure class="shot">
+      <img src="images/rtb/ldo.png" alt="LDL1117 LDO schematic" loading="lazy" />
+      <figcaption><b>LDO.</b> P5V in, P3V3 out, with the datasheet-recommended input and output capacitors.</figcaption>
+    </figure>
+
+    <h2>Microcontroller</h2>
+    <p>
+      The <b>STM32H573RIT6</b> is the board&rsquo;s brain. In a finished system its firmware would configure the ADC, read each
+      channel, convert currents to engineering units, flag out-of-range readings and forward the data. The hardware around it
+      covers what it needs to run and be programmed:
+    </p>
+    <ul>
+      <li><b>Decoupling:</b> a 4.7&nbsp;&micro;F bulk capacitor plus a 100&nbsp;nF capacitor per VDD pin, with separate filtering on the analog supply (VDDA).</li>
+      <li><b>VCAP:</b> 2.2&nbsp;&micro;F capacitors on the internal core regulator&rsquo;s output pins, as ST specifies.</li>
+      <li><b>Boot configuration:</b> BOOT0 is pulled low through 10&nbsp;k&Omega;, so the chip always starts from its own flash.</li>
+      <li><b>JTAG / SWD connector:</b> a 14-pin debug header with pull-ups on the debug lines, for programming and on-chip debugging.</li>
+      <li><b>SPI series resistors:</b> 47&nbsp;&Omega; resistors on each SPI line slow the signal edges, reducing ringing and overshoot on the bus.</li>
+    </ul>
+    <figure class="shot">
+      <img src="images/rtb/stm32.png" alt="STM32H573 schematic with decoupling, VCAP, BOOT0 and JTAG connector" loading="lazy" />
+      <figcaption><b>STM32 sheet.</b> On the left, the GPIO unit with the SPI harness and JTAG nets. On the right, the power unit with its decoupling and VCAP capacitors. The JTAG connector is at the bottom.</figcaption>
+    </figure>
+
+    <h2>ADC</h2>
+    <p>
+      The sensors produce analog voltages, so a Texas Instruments <b>ADS114S06</b> (16-bit, six analog inputs) digitizes them.
+      Each sensor channel gets its own input, AIN0&ndash;AIN5, measured against AINCOM. The ADC uses its internal 2.5&nbsp;V
+      reference, which comfortably covers the 0.4&ndash;2.2&nbsp;V range the sensor channels produce. Its supplies are split:
+      the analog side runs from 5&nbsp;V and the digital and I/O side from 3.3&nbsp;V, each with its own decoupling.
+    </p>
+    <p>
+      The STM32 talks to the ADC over <b>SPI</b> (SCLK, MOSI, MISO and a chip select). The ADC also has a <code>nDRDY</code>
+      line that tells the STM32 when a new conversion is ready, so the microcontroller doesn&rsquo;t have to keep polling.
+    </p>
+    <figure class="shot">
+      <img src="images/rtb/adc.png" alt="ADS114S06 ADC schematic" loading="lazy" />
+      <figcaption><b>ADC sheet.</b> The SPI harness, chip select and data-ready connect on the left, and the six analog inputs on the right. REFOUT is bypassed for the internal reference, and the analog and digital supplies are decoupled separately.</figcaption>
+    </figure>
+
+    <h2>4&ndash;20 mA Sensor Channels</h2>
+    <p>
+      A 4&ndash;20&nbsp;mA sensor sets its current to represent the measurement. For a 0&ndash;500&nbsp;psi transducer, 4&nbsp;mA
+      means 0&nbsp;psi and 20&nbsp;mA means 500&nbsp;psi. Starting at 4&nbsp;mA instead of zero gives a <em>live zero</em>: a broken
+      or unplugged sensor reads near 0&nbsp;mA, which is clearly different from a valid minimum reading.
+    </p>
+    <p>Each of the six identical channels does three jobs:</p>
+    <ul>
+      <li><b>Current-limited sensor power:</b> an <b>LT3092</b> current source feeds the sensor from 24&nbsp;V. Its 22&nbsp;k&Omega; and 10&nbsp;&Omega; set resistors cap the loop at about 22&nbsp;mA, just above the normal range. In normal operation the sensor sets the current. If the sensor or its cable shorts, the LT3092 holds the current at about 22&nbsp;mA instead of letting the 24&nbsp;V supply dump into the fault.</li>
+      <li><b>Current to voltage:</b> the return current flows through a <b>100&nbsp;&Omega; shunt</b> to ground, so 4&ndash;20&nbsp;mA becomes 0.4&ndash;2.0&nbsp;V. Even at the 22&nbsp;mA limit the shunt dissipates only about 49&nbsp;mW.</li>
+      <li><b>Filtering:</b> a <b>1&nbsp;k&Omega; / 100&nbsp;nF RC low-pass filter</b> (cutoff about 1.6&nbsp;kHz) removes high-frequency noise picked up by the sensor wiring before the signal reaches the ADC.</li>
+    </ul>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Loop current</th><th>Voltage at ADC</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>~0 mA</td><td>~0 V</td><td>Disconnected, broken or unpowered sensor</td></tr>
+          <tr><td>4 mA</td><td>0.4 V</td><td>Minimum valid reading</td></tr>
+          <tr><td>20 mA</td><td>2.0 V</td><td>Maximum valid reading</td></tr>
+          <tr><td>~22 mA</td><td>~2.2 V</td><td>Current limit reached, likely a shorted sensor or cable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Software can therefore tell a fault apart from a real reading, as well as measure the sensor.</p>
+    <figure class="shot">
+      <img src="images/rtb/sensor-channel.png" alt="Single 4-20 mA sensor channel schematic with LT3092 current source, shunt and RC filter" loading="lazy" />
+      <figcaption><b>One sensor channel.</b> The LT3092 sources current out to SIG+. The return on SIG&minus; flows through the 100&nbsp;&Omega; shunt (R17), and the R16/C26 filter produces SIG for the ADC. This one sheet is instantiated six times.</figcaption>
+    </figure>
+    <figure class="shot" style="max-width:380px;margin-left:auto;margin-right:auto">
+      <img src="images/rtb/output-connectors.png" alt="Six two-pin Molex sensor connectors J3 through J8" loading="lazy" />
+        <figcaption><b>Sensor connectors.</b> Six two-pin Molex connectors (J3&ndash;J8). Each one bundles its SIG+ and SIG&minus; into a harness that runs to the matching channel sheet.</figcaption>
+    </figure>
+
+    <h2>Current Accounting and Trace Sizing</h2>
+    <p>
+      Before routing, I worked out the worst-case current on every power rail, added a 1.5&times; safety margin, and sized each
+      trace for an acceptable voltage drop (3% of the rail) and temperature rise. Current is traced back from the loads:
+    </p>
+    <ul>
+      <li>The 3.3&nbsp;V rail is dominated by the STM32 (~350&nbsp;mA). The ADC&rsquo;s draw is negligible.</li>
+      <li>An LDO&rsquo;s input current equals its output current, so the 5&nbsp;V rail carries the same 350&nbsp;mA.</li>
+      <li>The 24&nbsp;V side is sized by power, not current: 350&nbsp;mA &times; 5&nbsp;V &asymp; 1.75&nbsp;W out of the buck means only about 73&nbsp;mA in at 24&nbsp;V. The six sensor loops add up to 6 &times; 22&nbsp;mA = 132&nbsp;mA, for about 205&nbsp;mA in total.</li>
+      <li>The LDO dissipates (5 &minus; 3.3)&nbsp;V &times; 350&nbsp;mA &asymp; 0.6&nbsp;W. At 120&nbsp;&deg;C/W that is a 72&nbsp;&deg;C rise in the part itself, so its traces were given a tighter 5&nbsp;&deg;C budget to avoid adding more heat.</li>
+    </ul>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Rail</th><th>Max current</th><th>With margin</th><th>Max drop</th><th>Temp rise</th><th>Min width</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>P24V (unfused)</td><td>Sized for 1&nbsp;A</td><td>1&nbsp;A</td><td>0.72&nbsp;V</td><td>10&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
+          <tr><td>P24V_SAFE</td><td>205&nbsp;mA</td><td>~310&nbsp;mA</td><td>0.72&nbsp;V</td><td>10&nbsp;&deg;C</td><td>10&nbsp;mil</td></tr>
+          <tr><td>P5V</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.15&nbsp;V</td><td>5&nbsp;&deg;C</td><td>15&nbsp;mil</td></tr>
+          <tr><td>P3V3</td><td>350&nbsp;mA</td><td>525&nbsp;mA</td><td>0.10&nbsp;V</td><td>10&nbsp;&deg;C</td><td>10&nbsp;mil</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>PCB Layout</h2>
+    <p>
+      Layout started with floorplanning instead of routing. Each schematic sheet came into the PCB as an Altium
+      <b>room</b>, which made it easy to keep each functional block together: input and protection at the connector edge, power
+      conversion along the top, the STM32 in the middle, and the ADC with the six sensor channels in the lower half, near their
+      connectors. Once the floorplan made the ratsnest short and untangled, the individual parts were placed and routed.
+    </p>
+    <ul>
+      <li><b>Input protection at the edge:</b> the fuse, TVS and bulk capacitor sit right next to J1, so very little of the board is unprotected and the TVS has a short, low-inductance path to ground.</li>
+      <li><b>Tight buck layout:</b> the input capacitors, inductor and switch node are packed close to the MAX17503 to keep the high-current switching loop small.</li>
+      <li><b>Analog kept away from noise:</b> the short analog sensor traces are kept away from the buck&rsquo;s switching node and other high-current paths.</li>
+      <li><b>Decoupling at the pins:</b> each decoupling capacitor sits right at the supply pin it serves, keeping its loop area small.</li>
+      <li><b>Sized power traces:</b> every power rail is routed at or above the minimum width from the table above.</li>
+      <li><b>Ground pours and stitching:</b> both outer layers carry ground pours, stitched to the internal ground planes with vias for a continuous, low-impedance return path.</li>
+    </ul>
+    <figure class="shot">
+      <img src="images/rtb/pcb-2d.png" alt="2D Altium layout of the sensor interface PCB with labeled rooms and ground pour" loading="lazy" />
+      <figcaption><b>2D layout.</b> Room labels mark each functional block: Input Connectors, U_Buck, U_LDO, U_STM32, the six U0&ndash;U5 SensorCL channels and the output connectors. The red is the top-layer ground pour. Power traces run visibly wider than the signal routing, and the sensor channels fan out from the ADC to their connectors along the lower edge.</figcaption>
+    </figure>
+
+    <div class="btn-row" style="margin-top:2.5rem">
+      <a class="btn btn-primary" href="projects.html">&larr; Back to projects</a>
+      <a class="btn btn-quiet" href="mailto:joshua.su@gatech.edu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg> Ask me about it</a>
+    </div>
+
+  </div>
+</div>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>&copy; 2026 Joshua Su</div>
+    <div class="social">
+      <a href="https://github.com/JoshuaSU7" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17.6 4.6 18.6 5 18.6 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg></a>
+      <a href="https://www.linkedin.com/in/joshua-su-b7b88a281/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.3 8.65 21 11 21 14.1V21h-4v-6.1c0-1.45-.03-3.32-2.02-3.32-2.03 0-2.34 1.58-2.34 3.21V21H9z"/></svg></a>
+      <a href="mailto:joshua.su@gatech.edu" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><path d="m3 6 9 6.5L21 6"/></svg></a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
