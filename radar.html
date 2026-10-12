@@ -88,6 +88,417 @@
       <figcaption><b>The array model in ANSYS Electronics Desktop.</b> All sixteen microstrip patch elements are laid out on a 4&times;4 grid and indexed [1,1] through [4,4]. Each patch is fed from underneath by its own coaxial pin, and the red wireframe is the radiation boundary the solver uses for far-field calculation. The scale bar runs 0&ndash;5&nbsp;cm, which gives a sense of just how compact an X-band array is.</figcaption>
     </figure>
 
+    <h2 id="applications">Applications of X-Band Phased Arrays</h2>
+    <p>
+      Every radar design is a set of tradeoffs. The frequency band sets the wavelength, and the wavelength drives almost
+      everything else: what size of target returns a strong echo, how fine the resolution can be, how large the antenna has
+      to be, and how badly weather gets in the way. A good design picks the band that performs best in the scenarios that
+      matter most and accepts weaker performance in the niche ones. For several key military missions, the X-band
+      (8&ndash;12&nbsp;GHz) is that sweet spot.
+    </p>
+
+    <h3>Why X-band (8&ndash;12 GHz)?</h3>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Band</th><th>Wavelength</th><th>4&times;4 array (&lambda;/2 spacing)</th><th>Rain and fog</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>S-band (3&nbsp;GHz)</td><td>10&nbsp;cm</td><td>20 &times; 20&nbsp;cm</td><td>Barely affected</td></tr>
+          <tr><td><b>X-band (10.5&nbsp;GHz, this project)</b></td><td><b>2.86&nbsp;cm</b></td><td><b>5.7 &times; 5.7&nbsp;cm</b></td><td>Moderate loss in heavy rain</td></tr>
+          <tr><td>Ku-band (15&nbsp;GHz)</td><td>2.0&nbsp;cm</td><td>4 &times; 4&nbsp;cm</td><td>Heavily attenuated</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Lower bands like S-band see through weather and reach farther, but they resolve less detail and need a much larger
+      antenna. Higher bands like Ku resolve finer detail from a smaller antenna, but lose range quickly in rain and fog. X-band
+      sits between the two.
+    </p>
+
+    <h3>1. Counter-UAS: detecting and tracking small drones</h3>
+    <p>
+      Small drones are now one of the most common threats on the battlefield. They are cheap, small and often fly in groups.
+      X-band suits them because its ~3&nbsp;cm wavelength is about the same size as a drone&rsquo;s parts. How strongly a target
+      reflects depends on its size compared with the wavelength, and there are three scattering regimes:
+    </p>
+    <figure class="diagram">
+      <svg class="appdiag" viewBox="0 0 960 330" role="img" aria-label="Rayleigh, Mie and optical scattering regimes compared by target size relative to wavelength" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
+  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
+  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
+  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
+  .appdiag .solid{fill:var(--fg,#0b0b0b)}
+  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
+  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
+  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
+  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
+  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .appdiag .ar{fill:var(--fg,#0b0b0b)}
+  .appdiag .arm{fill:var(--fg-muted,#666)}
+</style>
+<defs><marker id="sca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="scm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="20">SCATTERING REGIME · target size vs. wavelength λ</text>
+<rect class="soft" x="12" y="34" width="296" height="286" rx="4"/>
+<text class="t" x="160" y="58">Rayleigh</text>
+<text class="g" x="160" y="76">size ≪ λ</text>
+<polyline class="wave" points="26.0,150.0 28.0,147.6 30.0,145.3 32.0,143.4 34.0,142.0 36.0,141.2 38.0,141.0 40.0,141.5 42.0,142.6 44.0,144.3 46.0,146.4 48.0,148.8 50.0,151.2 52.0,153.6 54.0,155.7 56.0,157.4 58.0,158.5 60.0,159.0 62.0,158.8 64.0,158.0 66.0,156.6 68.0,154.7 70.0,152.4 72.0,150.0 74.0,147.6 76.0,145.3 78.0,143.4 80.0,142.0 82.0,141.2 84.0,141.0 86.0,141.5 88.0,142.6 90.0,144.3 92.0,146.4 94.0,148.8 96.0,151.2 98.0,153.6 100.0,155.7 102.0,157.4 104.0,158.5 106.0,159.0 108.0,158.8 110.0,158.0 112.0,156.6 114.0,154.7 116.0,152.4 118.0,150.0 120.0,147.6 122.0,145.3 124.0,143.4 126.0,142.0 128.0,141.2 130.0,141.0 132.0,141.5 134.0,142.6 136.0,144.3 138.0,146.4 140.0,148.8 142.0,151.2 144.0,153.6 146.0,155.7 148.0,157.4 150.0,158.5 152.0,159.0 154.0,158.8 156.0,158.0 158.0,156.6 160.0,154.7 162.0,152.4 164.0,150.0 166.0,147.6 168.0,145.3 170.0,143.4 172.0,142.0 174.0,141.2 176.0,141.0 178.0,141.5"/>
+<line class="ln" x1="160" y1="172" x2="176" y2="172" marker-end="url(#sca)"/>
+<text class="p" x="70" y="186">incident wave</text>
+<circle class="solid" cx="200" cy="150" r="3"/>
+<polyline class="wave" points="210.0,150.0 212.0,147.6 214.0,145.3 216.0,143.4 218.0,142.0 220.0,141.2 222.0,141.0 224.0,141.5 226.0,142.6 228.0,144.3 230.0,146.4 232.0,148.8 234.0,151.2 236.0,153.6 238.0,155.7 240.0,157.4 242.0,158.5 244.0,159.0 246.0,158.8 248.0,158.0 250.0,156.6 252.0,154.7 254.0,152.4 256.0,150.0 258.0,147.6 260.0,145.3 262.0,143.4 264.0,142.0 266.0,141.2 268.0,141.0 270.0,141.5 272.0,142.6 274.0,144.3 276.0,146.4 278.0,148.8 280.0,151.2 282.0,153.6 284.0,155.7 286.0,157.4 288.0,158.5 290.0,159.0 292.0,158.8 294.0,158.0 296.0,156.6"/>
+<line class="thin" x1="192" y1="138" x2="166" y2="116" marker-end="url(#scm)"/>
+<text class="p" x="240" y="128">passes by</text>
+<text class="p" x="160" y="238">Wave flows around the target.</text>
+<text class="p" x="160" y="254">Very weak echo, falls as 1/λ⁴.</text>
+<line class="thin" x1="40" y1="270" x2="280" y2="270"/>
+<text class="lab" x="160" y="290" text-anchor="middle">DRONE PARTS AT 10.5 GHZ</text>
+<text class="g" x="160" y="308">< ~1 cm: wires, screws, antennas</text>
+<rect class="soft" x="332" y="34" width="296" height="286" rx="4"/>
+<text class="t" x="480" y="58">Mie (resonant)</text>
+<text class="g" x="480" y="76">size ≈ λ</text>
+<polyline class="wave" points="346.0,150.0 348.0,147.6 350.0,145.3 352.0,143.4 354.0,142.0 356.0,141.2 358.0,141.0 360.0,141.5 362.0,142.6 364.0,144.3 366.0,146.4 368.0,148.8 370.0,151.2 372.0,153.6 374.0,155.7 376.0,157.4 378.0,158.5 380.0,159.0 382.0,158.8 384.0,158.0 386.0,156.6 388.0,154.7 390.0,152.4 392.0,150.0 394.0,147.6 396.0,145.3 398.0,143.4 400.0,142.0 402.0,141.2 404.0,141.0 406.0,141.5 408.0,142.6 410.0,144.3 412.0,146.4 414.0,148.8 416.0,151.2 418.0,153.6 420.0,155.7 422.0,157.4 424.0,158.5 426.0,159.0 428.0,158.8 430.0,158.0 432.0,156.6 434.0,154.7 436.0,152.4 438.0,150.0 440.0,147.6 442.0,145.3 444.0,143.4 446.0,142.0 448.0,141.2 450.0,141.0 452.0,141.5 454.0,142.6 456.0,144.3 458.0,146.4 460.0,148.8 462.0,151.2 464.0,153.6 466.0,155.7 468.0,157.4 470.0,158.5 472.0,159.0 474.0,158.8 476.0,158.0 478.0,156.6 480.0,154.7 482.0,152.4 484.0,150.0 486.0,147.6 488.0,145.3 490.0,143.4 492.0,142.0 494.0,141.2 496.0,141.0 498.0,141.5"/>
+<line class="ln" x1="480" y1="172" x2="496" y2="172" marker-end="url(#sca)"/>
+<text class="p" x="390" y="186">incident wave</text>
+<circle class="bx" cx="520" cy="150" r="9"/>
+<line class="ln" x1="508.5" y1="142.0" x2="477.4" y2="120.2" marker-end="url(#sca)"/>
+<line class="ln" x1="508.5" y1="158.0" x2="477.4" y2="179.8" marker-end="url(#sca)"/>
+<line class="thin" x1="512.0" y1="138.5" x2="500.5" y2="122.1" marker-end="url(#scm)"/>
+<line class="thin" x1="512.0" y1="161.5" x2="500.5" y2="177.9" marker-end="url(#scm)"/>
+<line class="thin" x1="527.0" y1="137.9" x2="537.0" y2="120.6" marker-end="url(#scm)"/>
+<line class="thin" x1="534.0" y1="150.0" x2="554.0" y2="150.0" marker-end="url(#scm)"/>
+<line class="thin" x1="527.0" y1="162.1" x2="537.0" y2="179.4" marker-end="url(#scm)"/>
+<text class="p" x="490" y="100">strong backscatter</text>
+<text class="p" x="480" y="238">Target resonates with the wave.</text>
+<text class="p" x="480" y="254">Strong, angle-dependent echo.</text>
+<line class="thin" x1="360" y1="270" x2="600" y2="270"/>
+<text class="lab" x="480" y="290" text-anchor="middle">DRONE PARTS AT 10.5 GHZ</text>
+<text class="g" x="480" y="308">~1–9 cm: motors, arms, propellers</text>
+<rect class="soft" x="652" y="34" width="296" height="286" rx="4"/>
+<text class="t" x="800" y="58">Optical</text>
+<text class="g" x="800" y="76">size ≫ λ</text>
+<polyline class="wave" points="666.0,150.0 668.0,147.6 670.0,145.3 672.0,143.4 674.0,142.0 676.0,141.2 678.0,141.0 680.0,141.5 682.0,142.6 684.0,144.3 686.0,146.4 688.0,148.8 690.0,151.2 692.0,153.6 694.0,155.7 696.0,157.4 698.0,158.5 700.0,159.0 702.0,158.8 704.0,158.0 706.0,156.6 708.0,154.7 710.0,152.4 712.0,150.0 714.0,147.6 716.0,145.3 718.0,143.4 720.0,142.0 722.0,141.2 724.0,141.0 726.0,141.5 728.0,142.6 730.0,144.3 732.0,146.4 734.0,148.8 736.0,151.2 738.0,153.6 740.0,155.7 742.0,157.4 744.0,158.5 746.0,159.0 748.0,158.8 750.0,158.0 752.0,156.6 754.0,154.7 756.0,152.4 758.0,150.0 760.0,147.6 762.0,145.3 764.0,143.4 766.0,142.0 768.0,141.2 770.0,141.0 772.0,141.5 774.0,142.6 776.0,144.3 778.0,146.4 780.0,148.8 782.0,151.2 784.0,153.6 786.0,155.7 788.0,157.4 790.0,158.5 792.0,159.0 794.0,158.8 796.0,158.0 798.0,156.6 800.0,154.7 802.0,152.4 804.0,150.0 806.0,147.6 808.0,145.3 810.0,143.4 812.0,142.0 814.0,141.2 816.0,141.0 818.0,141.5"/>
+<line class="ln" x1="800" y1="172" x2="816" y2="172" marker-end="url(#sca)"/>
+<text class="p" x="710" y="186">incident wave</text>
+<rect class="bx" x="836" y="102" width="10" height="96"/>
+<line class="ln" x1="830" y1="114" x2="770" y2="114" marker-end="url(#sca)"/>
+<line class="ln" x1="830" y1="128" x2="770" y2="128" marker-end="url(#sca)"/>
+<line class="ln" x1="830" y1="172" x2="770" y2="172" marker-end="url(#sca)"/>
+<line class="ln" x1="830" y1="186" x2="770" y2="186" marker-end="url(#sca)"/>
+<text class="p" x="800" y="94">mirror-like reflection</text>
+<text class="p" x="800" y="238">Wave reflects off surfaces like light.</text>
+<text class="p" x="800" y="254">Echo set by shape and area.</text>
+<line class="thin" x1="680" y1="270" x2="920" y2="270"/>
+<text class="lab" x="800" y="290" text-anchor="middle">DRONE PARTS AT 10.5 GHZ</text>
+<text class="g" x="800" y="308">> ~9 cm: body, battery, payload</text>
+</svg>
+      <figcaption><b>Three scattering regimes.</b> If a target is much smaller than the wavelength (<b>Rayleigh</b>), the wave mostly flows around it and very little power comes back. If they are about the same size (<b>Mie</b>), the target resonates and scatters strongly. If the target is much larger (<b>optical</b>), the wave reflects off its surfaces much as light does off a mirror. At 10.5&nbsp;GHz the Mie region covers features from about 1 to 9&nbsp;cm, which is exactly the size of a small drone&rsquo;s motors, arms and propellers.</figcaption>
+    </figure>
+    <p>
+      This is where the wavelength pays off. In the Rayleigh regime the echo falls off as 1/&lambda;<sup>4</sup>. A 1&nbsp;cm
+      motor or arm that is Rayleigh-sized for an S-band radar (&lambda;&nbsp;=&nbsp;10&nbsp;cm) returns about
+      (10&nbsp;/&nbsp;2.86)<sup>4</sup>&nbsp;&asymp;&nbsp;150 times, or <b>~22&nbsp;dB</b>, more power at X-band. The shorter
+      wavelength also shrinks the antenna. Sixteen elements fit in a 5.7&nbsp;cm square, so a full array fits on a small,
+      portable or vehicle-mounted unit.
+    </p>
+    <ul>
+      <li><b>Against S-band:</b> the longer wavelength sees small drones only weakly. Its wider beam for the same aperture size also makes it hard to tell two closely spaced drones apart.</li>
+      <li><b>Against Ku-band:</b> Ku resolves even finer detail and makes narrower beams, but rain and fog absorb it much more strongly. It loses range quickly in exactly the conditions a defensive system still has to work in.</li>
+      <li><b>X-band&rsquo;s drawbacks:</b> heavy rain and severe weather still reduce its range, and its maximum range is shorter than a lower-frequency radar of the same power.</li>
+    </ul>
+
+    <h3>Example: tracking an incoming drone swarm</h3>
+    <p>
+      Suppose five small quadcopters approach together, 46&ndash;57&nbsp;m from the array. That is inside the
+      ~59&nbsp;m range this board reaches for a 0.1&nbsp;m&sup2; target (see the range analysis below). They are a few metres
+      apart, all in the same patch of sky, and flying at similar speeds. To defend against them, the radar has to
+      <em>count</em> them and track each one separately, not just report one blob. The worked example below uses
+      illustrative waveform settings: a 20&nbsp;MHz chirp, which is within the ADALM-PLUTO&rsquo;s standard bandwidth, and
+      a 50&nbsp;ms coherent processing interval.
+    </p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Dimension</th><th>Resolution</th><th>Where it comes from</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Angle</td><td>13&deg; beam &rarr; ~11&nbsp;m across at 50&nbsp;m</td><td>The array&rsquo;s simulated 3&nbsp;dB beamwidth. The phased array steers between beams in microseconds.</td></tr>
+          <tr><td>Range</td><td>&Delta;R = c / 2B = <b>7.5&nbsp;m</b></td><td>Set by the 20&nbsp;MHz signal bandwidth, not by the carrier frequency</td></tr>
+          <tr><td>Velocity (Doppler)</td><td>&Delta;v = &lambda; / 2T = <b>0.29&nbsp;m/s</b> (20&nbsp;Hz)</td><td>The short 2.86&nbsp;cm wavelength: every 1&nbsp;m/s of radial speed shifts the echo by 2v/&lambda; = <b>70&nbsp;Hz</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="diagram">
+      <svg class="appdiag" viewBox="0 0 960 440" role="img" aria-label="Top-down view of a five-drone swarm 46 to 57 metres from the radar, split across two beams and two range cells" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
+  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
+  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
+  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
+  .appdiag .solid{fill:var(--fg,#0b0b0b)}
+  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
+  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
+  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
+  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
+  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .appdiag .ar{fill:var(--fg,#0b0b0b)}
+  .appdiag .arm{fill:var(--fg-muted,#666)}
+</style>
+<defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
+<path class="wedge" d="M70,205 L927.6,205.0 A857.6,857.6 0 0 0 905.6,12.1 Z"/>
+<text class="p" x="469.4" y="163.5">Beam 2 (0° to +13°)</text>
+<path class="wedge" d="M70,205 L905.6,397.9 A857.6,857.6 0 0 0 927.6,205.0 Z"/>
+<text class="p" x="469.4" y="254.5">Beam 1 (−13° to 0°)</text>
+<path class="dash" d="M655.1,350.9 A603.0,603.0 0 0 0 655.1,59.1"/>
+<text class="g" x="653.5" y="49.0">45 m</text>
+<path class="dash" d="M752.6,375.2 A703.5,703.5 0 0 0 752.6,34.8"/>
+<text class="g" x="750.8" y="23.7">52.5 m</text>
+<path class="dash" d="M850.1,399.5 A804.0,804.0 0 0 0 850.1,10.5"/>
+<text class="g" x="848.0" y="-1.7">60 m</text>
+<text class="p" x="699.2" y="384.7">range cell 1</text>
+<text class="p" x="796.0" y="411.7">range cell 2</text>
+<rect class="bx" x="44" y="181" width="22" height="48" rx="2"/>
+<rect class="solid" x="47.0" y="185.0" width="3" height="7"/>
+<rect class="solid" x="51.6" y="185.0" width="3" height="7"/>
+<rect class="solid" x="56.2" y="185.0" width="3" height="7"/>
+<rect class="solid" x="60.8" y="185.0" width="3" height="7"/>
+<rect class="solid" x="47.0" y="195.6" width="3" height="7"/>
+<rect class="solid" x="51.6" y="195.6" width="3" height="7"/>
+<rect class="solid" x="56.2" y="195.6" width="3" height="7"/>
+<rect class="solid" x="60.8" y="195.6" width="3" height="7"/>
+<rect class="solid" x="47.0" y="206.2" width="3" height="7"/>
+<rect class="solid" x="51.6" y="206.2" width="3" height="7"/>
+<rect class="solid" x="56.2" y="206.2" width="3" height="7"/>
+<rect class="solid" x="60.8" y="206.2" width="3" height="7"/>
+<rect class="solid" x="47.0" y="216.8" width="3" height="7"/>
+<rect class="solid" x="51.6" y="216.8" width="3" height="7"/>
+<rect class="solid" x="56.2" y="216.8" width="3" height="7"/>
+<rect class="solid" x="60.8" y="216.8" width="3" height="7"/>
+<text class="t" x="55" y="247">4×4 array</text>
+<line class="thin" x1="70" y1="205" x2="606.0" y2="205"/>
+<line class="thin" x1="204.0" y1="201" x2="204.0" y2="209"/>
+<text class="g" x="204.0" y="222">10 m</text>
+<line class="thin" x1="338.0" y1="201" x2="338.0" y2="209"/>
+<text class="g" x="338.0" y="222">20 m</text>
+<line class="thin" x1="472.0" y1="201" x2="472.0" y2="209"/>
+<text class="g" x="472.0" y="222">30 m</text>
+<line class="thin" x1="606.0" y1="201" x2="606.0" y2="209"/>
+<text class="g" x="606.0" y="222">40 m</text>
+<line class="ln" x1="671.8110931428429" y1="294.4262042507983" x2="685.8110931428429" y2="308.4262042507983"/>
+<line class="ln" x1="671.8110931428429" y1="308.4262042507983" x2="685.8110931428429" y2="294.4262042507983"/>
+<circle class="solid" cx="671.8110931428429" cy="294.4262042507983" r="3.6"/>
+<circle class="solid" cx="685.8110931428429" cy="294.4262042507983" r="3.6"/>
+<circle class="solid" cx="671.8110931428429" cy="308.4262042507983" r="3.6"/>
+<circle class="solid" cx="685.8110931428429" cy="308.4262042507983" r="3.6"/>
+<text class="tl" x="664.8" y="311.4" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="688.1055663037047" y1="274.75331247656186" x2="702.1055663037047" y2="288.75331247656186"/>
+<line class="ln" x1="688.1055663037047" y1="288.75331247656186" x2="702.1055663037047" y2="274.75331247656186"/>
+<circle class="solid" cx="688.1055663037047" cy="274.75331247656186" r="3.6"/>
+<circle class="solid" cx="702.1055663037047" cy="274.75331247656186" r="3.6"/>
+<circle class="solid" cx="688.1055663037047" cy="288.75331247656186" r="3.6"/>
+<circle class="solid" cx="702.1055663037047" cy="288.75331247656186" r="3.6"/>
+<text class="tl" x="709.1" y="277.8" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
+<line class="ln" x1="732.8979557547822" y1="209.69311231297996" x2="746.8979557547822" y2="223.69311231297996"/>
+<line class="ln" x1="732.8979557547822" y1="223.69311231297996" x2="746.8979557547822" y2="209.69311231297996"/>
+<circle class="solid" cx="732.8979557547822" cy="209.69311231297996" r="3.6"/>
+<circle class="solid" cx="746.8979557547822" cy="209.69311231297996" r="3.6"/>
+<circle class="solid" cx="732.8979557547822" cy="223.69311231297996" r="3.6"/>
+<circle class="solid" cx="746.8979557547822" cy="223.69311231297996" r="3.6"/>
+<text class="tl" x="753.9" y="214.7" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
+<line class="ln" x1="810.5445014480458" y1="132.5983306421573" x2="824.5445014480458" y2="146.5983306421573"/>
+<line class="ln" x1="810.5445014480458" y1="146.5983306421573" x2="824.5445014480458" y2="132.5983306421573"/>
+<circle class="hollow" cx="810.5445014480458" cy="132.5983306421573" r="3.6"/>
+<circle class="hollow" cx="824.5445014480458" cy="132.5983306421573" r="3.6"/>
+<circle class="hollow" cx="810.5445014480458" cy="146.5983306421573" r="3.6"/>
+<circle class="hollow" cx="824.5445014480458" cy="146.5983306421573" r="3.6"/>
+<text class="tl" x="831.5" y="151.6" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="821.1067506236418" y1="104.91619550714834" x2="835.1067506236418" y2="118.91619550714834"/>
+<line class="ln" x1="821.1067506236418" y1="118.91619550714834" x2="835.1067506236418" y2="104.91619550714834"/>
+<circle class="hollow" cx="821.1067506236418" cy="104.91619550714834" r="3.6"/>
+<circle class="hollow" cx="835.1067506236418" cy="104.91619550714834" r="3.6"/>
+<circle class="hollow" cx="821.1067506236418" cy="118.91619550714834" r="3.6"/>
+<circle class="hollow" cx="835.1067506236418" cy="118.91619550714834" r="3.6"/>
+<text class="tl" x="842.1" y="101.9" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
+<text class="pl" x="40" y="430">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
+</svg>
+      <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 2&deg; apart) or D from E (1&nbsp;m and 2&deg; apart), because each pair shares a beam and a range cell.</figcaption>
+    </figure>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Drone</th><th>Range</th><th>Azimuth</th><th>Radial speed</th><th>Doppler shift</th><th>Beam / range cell</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>46&nbsp;m</td><td>&minus;9&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>B</td><td>47&nbsp;m</td><td>&minus;7&deg;</td><td>12.5&nbsp;m/s</td><td>876&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>C</td><td>50&nbsp;m</td><td>&minus;1&deg;</td><td>10.5&nbsp;m/s</td><td>736&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>D</td><td>56&nbsp;m</td><td>+5&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>2 / 2</td></tr>
+          <tr><td>E</td><td>57&nbsp;m</td><td>+7&deg;</td><td>8.0&nbsp;m/s</td><td>560&nbsp;Hz</td><td>2 / 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The short wavelength is what separates them. Drones A and B differ in speed by only 0.5&nbsp;m/s, about walking pace.
+      At 2.86&nbsp;cm that is a 35&nbsp;Hz difference in Doppler shift, wider than the 20&nbsp;Hz Doppler bin, so they land in
+      different cells of the range&ndash;Doppler map. An S-band radar with the same 50&nbsp;ms interval would see only
+      10&nbsp;Hz of separation and would merge them into one target.
+    </p>
+    <figure class="diagram">
+      <svg class="appdiag" viewBox="0 0 960 420" role="img" aria-label="Range-Doppler map showing all five drones in separate range and Doppler cells" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
+  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
+  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
+  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
+  .appdiag .solid{fill:var(--fg,#0b0b0b)}
+  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
+  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
+  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
+  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
+  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .appdiag .ar{fill:var(--fg,#0b0b0b)}
+  .appdiag .arm{fill:var(--fg-muted,#666)}
+</style>
+<defs><marker id="rda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="rdm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="20">RANGE–DOPPLER MAP · one cell = 7.5 m × 0.29 m/s (20 Hz)</text>
+<rect class="bx" x="120" y="70" width="760" height="280"/>
+<line class="thin" x1="135.9" y1="70" x2="135.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="168.8" y1="70" x2="168.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="201.6" y1="70" x2="201.6" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="234.5" y1="70" x2="234.5" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="267.4" y1="70" x2="267.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="300.3" y1="70" x2="300.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="333.1" y1="70" x2="333.1" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="366.0" y1="70" x2="366.0" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="398.9" y1="70" x2="398.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="431.8" y1="70" x2="431.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="464.7" y1="70" x2="464.7" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="497.5" y1="70" x2="497.5" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="530.4" y1="70" x2="530.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="563.3" y1="70" x2="563.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="596.2" y1="70" x2="596.2" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="629.0" y1="70" x2="629.0" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="661.9" y1="70" x2="661.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="694.8" y1="70" x2="694.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="727.7" y1="70" x2="727.7" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="760.6" y1="70" x2="760.6" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="793.4" y1="70" x2="793.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="826.3" y1="70" x2="826.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="859.2" y1="70" x2="859.2" y2="350" stroke-opacity=".35"/>
+<line class="dash" x1="120" y1="256.7" x2="880" y2="256.7"/>
+<line class="dash" x1="120" y1="163.3" x2="880" y2="163.3"/>
+<text class="g" x="110" y="354.0" text-anchor="end">37.5</text>
+<text class="g" x="110" y="260.7" text-anchor="end">45</text>
+<text class="g" x="110" y="167.3" text-anchor="end">52.5</text>
+<text class="g" x="110" y="74.0" text-anchor="end">60</text>
+<text class="p" x="68" y="210.0" transform="rotate(-90 68 210.0)">range (m)</text>
+<text class="g" x="120.0" y="368">7</text>
+<text class="g" x="120.0" y="62">490</text>
+<text class="g" x="235.2" y="368">8</text>
+<text class="g" x="235.2" y="62">560</text>
+<text class="g" x="350.3" y="368">9</text>
+<text class="g" x="350.3" y="62">630</text>
+<text class="g" x="465.5" y="368">10</text>
+<text class="g" x="465.5" y="62">700</text>
+<text class="g" x="580.6" y="368">11</text>
+<text class="g" x="580.6" y="62">771</text>
+<text class="g" x="695.8" y="368">12</text>
+<text class="g" x="695.8" y="62">841</text>
+<text class="g" x="810.9" y="368">13</text>
+<text class="g" x="810.9" y="62">911</text>
+<text class="p" x="500.0" y="386">radial velocity toward radar (m/s)</text>
+<text class="p" x="500.0" y="44">Doppler shift (Hz) = 2v / λ</text>
+<rect class="solid" x="694.8" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="711.2" y="214.0" style="fill:var(--bg,#fff)">A</text>
+<rect class="solid" x="727.7" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="744.1" y="214.0" style="fill:var(--bg,#fff)">B</text>
+<rect class="solid" x="497.5" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="514.0" y="214.0" style="fill:var(--bg,#fff)">C</text>
+<rect class="hollow" x="694.8" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="711.2" y="120.7" style="fill:var(--fg,#0b0b0b)">D</text>
+<rect class="hollow" x="234.5" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="251.0" y="120.7" style="fill:var(--fg,#0b0b0b)">E</text>
+<text class="pl" x="686.5" y="199.4" text-anchor="end">A and B: same range cell,</text>
+<text class="pl" x="686.5" y="213.4" text-anchor="end">same beam, 35 Hz apart.</text>
+<text class="pl" x="287.0" y="112.3">D and E: same range cell, same beam, 280 Hz apart.</text>
+<text class="pl" x="350.3" y="290.3">A and D: same speed, but 10 m apart in range.</text>
+<rect class="solid" x="120" y="400" width="10" height="10"/><text class="pl" x="136" y="409">Beam 1</text>
+<rect class="hollow" x="200" y="400" width="10" height="10"/><text class="pl" x="216" y="409">Beam 2</text>
+</svg>
+      <figcaption><b>Range&ndash;Doppler map of the swarm.</b> Each drone occupies its own cell. A and B share a beam and a range cell but are separated in Doppler. A and D have the same speed but sit in different range cells and beams. D and E are 280&nbsp;Hz apart. Every pair differs in at least one of angle, range or Doppler, so all five can be counted and tracked independently.</figcaption>
+    </figure>
+    <p>
+      X-band can also tell a drone from a bird. Spinning propellers add a <b>micro-Doppler</b> signature to the echo. A
+      5-inch propeller at ~10,000&nbsp;RPM has blade tips moving at about 66&nbsp;m/s, which spreads short Doppler flashes up
+      to roughly &plusmn;4.7&nbsp;kHz either side of the body&rsquo;s return. Birds have no rotating blades, so their
+      signature looks completely different. At longer wavelengths these blade flashes are both weaker and compressed into a
+      narrower band of frequencies, which makes them harder to pick out.
+    </p>
+
+    <h3>2. Synthetic aperture radar (SAR)</h3>
+    <p>
+      SAR builds a high-resolution image of the ground by combining echoes collected as the radar moves along its flight path,
+      synthesizing an aperture far longer than the physical antenna. X-band is a workhorse for military and commercial SAR
+      reconnaissance satellites and airborne pods.
+    </p>
+    <ul>
+      <li><b>Precise imaging from a modest aperture:</b> the short wavelength gives sharp, high-contrast images of vehicles, structures and terrain, without the very large antenna a lower band would need.</li>
+      <li><b>Wide bandwidth is practical:</b> range resolution is set by bandwidth, and hundreds of MHz of bandwidth are much easier to fit around a 10&nbsp;GHz carrier than a 1&nbsp;GHz one.</li>
+      <li><b>Surface sensitivity:</b> X-band reflects mostly off surfaces and the tops of vegetation, rather than penetrating deep into foliage and soil as L-band does. That makes man-made objects stand out clearly.</li>
+      <li><b>Ku-band and above</b> are used where even finer resolution is needed, such as measuring very small surface changes over time, at the cost of more atmospheric loss.</li>
+    </ul>
+
+    <h3>3. Why a phased array?</h3>
+    <p>
+      A phased array points its beam by changing the phase of each element instead of turning the antenna. For a military
+      sensor, that changes how fast the system can react.
+    </p>
+    <ul>
+      <li><b>Fast decision-to-action loop:</b> decisions have to be made quickly, and the actions that follow have to be even quicker. If an operator is told a drone swarm is approaching from a new direction, an electronically steered beam can be pointed there instantly, without waiting for a dish to rotate.</li>
+      <li><b>Several jobs at once:</b> because the beam can jump anywhere in microseconds, one array can interleave searching for new targets with revisiting tracked ones, such as each drone in the swarm above, many times per second.</li>
+      <li><b>Mechanical simplicity:</b> no motors, slip rings or gimbals to configure, maintain or wear out. That also makes the unit quieter, lighter and more rugged in the field.</li>
+      <li><b>Graceful degradation:</b> losing a single element slightly reduces gain rather than taking the whole radar offline.</li>
+    </ul>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th></th><th>Mechanically steered</th><th>Electronically steered (phased array)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Time to re-point</td><td>Hundreds of milliseconds to seconds</td><td>Microseconds</td></tr>
+          <tr><td>Revisit pattern</td><td>Fixed by rotation rate</td><td>Any order, on demand</td></tr>
+          <tr><td>Moving parts</td><td>Motors, bearings, slip rings</td><td>None</td></tr>
+          <tr><td>Gain off boresight</td><td>Full gain in every direction</td><td>Falls as the beam is steered (&minus;3&nbsp;dB at 60&deg; for this array)</td></tr>
+          <tr><td>Coverage</td><td>360&deg;</td><td>Limited to &plusmn;90&deg; in theory, about &plusmn;60&deg; in practice per face</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The drawbacks are real but manageable. A steered beam loses gain and widens as it moves away from boresight, and one flat
+      array can only cover a sector in front of it. Systems that need full 360&deg; coverage usually mount three or four
+      array faces, each covering one sector.
+    </p>
+
     <h2>Design Variables</h2>
     <p>
       The whole 4&times;4 array measures just 5.712&nbsp;&times;&nbsp;5.712&nbsp;cm: four elements on a 1.428&nbsp;cm
