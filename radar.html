@@ -213,243 +213,9 @@
       <li><b>Against Ku-band:</b> Ku resolves even finer detail and makes narrower beams, but rain and fog absorb it much more strongly. It loses range quickly in exactly the conditions a defensive system still has to work in.</li>
       <li><b>X-band&rsquo;s drawbacks:</b> heavy rain and severe weather still reduce its range, and its maximum range is shorter than a lower-frequency radar of the same power.</li>
     </ul>
-
-    <h3>Example: tracking an incoming drone swarm</h3>
     <p>
-      Suppose five small quadcopters approach together, 16&ndash;27&nbsp;m from the array. A small quadcopter has a radar
-      cross-section of roughly 0.01&nbsp;m&sup2; at X-band, which this board can detect out to about 33&nbsp;m (see the
-      range analysis below), so the whole swarm is within reach. They are a few metres
-      apart, all in the same patch of sky, and flying at similar speeds. To defend against them, the radar has to
-      <em>count</em> them and track each one separately, not just report one blob. The worked example below uses
-      illustrative waveform settings: a 20&nbsp;MHz chirp, which is within the ADALM-PLUTO&rsquo;s standard bandwidth, and
-      a 50&nbsp;ms coherent processing interval.
-    </p>
-    <div class="table-wrap">
-      <table class="data">
-        <thead>
-          <tr><th>Dimension</th><th>Resolution</th><th>Where it comes from</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Angle</td><td>13&deg; beam &rarr; ~4.5&nbsp;m across at 20&nbsp;m</td><td>The array&rsquo;s simulated 3&nbsp;dB beamwidth. The phased array steers between beams in microseconds.</td></tr>
-          <tr><td>Range</td><td>&Delta;R = c / 2B = <b>7.5&nbsp;m</b></td><td>Set by the 20&nbsp;MHz signal bandwidth, not by the carrier frequency</td></tr>
-          <tr><td>Velocity (Doppler)</td><td>&Delta;v = &lambda; / 2T = <b>0.29&nbsp;m/s</b> (20&nbsp;Hz)</td><td>The short 2.86&nbsp;cm wavelength: every 1&nbsp;m/s of radial speed shifts the echo by 2v/&lambda; = <b>70&nbsp;Hz</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <figure class="diagram">
-      <svg class="appdiag" viewBox="0 0 960 440" role="img" aria-label="Top-down view of a five-drone swarm 16 to 27 metres from the radar, split across two beams and two range cells" xmlns="http://www.w3.org/2000/svg">
-<style>
-  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
-  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
-  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
-  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
-  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
-  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
-  .appdiag .solid{fill:var(--fg,#0b0b0b)}
-  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
-  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
-  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
-  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
-  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
-  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
-  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
-  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
-  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
-  .appdiag .ar{fill:var(--fg,#0b0b0b)}
-  .appdiag .arm{fill:var(--fg-muted,#666)}
-</style>
-<defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
-<text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
-<path class="wedge" d="M70,205 L926.8,205.0 A856.8,856.8 0 0 0 904.8,12.3 Z"/>
-<text class="p" x="307.9" y="181.9">Beam 2 (0° to +13°)</text>
-<path class="wedge" d="M70,205 L904.8,397.7 A856.8,856.8 0 0 0 926.8,205.0 Z"/>
-<text class="p" x="307.9" y="236.1">Beam 1 (−13° to 0°)</text>
-<path class="dash" d="M436.8,296.4 A378.0,378.0 0 0 0 436.8,113.6"/>
-<text class="g" x="435.8" y="105.7">15 m</text>
-<path class="dash" d="M620.2,342.2 A567.0,567.0 0 0 0 620.2,67.8"/>
-<text class="g" x="618.7" y="58.1">22.5 m</text>
-<path class="dash" d="M803.5,387.9 A756.0,756.0 0 0 0 803.5,22.1"/>
-<text class="g" x="801.6" y="10.4">30 m</text>
-<text class="p" x="525.1" y="336.1">range cell 1</text>
-<text class="p" x="707.1" y="386.9">range cell 2</text>
-<rect class="bx" x="44" y="181" width="22" height="48" rx="2"/>
-<rect class="solid" x="47.0" y="185.0" width="3" height="7"/>
-<rect class="solid" x="51.6" y="185.0" width="3" height="7"/>
-<rect class="solid" x="56.2" y="185.0" width="3" height="7"/>
-<rect class="solid" x="60.8" y="185.0" width="3" height="7"/>
-<rect class="solid" x="47.0" y="195.6" width="3" height="7"/>
-<rect class="solid" x="51.6" y="195.6" width="3" height="7"/>
-<rect class="solid" x="56.2" y="195.6" width="3" height="7"/>
-<rect class="solid" x="60.8" y="195.6" width="3" height="7"/>
-<rect class="solid" x="47.0" y="206.2" width="3" height="7"/>
-<rect class="solid" x="51.6" y="206.2" width="3" height="7"/>
-<rect class="solid" x="56.2" y="206.2" width="3" height="7"/>
-<rect class="solid" x="60.8" y="206.2" width="3" height="7"/>
-<rect class="solid" x="47.0" y="216.8" width="3" height="7"/>
-<rect class="solid" x="51.6" y="216.8" width="3" height="7"/>
-<rect class="solid" x="56.2" y="216.8" width="3" height="7"/>
-<rect class="solid" x="60.8" y="216.8" width="3" height="7"/>
-<text class="t" x="55" y="247">4×4 array</text>
-<line class="thin" x1="70" y1="205" x2="372.4" y2="205"/>
-<line class="thin" x1="196.0" y1="201" x2="196.0" y2="209"/>
-<text class="g" x="196.0" y="222">5 m</text>
-<line class="thin" x1="322.0" y1="201" x2="322.0" y2="209"/>
-<text class="g" x="322.0" y="222">10 m</text>
-<line class="ln" x1="461.2359389279595" y1="261.07437630422106" x2="475.2359389279595" y2="275.07437630422106"/>
-<line class="ln" x1="461.2359389279595" y1="275.07437630422106" x2="475.2359389279595" y2="261.07437630422106"/>
-<circle class="solid" cx="461.2359389279595" cy="261.07437630422106" r="3.6"/>
-<circle class="solid" cx="475.2359389279595" cy="261.07437630422106" r="3.6"/>
-<circle class="solid" cx="461.2359389279595" cy="275.07437630422106" r="3.6"/>
-<circle class="solid" cx="475.2359389279595" cy="275.07437630422106" r="3.6"/>
-<text class="tl" x="454.2" y="278.1" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="488.2067713631423" y1="250.20882671476517" x2="502.2067713631423" y2="264.20882671476517"/>
-<line class="ln" x1="488.2067713631423" y1="264.20882671476517" x2="502.2067713631423" y2="250.20882671476517"/>
-<circle class="solid" cx="488.2067713631423" cy="250.20882671476517" r="3.6"/>
-<circle class="solid" cx="502.2067713631423" cy="250.20882671476517" r="3.6"/>
-<circle class="solid" cx="488.2067713631423" cy="264.20882671476517" r="3.6"/>
-<circle class="solid" cx="502.2067713631423" cy="264.20882671476517" r="3.6"/>
-<text class="tl" x="509.2" y="253.2" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
-<line class="ln" x1="566.9232383588212" y1="206.7960128443909" x2="580.9232383588212" y2="220.7960128443909"/>
-<line class="ln" x1="566.9232383588212" y1="220.7960128443909" x2="580.9232383588212" y2="206.7960128443909"/>
-<circle class="solid" cx="566.9232383588212" cy="206.7960128443909" r="3.6"/>
-<circle class="solid" cx="580.9232383588212" cy="206.7960128443909" r="3.6"/>
-<circle class="solid" cx="566.9232383588212" cy="220.7960128443909" r="3.6"/>
-<circle class="solid" cx="580.9232383588212" cy="220.7960128443909" r="3.6"/>
-<text class="tl" x="587.9" y="211.8" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
-<line class="ln" x1="715.7067661897116" y1="140.89555735173437" x2="729.7067661897116" y2="154.89555735173437"/>
-<line class="ln" x1="715.7067661897116" y1="154.89555735173437" x2="729.7067661897116" y2="140.89555735173437"/>
-<circle class="hollow" cx="715.7067661897116" cy="140.89555735173437" r="3.6"/>
-<circle class="hollow" cx="729.7067661897116" cy="140.89555735173437" r="3.6"/>
-<circle class="hollow" cx="715.7067661897116" cy="154.89555735173437" r="3.6"/>
-<circle class="hollow" cx="729.7067661897116" cy="154.89555735173437" r="3.6"/>
-<text class="tl" x="736.7" y="159.9" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="738.3284015767555" y1="115.08009874713765" x2="752.3284015767555" y2="129.08009874713764"/>
-<line class="ln" x1="738.3284015767555" y1="129.08009874713764" x2="752.3284015767555" y2="115.08009874713765"/>
-<circle class="hollow" cx="738.3284015767555" cy="115.08009874713765" r="3.6"/>
-<circle class="hollow" cx="752.3284015767555" cy="115.08009874713765" r="3.6"/>
-<circle class="hollow" cx="738.3284015767555" cy="129.08009874713764" r="3.6"/>
-<circle class="hollow" cx="752.3284015767555" cy="129.08009874713764" r="3.6"/>
-<text class="tl" x="759.3" y="112.1" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
-<text class="pl" x="40" y="430">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
-</svg>
-      <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 2&deg; apart) or D from E (1&nbsp;m and 2&deg; apart), because each pair shares a beam and a range cell.</figcaption>
-    </figure>
-    <div class="table-wrap">
-      <table class="data">
-        <thead>
-          <tr><th>Drone</th><th>Range</th><th>Azimuth</th><th>Radial speed</th><th>Doppler shift</th><th>Beam / range cell</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>A</td><td>16&nbsp;m</td><td>&minus;9&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>B</td><td>17&nbsp;m</td><td>&minus;7&deg;</td><td>12.5&nbsp;m/s</td><td>876&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>C</td><td>20&nbsp;m</td><td>&minus;1&deg;</td><td>10.5&nbsp;m/s</td><td>736&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>D</td><td>26&nbsp;m</td><td>+5&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>2 / 2</td></tr>
-          <tr><td>E</td><td>27&nbsp;m</td><td>+7&deg;</td><td>8.0&nbsp;m/s</td><td>560&nbsp;Hz</td><td>2 / 2</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>
-      The short wavelength is what separates them. Drones A and B differ in speed by only 0.5&nbsp;m/s, about walking pace.
-      At 2.86&nbsp;cm that is a 35&nbsp;Hz difference in Doppler shift, wider than the 20&nbsp;Hz Doppler bin, so they land in
-      different cells of the range&ndash;Doppler map. An S-band radar with the same 50&nbsp;ms interval would see only
-      10&nbsp;Hz of separation and would merge them into one target.
-    </p>
-    <figure class="diagram">
-      <svg class="appdiag" viewBox="0 0 960 420" role="img" aria-label="Range-Doppler map showing all five drones in separate range and Doppler cells" xmlns="http://www.w3.org/2000/svg">
-<style>
-  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
-  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
-  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
-  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
-  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
-  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
-  .appdiag .solid{fill:var(--fg,#0b0b0b)}
-  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
-  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
-  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
-  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
-  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
-  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
-  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
-  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
-  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
-  .appdiag .ar{fill:var(--fg,#0b0b0b)}
-  .appdiag .arm{fill:var(--fg-muted,#666)}
-</style>
-<defs><marker id="rda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="rdm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
-<text class="lab" x="12" y="20">RANGE–DOPPLER MAP · one cell = 7.5 m × 0.29 m/s (20 Hz)</text>
-<rect class="bx" x="120" y="70" width="760" height="280"/>
-<line class="thin" x1="135.9" y1="70" x2="135.9" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="168.8" y1="70" x2="168.8" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="201.6" y1="70" x2="201.6" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="234.5" y1="70" x2="234.5" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="267.4" y1="70" x2="267.4" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="300.3" y1="70" x2="300.3" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="333.1" y1="70" x2="333.1" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="366.0" y1="70" x2="366.0" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="398.9" y1="70" x2="398.9" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="431.8" y1="70" x2="431.8" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="464.7" y1="70" x2="464.7" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="497.5" y1="70" x2="497.5" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="530.4" y1="70" x2="530.4" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="563.3" y1="70" x2="563.3" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="596.2" y1="70" x2="596.2" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="629.0" y1="70" x2="629.0" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="661.9" y1="70" x2="661.9" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="694.8" y1="70" x2="694.8" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="727.7" y1="70" x2="727.7" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="760.6" y1="70" x2="760.6" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="793.4" y1="70" x2="793.4" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="826.3" y1="70" x2="826.3" y2="350" stroke-opacity=".35"/>
-<line class="thin" x1="859.2" y1="70" x2="859.2" y2="350" stroke-opacity=".35"/>
-<line class="dash" x1="120" y1="256.7" x2="880" y2="256.7"/>
-<line class="dash" x1="120" y1="163.3" x2="880" y2="163.3"/>
-<text class="g" x="110" y="354.0" text-anchor="end">7.5</text>
-<text class="g" x="110" y="260.7" text-anchor="end">15</text>
-<text class="g" x="110" y="167.3" text-anchor="end">22.5</text>
-<text class="g" x="110" y="74.0" text-anchor="end">30</text>
-<text class="p" x="68" y="210.0" transform="rotate(-90 68 210.0)">range (m)</text>
-<text class="g" x="120.0" y="368">7</text>
-<text class="g" x="120.0" y="62">490</text>
-<text class="g" x="235.2" y="368">8</text>
-<text class="g" x="235.2" y="62">560</text>
-<text class="g" x="350.3" y="368">9</text>
-<text class="g" x="350.3" y="62">630</text>
-<text class="g" x="465.5" y="368">10</text>
-<text class="g" x="465.5" y="62">700</text>
-<text class="g" x="580.6" y="368">11</text>
-<text class="g" x="580.6" y="62">771</text>
-<text class="g" x="695.8" y="368">12</text>
-<text class="g" x="695.8" y="62">841</text>
-<text class="g" x="810.9" y="368">13</text>
-<text class="g" x="810.9" y="62">911</text>
-<text class="p" x="500.0" y="386">radial velocity toward radar (m/s)</text>
-<text class="p" x="500.0" y="44">Doppler shift (Hz) = 2v / λ</text>
-<rect class="solid" x="694.8" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
-<text class="t" x="711.2" y="214.0" style="fill:var(--bg,#fff)">A</text>
-<rect class="solid" x="727.7" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
-<text class="t" x="744.1" y="214.0" style="fill:var(--bg,#fff)">B</text>
-<rect class="solid" x="497.5" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
-<text class="t" x="514.0" y="214.0" style="fill:var(--bg,#fff)">C</text>
-<rect class="hollow" x="694.8" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
-<text class="t" x="711.2" y="120.7" style="fill:var(--fg,#0b0b0b)">D</text>
-<rect class="hollow" x="234.5" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
-<text class="t" x="251.0" y="120.7" style="fill:var(--fg,#0b0b0b)">E</text>
-<text class="pl" x="686.5" y="199.4" text-anchor="end">A and B: same range cell,</text>
-<text class="pl" x="686.5" y="213.4" text-anchor="end">same beam, 35 Hz apart.</text>
-<text class="pl" x="287.0" y="112.3">D and E: same range cell, same beam, 280 Hz apart.</text>
-<text class="pl" x="350.3" y="290.3">A and D: same speed, but 10 m apart in range.</text>
-<rect class="solid" x="120" y="400" width="10" height="10"/><text class="pl" x="136" y="409">Beam 1</text>
-<rect class="hollow" x="200" y="400" width="10" height="10"/><text class="pl" x="216" y="409">Beam 2</text>
-</svg>
-      <figcaption><b>Range&ndash;Doppler map of the swarm.</b> Each drone occupies its own cell. A and B share a beam and a range cell but are separated in Doppler. A and D have the same speed but sit in different range cells and beams. D and E are 280&nbsp;Hz apart. Every pair differs in at least one of angle, range or Doppler, so all five can be counted and tracked independently.</figcaption>
-    </figure>
-    <p>
-      X-band can also tell a drone from a bird. Spinning propellers add a <b>micro-Doppler</b> signature to the echo. A
-      5-inch propeller at ~10,000&nbsp;RPM has blade tips moving at about 66&nbsp;m/s, which spreads short Doppler flashes up
-      to roughly &plusmn;4.7&nbsp;kHz either side of the body&rsquo;s return. Birds have no rotating blades, so their
-      signature looks completely different. At longer wavelengths these blade flashes are both weaker and compressed into a
-      narrower band of frequencies, which makes them harder to pick out.
+      A worked example later on the page, after the range analysis, shows how this board&rsquo;s 2.86&nbsp;cm wavelength lets it
+      separate the drones in a small swarm (see <a class="tlink" href="#swarm-example">Example: tracking an incoming drone swarm</a>).
     </p>
 
     <h3>2. Synthetic aperture radar (SAR)</h3>
@@ -472,7 +238,7 @@
     </p>
     <ul>
       <li><b>Fast decision-to-action loop:</b> decisions have to be made quickly, and the actions that follow have to be even quicker. If an operator is told a drone swarm is approaching from a new direction, an electronically steered beam can be pointed there instantly, without waiting for a dish to rotate.</li>
-      <li><b>Several jobs at once:</b> because the beam can jump anywhere in microseconds, one array can interleave searching for new targets with revisiting tracked ones, such as each drone in the swarm above, many times per second.</li>
+      <li><b>Several jobs at once:</b> because the beam can jump anywhere in microseconds, one array can interleave searching for new targets with revisiting tracked ones, such as each drone in a swarm, many times per second.</li>
       <li><b>Mechanical simplicity:</b> no motors, slip rings or gimbals to configure, maintain or wear out. That also makes the unit quieter, lighter and more rugged in the field.</li>
       <li><b>Graceful degradation:</b> losing a single element slightly reduces gain rather than taking the whole radar offline.</li>
     </ul>
@@ -1249,6 +1015,245 @@
       Typical target RCS values are representative microwave figures (Britannica; GlobalSecurity.org). Real targets vary by
       a factor of 10 to 1,000 depending on the angle they are viewed from.
     </p>
+
+    <h3 id="swarm-example">Example: tracking an incoming drone swarm</h3>
+    <p>
+      Suppose five small quadcopters approach together, 16&ndash;27&nbsp;m from the array. A small quadcopter has a radar
+      cross-section of roughly 0.01&nbsp;m&sup2; at X-band, which this board can detect out to about 33&nbsp;m (see the
+      table above), so the whole swarm is within reach. They are a few metres
+      apart, all in the same patch of sky, and flying at similar speeds. To defend against them, the radar has to
+      <em>count</em> them and track each one separately, not just report one blob. The worked example below uses
+      illustrative waveform settings: a 20&nbsp;MHz chirp, which is within the ADALM-PLUTO&rsquo;s standard bandwidth, and
+      a 50&nbsp;ms coherent processing interval.
+    </p>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Dimension</th><th>Resolution</th><th>Where it comes from</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Angle</td><td>13&deg; beam &rarr; ~4.5&nbsp;m across at 20&nbsp;m</td><td>The array&rsquo;s simulated 3&nbsp;dB beamwidth. The phased array steers between beams in microseconds.</td></tr>
+          <tr><td>Range</td><td>&Delta;R = c / 2B = <b>7.5&nbsp;m</b></td><td>Set by the 20&nbsp;MHz signal bandwidth, not by the carrier frequency</td></tr>
+          <tr><td>Velocity (Doppler)</td><td>&Delta;v = &lambda; / 2T = <b>0.29&nbsp;m/s</b> (20&nbsp;Hz)</td><td>The short 2.86&nbsp;cm wavelength: every 1&nbsp;m/s of radial speed shifts the echo by 2v/&lambda; = <b>70&nbsp;Hz</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="diagram">
+      <svg class="appdiag" viewBox="0 0 960 440" role="img" aria-label="Top-down view of a five-drone swarm 16 to 27 metres from the radar, split across two beams and two range cells" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
+  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
+  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
+  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
+  .appdiag .solid{fill:var(--fg,#0b0b0b)}
+  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
+  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
+  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
+  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
+  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .appdiag .ar{fill:var(--fg,#0b0b0b)}
+  .appdiag .arm{fill:var(--fg-muted,#666)}
+</style>
+<defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
+<path class="wedge" d="M70,205 L926.8,205.0 A856.8,856.8 0 0 0 904.8,12.3 Z"/>
+<text class="p" x="307.9" y="181.9">Beam 2 (0° to +13°)</text>
+<path class="wedge" d="M70,205 L904.8,397.7 A856.8,856.8 0 0 0 926.8,205.0 Z"/>
+<text class="p" x="307.9" y="236.1">Beam 1 (−13° to 0°)</text>
+<path class="dash" d="M436.8,296.4 A378.0,378.0 0 0 0 436.8,113.6"/>
+<text class="g" x="435.8" y="105.7">15 m</text>
+<path class="dash" d="M620.2,342.2 A567.0,567.0 0 0 0 620.2,67.8"/>
+<text class="g" x="618.7" y="58.1">22.5 m</text>
+<path class="dash" d="M803.5,387.9 A756.0,756.0 0 0 0 803.5,22.1"/>
+<text class="g" x="801.6" y="10.4">30 m</text>
+<text class="p" x="525.1" y="336.1">range cell 1</text>
+<text class="p" x="707.1" y="386.9">range cell 2</text>
+<rect class="bx" x="44" y="181" width="22" height="48" rx="2"/>
+<rect class="solid" x="47.0" y="185.0" width="3" height="7"/>
+<rect class="solid" x="51.6" y="185.0" width="3" height="7"/>
+<rect class="solid" x="56.2" y="185.0" width="3" height="7"/>
+<rect class="solid" x="60.8" y="185.0" width="3" height="7"/>
+<rect class="solid" x="47.0" y="195.6" width="3" height="7"/>
+<rect class="solid" x="51.6" y="195.6" width="3" height="7"/>
+<rect class="solid" x="56.2" y="195.6" width="3" height="7"/>
+<rect class="solid" x="60.8" y="195.6" width="3" height="7"/>
+<rect class="solid" x="47.0" y="206.2" width="3" height="7"/>
+<rect class="solid" x="51.6" y="206.2" width="3" height="7"/>
+<rect class="solid" x="56.2" y="206.2" width="3" height="7"/>
+<rect class="solid" x="60.8" y="206.2" width="3" height="7"/>
+<rect class="solid" x="47.0" y="216.8" width="3" height="7"/>
+<rect class="solid" x="51.6" y="216.8" width="3" height="7"/>
+<rect class="solid" x="56.2" y="216.8" width="3" height="7"/>
+<rect class="solid" x="60.8" y="216.8" width="3" height="7"/>
+<text class="t" x="55" y="247">4×4 array</text>
+<line class="thin" x1="70" y1="205" x2="372.4" y2="205"/>
+<line class="thin" x1="196.0" y1="201" x2="196.0" y2="209"/>
+<text class="g" x="196.0" y="222">5 m</text>
+<line class="thin" x1="322.0" y1="201" x2="322.0" y2="209"/>
+<text class="g" x="322.0" y="222">10 m</text>
+<line class="ln" x1="461.2359389279595" y1="261.07437630422106" x2="475.2359389279595" y2="275.07437630422106"/>
+<line class="ln" x1="461.2359389279595" y1="275.07437630422106" x2="475.2359389279595" y2="261.07437630422106"/>
+<circle class="solid" cx="461.2359389279595" cy="261.07437630422106" r="3.6"/>
+<circle class="solid" cx="475.2359389279595" cy="261.07437630422106" r="3.6"/>
+<circle class="solid" cx="461.2359389279595" cy="275.07437630422106" r="3.6"/>
+<circle class="solid" cx="475.2359389279595" cy="275.07437630422106" r="3.6"/>
+<text class="tl" x="454.2" y="278.1" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="488.2067713631423" y1="250.20882671476517" x2="502.2067713631423" y2="264.20882671476517"/>
+<line class="ln" x1="488.2067713631423" y1="264.20882671476517" x2="502.2067713631423" y2="250.20882671476517"/>
+<circle class="solid" cx="488.2067713631423" cy="250.20882671476517" r="3.6"/>
+<circle class="solid" cx="502.2067713631423" cy="250.20882671476517" r="3.6"/>
+<circle class="solid" cx="488.2067713631423" cy="264.20882671476517" r="3.6"/>
+<circle class="solid" cx="502.2067713631423" cy="264.20882671476517" r="3.6"/>
+<text class="tl" x="509.2" y="253.2" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
+<line class="ln" x1="566.9232383588212" y1="206.7960128443909" x2="580.9232383588212" y2="220.7960128443909"/>
+<line class="ln" x1="566.9232383588212" y1="220.7960128443909" x2="580.9232383588212" y2="206.7960128443909"/>
+<circle class="solid" cx="566.9232383588212" cy="206.7960128443909" r="3.6"/>
+<circle class="solid" cx="580.9232383588212" cy="206.7960128443909" r="3.6"/>
+<circle class="solid" cx="566.9232383588212" cy="220.7960128443909" r="3.6"/>
+<circle class="solid" cx="580.9232383588212" cy="220.7960128443909" r="3.6"/>
+<text class="tl" x="587.9" y="211.8" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
+<line class="ln" x1="715.7067661897116" y1="140.89555735173437" x2="729.7067661897116" y2="154.89555735173437"/>
+<line class="ln" x1="715.7067661897116" y1="154.89555735173437" x2="729.7067661897116" y2="140.89555735173437"/>
+<circle class="hollow" cx="715.7067661897116" cy="140.89555735173437" r="3.6"/>
+<circle class="hollow" cx="729.7067661897116" cy="140.89555735173437" r="3.6"/>
+<circle class="hollow" cx="715.7067661897116" cy="154.89555735173437" r="3.6"/>
+<circle class="hollow" cx="729.7067661897116" cy="154.89555735173437" r="3.6"/>
+<text class="tl" x="736.7" y="159.9" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="738.3284015767555" y1="115.08009874713765" x2="752.3284015767555" y2="129.08009874713764"/>
+<line class="ln" x1="738.3284015767555" y1="129.08009874713764" x2="752.3284015767555" y2="115.08009874713765"/>
+<circle class="hollow" cx="738.3284015767555" cy="115.08009874713765" r="3.6"/>
+<circle class="hollow" cx="752.3284015767555" cy="115.08009874713765" r="3.6"/>
+<circle class="hollow" cx="738.3284015767555" cy="129.08009874713764" r="3.6"/>
+<circle class="hollow" cx="752.3284015767555" cy="129.08009874713764" r="3.6"/>
+<text class="tl" x="759.3" y="112.1" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
+<text class="pl" x="40" y="430">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
+</svg>
+      <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 2&deg; apart) or D from E (1&nbsp;m and 2&deg; apart), because each pair shares a beam and a range cell.</figcaption>
+    </figure>
+    <div class="table-wrap">
+      <table class="data">
+        <thead>
+          <tr><th>Drone</th><th>Range</th><th>Azimuth</th><th>Radial speed</th><th>Doppler shift</th><th>Beam / range cell</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>16&nbsp;m</td><td>&minus;9&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>B</td><td>17&nbsp;m</td><td>&minus;7&deg;</td><td>12.5&nbsp;m/s</td><td>876&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>C</td><td>20&nbsp;m</td><td>&minus;1&deg;</td><td>10.5&nbsp;m/s</td><td>736&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>D</td><td>26&nbsp;m</td><td>+5&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>2 / 2</td></tr>
+          <tr><td>E</td><td>27&nbsp;m</td><td>+7&deg;</td><td>8.0&nbsp;m/s</td><td>560&nbsp;Hz</td><td>2 / 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The short wavelength is what separates them. Drones A and B differ in speed by only 0.5&nbsp;m/s, about walking pace.
+      At 2.86&nbsp;cm that is a 35&nbsp;Hz difference in Doppler shift, wider than the 20&nbsp;Hz Doppler bin, so they land in
+      different cells of the range&ndash;Doppler map. An S-band radar with the same 50&nbsp;ms interval would see only
+      10&nbsp;Hz of separation and would merge them into one target.
+    </p>
+    <figure class="diagram">
+      <svg class="appdiag" viewBox="0 0 960 420" role="img" aria-label="Range-Doppler map showing all five drones in separate range and Doppler cells" xmlns="http://www.w3.org/2000/svg">
+<style>
+  .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
+  .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
+  .appdiag .ln{stroke:var(--fg,#0b0b0b);stroke-width:1.3;fill:none}
+  .appdiag .thin{stroke:var(--fg-faint,#999);stroke-width:0.8;fill:none}
+  .appdiag .dash{stroke:var(--fg-muted,#666);stroke-width:1;fill:none;stroke-dasharray:4 4}
+  .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
+  .appdiag .solid{fill:var(--fg,#0b0b0b)}
+  .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
+  .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
+  .appdiag .p{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .pl{fill:var(--fg-muted,#555);font:400 11px var(--sans,"Inter",sans-serif)}
+  .appdiag .g{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace);text-anchor:middle}
+  .appdiag .gl{fill:var(--fg,#0b0b0b);font:500 10.5px var(--mono,"IBM Plex Mono",monospace)}
+  .appdiag .lab{fill:var(--fg-faint,#888);font:500 9.5px var(--mono,"IBM Plex Mono",monospace);letter-spacing:.14em}
+  .appdiag .ar{fill:var(--fg,#0b0b0b)}
+  .appdiag .arm{fill:var(--fg-muted,#666)}
+</style>
+<defs><marker id="rda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="rdm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<text class="lab" x="12" y="20">RANGE–DOPPLER MAP · one cell = 7.5 m × 0.29 m/s (20 Hz)</text>
+<rect class="bx" x="120" y="70" width="760" height="280"/>
+<line class="thin" x1="135.9" y1="70" x2="135.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="168.8" y1="70" x2="168.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="201.6" y1="70" x2="201.6" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="234.5" y1="70" x2="234.5" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="267.4" y1="70" x2="267.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="300.3" y1="70" x2="300.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="333.1" y1="70" x2="333.1" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="366.0" y1="70" x2="366.0" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="398.9" y1="70" x2="398.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="431.8" y1="70" x2="431.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="464.7" y1="70" x2="464.7" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="497.5" y1="70" x2="497.5" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="530.4" y1="70" x2="530.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="563.3" y1="70" x2="563.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="596.2" y1="70" x2="596.2" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="629.0" y1="70" x2="629.0" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="661.9" y1="70" x2="661.9" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="694.8" y1="70" x2="694.8" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="727.7" y1="70" x2="727.7" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="760.6" y1="70" x2="760.6" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="793.4" y1="70" x2="793.4" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="826.3" y1="70" x2="826.3" y2="350" stroke-opacity=".35"/>
+<line class="thin" x1="859.2" y1="70" x2="859.2" y2="350" stroke-opacity=".35"/>
+<line class="dash" x1="120" y1="256.7" x2="880" y2="256.7"/>
+<line class="dash" x1="120" y1="163.3" x2="880" y2="163.3"/>
+<text class="g" x="110" y="354.0" text-anchor="end">7.5</text>
+<text class="g" x="110" y="260.7" text-anchor="end">15</text>
+<text class="g" x="110" y="167.3" text-anchor="end">22.5</text>
+<text class="g" x="110" y="74.0" text-anchor="end">30</text>
+<text class="p" x="68" y="210.0" transform="rotate(-90 68 210.0)">range (m)</text>
+<text class="g" x="120.0" y="368">7</text>
+<text class="g" x="120.0" y="62">490</text>
+<text class="g" x="235.2" y="368">8</text>
+<text class="g" x="235.2" y="62">560</text>
+<text class="g" x="350.3" y="368">9</text>
+<text class="g" x="350.3" y="62">630</text>
+<text class="g" x="465.5" y="368">10</text>
+<text class="g" x="465.5" y="62">700</text>
+<text class="g" x="580.6" y="368">11</text>
+<text class="g" x="580.6" y="62">771</text>
+<text class="g" x="695.8" y="368">12</text>
+<text class="g" x="695.8" y="62">841</text>
+<text class="g" x="810.9" y="368">13</text>
+<text class="g" x="810.9" y="62">911</text>
+<text class="p" x="500.0" y="386">radial velocity toward radar (m/s)</text>
+<text class="p" x="500.0" y="44">Doppler shift (Hz) = 2v / λ</text>
+<rect class="solid" x="694.8" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="711.2" y="214.0" style="fill:var(--bg,#fff)">A</text>
+<rect class="solid" x="727.7" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="744.1" y="214.0" style="fill:var(--bg,#fff)">B</text>
+<rect class="solid" x="497.5" y="163.3" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="514.0" y="214.0" style="fill:var(--bg,#fff)">C</text>
+<rect class="hollow" x="694.8" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="711.2" y="120.7" style="fill:var(--fg,#0b0b0b)">D</text>
+<rect class="hollow" x="234.5" y="70.0" width="32.9" height="93.3" fill-opacity="1"/>
+<text class="t" x="251.0" y="120.7" style="fill:var(--fg,#0b0b0b)">E</text>
+<text class="pl" x="686.5" y="199.4" text-anchor="end">A and B: same range cell,</text>
+<text class="pl" x="686.5" y="213.4" text-anchor="end">same beam, 35 Hz apart.</text>
+<text class="pl" x="287.0" y="112.3">D and E: same range cell, same beam, 280 Hz apart.</text>
+<text class="pl" x="350.3" y="290.3">A and D: same speed, but 10 m apart in range.</text>
+<rect class="solid" x="120" y="400" width="10" height="10"/><text class="pl" x="136" y="409">Beam 1</text>
+<rect class="hollow" x="200" y="400" width="10" height="10"/><text class="pl" x="216" y="409">Beam 2</text>
+</svg>
+      <figcaption><b>Range&ndash;Doppler map of the swarm.</b> Each drone occupies its own cell. A and B share a beam and a range cell but are separated in Doppler. A and D have the same speed but sit in different range cells and beams. D and E are 280&nbsp;Hz apart. Every pair differs in at least one of angle, range or Doppler, so all five can be counted and tracked independently.</figcaption>
+    </figure>
+    <p>
+      X-band can also tell a drone from a bird. Spinning propellers add a <b>micro-Doppler</b> signature to the echo. A
+      5-inch propeller at ~10,000&nbsp;RPM has blade tips moving at about 66&nbsp;m/s, which spreads short Doppler flashes up
+      to roughly &plusmn;4.7&nbsp;kHz either side of the body&rsquo;s return. Birds have no rotating blades, so their
+      signature looks completely different. At longer wavelengths these blade flashes are both weaker and compressed into a
+      narrower band of frequencies, which makes them harder to pick out.
+    </p>
+
 
     <h2 class="part">Recent Revisions and Future Improvements</h2>
     <h2 id="modularity">Modularity and Debug Prep</h2>
