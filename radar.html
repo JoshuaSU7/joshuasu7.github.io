@@ -57,10 +57,27 @@
   </div>
 </div>
 
+<nav class="toc-rail" aria-label="Project sections">
+  <div class="toc-title">On this page</div>
+    <a href="#overview" data-sec="overview"><span class="dot"></span><span class="lbl">Overview</span></a>
+    <a href="#antenna-design" data-sec="antenna-design"><span class="dot"></span><span class="lbl">Antenna Design</span></a>
+    <a href="#pcb-design" data-sec="pcb-design"><span class="dot"></span><span class="lbl">PCB Design</span></a>
+    <a href="#revisions" data-sec="revisions"><span class="dot"></span><span class="lbl">Revisions &amp; Future</span></a>
+</nav>
+<details class="toc-pop">
+  <summary aria-label="Jump to section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg> Sections</summary>
+  <nav aria-label="Project sections">
+    <a href="#overview" data-sec="overview">Overview</a>
+    <a href="#antenna-design" data-sec="antenna-design">Antenna Design</a>
+    <a href="#pcb-design" data-sec="pcb-design">PCB Design</a>
+    <a href="#revisions" data-sec="revisions">Revisions &amp; Future</a>
+  </nav>
+</details>
+
 <div class="article">
   <div class="wrap wrap-narrow">
 
-    <h2 class="part">Overview</h2>
+    <h2 class="part" id="overview">Overview</h2>
     <p>
       A phased array steers its beam by controlling the <em>relative phase</em> of the signal driving each radiating element,
       rather than by physically rotating a dish. Feed the elements in phase and the beam points straight ahead at boresight;
@@ -499,7 +516,7 @@
       array faces, each covering one sector.
     </p>
 
-    <h2 class="part">Antenna Design</h2>
+    <h2 class="part" id="antenna-design">Antenna Design</h2>
     <h2>Design Variables</h2>
     <p>
       The whole 4&times;4 array measures just 5.712&nbsp;&times;&nbsp;5.712&nbsp;cm: four elements on a 1.428&nbsp;cm
@@ -667,7 +684,7 @@
       <figcaption><b>Electronic beamsteering across the full scan volume.</b> The main lobe sweeps through azimuth and elevation purely by varying the per-element phase, while the array stays fixed. The gradual broadening and gain loss at wide angles is the aperture foreshortening effect visible in the gain-versus-scan plot above.</figcaption>
     </figure>
 
-    <h2 class="part">PCB Design</h2>
+    <h2 class="part" id="pcb-design">PCB Design</h2>
     <h2>RF Front End PCB</h2>
     <p>
       The array is fed by a custom RF transceiver board that sits between an ADALM-PLUTO software-defined radio and the antenna
@@ -1253,7 +1270,7 @@
       a factor of 10 to 1,000 depending on the angle they are viewed from.
     </p>
 
-    <h2 class="part">Recent Revisions and Future Improvements</h2>
+    <h2 class="part" id="revisions">Recent Revisions and Future Improvements</h2>
     <h2 id="modularity">Modularity and Debug Prep</h2>
     <p>
       The second revision of the board is built to be taken apart, measured and debugged. It changes two things: the

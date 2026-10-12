@@ -54,4 +54,49 @@
 			Array.prototype.forEach.call(drops, function (d) { d.classList.remove('open'); });
 		});
 	});
+
+	// Section jump rail: highlight the part currently in view
+	document.addEventListener('DOMContentLoaded', function () {
+		var links = document.querySelectorAll('.toc-rail a, .toc-pop a');
+		if (!links.length) return;
+		var ids = [];
+		links.forEach(function (a) { var id = a.getAttribute('data-sec'); if (ids.indexOf(id) < 0) ids.push(id); });
+		var heads = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+		var pop = document.querySelector('.toc-pop');
+		function update() {
+			var line = window.innerHeight * 0.35, current = heads[0] && heads[0].id;
+			heads.forEach(function (h) { if (h.getBoundingClientRect().top <= line) current = h.id; });
+			links.forEach(function (a) {
+				if (a.getAttribute('data-sec') === current) a.setAttribute('aria-current', 'true');
+				else a.removeAttribute('aria-current');
+			});
+		}
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update);
+		update();
+		// Jump reliably: lazy images above the target can load mid-scroll and push it down,
+		// so load them first and re-align once the smooth scroll has settled.
+		function jump(id) {
+			var el = document.getElementById(id);
+			if (!el) return;
+			document.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
+				if (img.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) img.loading = 'eager';
+			});
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			[700, 1400, 2200].forEach(function (t) {
+				setTimeout(function () {
+					var off = el.getBoundingClientRect().top - 84;
+					if (Math.abs(off) > 6) window.scrollBy({ top: off, behavior: 'auto' });
+				}, t);
+			});
+			if (history.replaceState) history.replaceState(null, '', '#' + id);
+		}
+		links.forEach(function (a) {
+			a.addEventListener('click', function (e) {
+				e.preventDefault();
+				if (pop) pop.removeAttribute('open');
+				jump(a.getAttribute('data-sec'));
+			});
+		});
+	});
 })();
