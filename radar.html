@@ -1025,8 +1025,8 @@
     <ul>
       <li><b>Noise floor:</b> kTB over 20&nbsp;MHz is &minus;101&nbsp;dBm. Adding the 8&nbsp;dB system noise figure gives <b>&minus;93&nbsp;dBm</b>.</li>
       <li><b>Integration gain:</b> 10&nbsp;log(500) = <b>27&nbsp;dB</b>. For 13&nbsp;dB SNR at detection, each pulse only needs &minus;14&nbsp;dB SNR, so the minimum detectable signal per pulse (array output) is <b>&minus;107&nbsp;dBm</b>.</li>
-      <li><b>Detection range:</b> the radar equation then gives about <b>99&nbsp;m</b> for a 0.01&nbsp;m&sup2; drone (ideal), or about <b>83&nbsp;m</b> after ~3&nbsp;dB of processing losses.</li>
-      <li><b>Blind range:</b> the receiver can&rsquo;t listen while transmitting (50&nbsp;ns) or while the T/R switches turn on. The ADRF5019 takes 285&nbsp;ns in the board&rsquo;s single-supply configuration, so R<sub>min</sub> = c(&tau; + t<sub>sw</sub>)/2 &asymp; <b>50&nbsp;m</b>. Targets inside about 43&nbsp;m are fully blind, and those between 43 and 50&nbsp;m are partially eclipsed. Restoring the &minus;2.5&nbsp;V rail (dual-supply mode, 150&nbsp;ns) would cut this to about 30&nbsp;m.</li>
+      <li><b>Detection range:</b> the radar equation then gives about <b>100&nbsp;m</b> for a 0.01&nbsp;m&sup2; drone.</li>
+      <li><b>Blind range:</b> the receiver can&rsquo;t listen while transmitting (50&nbsp;ns) or while the T/R switches turn on. The ADRF5019 takes 285&nbsp;ns in the board&rsquo;s single-supply configuration, so R<sub>min</sub> = c(&tau; + t<sub>sw</sub>)/2 &asymp; <b>50&nbsp;m</b>. Restoring the &minus;2.5&nbsp;V rail (dual-supply mode, 150&nbsp;ns) would cut this to about 30&nbsp;m.</li>
     </ul>
     <p>
       Now suppose five small quadcopters approach together, 61&ndash;72&nbsp;m from the array. That is outside the blind range
@@ -1046,7 +1046,7 @@
       </table>
     </div>
     <figure class="diagram">
-      <svg class="appdiag" viewBox="0 0 960 485" role="img" aria-label="Top-down view of a five-drone swarm 61 to 72 metres from the radar, inside one 26 degree beam, outside the blind range and inside the detection range" xmlns="http://www.w3.org/2000/svg">
+      <svg class="appdiag" viewBox="0 0 1040 500" role="img" aria-label="Top-down view of a five-drone swarm 61 to 72 metres from the radar, inside one 26 degree beam, outside the blind range and inside the detection range" xmlns="http://www.w3.org/2000/svg">
 <style>
   .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
   .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
@@ -1075,86 +1075,84 @@
 </style>
 <defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
-<path class="w1" d="M64,232 L902.0,425.5 A860,860 0 0 0 902.0,38.5 Z"/>
-<path class="soft" style="fill-opacity:.55" d="M64,232 L551.2,344.5 A500,500 0 0 0 551.2,119.5 Z"/>
-<path class="soft" style="fill-opacity:.95" d="M64,232 L480.5,328.2 A427.5,427.5 0 0 0 480.5,135.8 Z"/>
-<text class="p" x="284.0" y="208.0">blind range</text>
-<text class="g" x="284.0" y="222.0">0–50 m</text>
-<text class="p" x="516.1" y="358.4">43–50 m: partially eclipsed</text>
+<path class="w1" d="M64,246 L967.2,454.5 A927,927 0 0 0 967.2,37.5 Z"/>
+<path class="soft" style="fill-opacity:.95" d="M64,246 L502.5,347.2 A450,450 0 0 0 502.5,144.8 Z"/>
+<text class="p" x="262.0" y="222.0">blind range</text>
+<text class="g" x="262.0" y="236.0">0–50 m</text>
 <text class="t1" x="12" y="52" style="text-anchor:start">One beam at boresight</text>
 <text class="p" x="12" y="67" style="text-anchor:start">26° wide: −13° to +13° (shaded wedge)</text>
-<path class="dash" d="M646.2,377.2 A600,600 0 0 0 646.2,86.8"/>
-<text class="g" x="644.1" y="74.7">60 m</text>
-<path class="dash" d="M718.9,395.3 A675.0,675.0 0 0 0 718.9,68.7"/>
-<text class="g" x="716.6" y="55.6">67.5 m</text>
-<path class="dash" d="M791.7,413.4 A750,750 0 0 0 791.7,50.6"/>
-<text class="g" x="789.1" y="36.4">75 m</text>
-<path class="c1" d="M872.7,418.7 A830,830 0 0 0 872.7,45.3"/>
-<text class="t1" x="950" y="441" style="text-anchor:end">~83 m detection limit</text>
-<text class="p" x="950" y="455" style="text-anchor:end">0.01 m², with losses (dotted arc)</text>
-<text class="p" x="677.4" y="409.6">60–67.5 m cell</text>
-<text class="p" x="749.6" y="430.0">67.5–75 m cell</text>
-<rect class="bx" x="38" y="208" width="22" height="48" rx="2"/>
-<rect class="solid" x="41.0" y="212.0" width="3" height="7"/>
-<rect class="solid" x="45.6" y="212.0" width="3" height="7"/>
-<rect class="solid" x="50.2" y="212.0" width="3" height="7"/>
-<rect class="solid" x="54.8" y="212.0" width="3" height="7"/>
-<rect class="solid" x="41.0" y="222.6" width="3" height="7"/>
-<rect class="solid" x="45.6" y="222.6" width="3" height="7"/>
-<rect class="solid" x="50.2" y="222.6" width="3" height="7"/>
-<rect class="solid" x="54.8" y="222.6" width="3" height="7"/>
-<rect class="solid" x="41.0" y="233.2" width="3" height="7"/>
-<rect class="solid" x="45.6" y="233.2" width="3" height="7"/>
-<rect class="solid" x="50.2" y="233.2" width="3" height="7"/>
-<rect class="solid" x="54.8" y="233.2" width="3" height="7"/>
-<rect class="solid" x="41.0" y="243.8" width="3" height="7"/>
-<rect class="solid" x="45.6" y="243.8" width="3" height="7"/>
-<rect class="solid" x="50.2" y="243.8" width="3" height="7"/>
-<rect class="solid" x="54.8" y="243.8" width="3" height="7"/>
-<text class="t" x="49" y="274">4×4 array</text>
-<line class="thin" x1="64" y1="232" x2="614" y2="232"/>
-<line class="thin" x1="264" y1="228" x2="264" y2="236"/>
-<text class="g" x="264" y="249">20 m</text>
-<line class="thin" x1="464" y1="228" x2="464" y2="236"/>
-<text class="g" x="464" y="249">40 m</text>
-<line class="ln" x1="661.4898877630341" y1="322.42502367454085" x2="671.4898877630341" y2="332.42502367454085"/>
-<line class="ln" x1="661.4898877630341" y1="332.42502367454085" x2="671.4898877630341" y2="322.42502367454085"/>
-<circle class="solid" cx="661.4898877630341" cy="322.42502367454085" r="2.6"/>
-<circle class="solid" cx="671.4898877630341" cy="322.42502367454085" r="2.6"/>
-<circle class="solid" cx="661.4898877630341" cy="332.42502367454085" r="2.6"/>
-<circle class="solid" cx="671.4898877630341" cy="332.42502367454085" r="2.6"/>
-<text class="tl" x="655.5" y="332.4" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="674.3786140176196" y1="302.55899291119147" x2="684.3786140176196" y2="312.55899291119147"/>
-<line class="ln" x1="674.3786140176196" y1="312.55899291119147" x2="684.3786140176196" y2="302.55899291119147"/>
-<circle class="solid" cx="674.3786140176196" cy="302.55899291119147" r="2.6"/>
-<circle class="solid" cx="684.3786140176196" cy="302.55899291119147" r="2.6"/>
-<circle class="solid" cx="674.3786140176196" cy="312.55899291119147" r="2.6"/>
-<circle class="solid" cx="684.3786140176196" cy="312.55899291119147" r="2.6"/>
-<text class="tl" x="690.4" y="305.6" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
-<line class="ln" x1="708.9010018516543" y1="238.34406418423427" x2="718.9010018516543" y2="248.34406418423427"/>
-<line class="ln" x1="708.9010018516543" y1="248.34406418423427" x2="718.9010018516543" y2="238.34406418423427"/>
-<circle class="solid" cx="708.9010018516543" cy="238.34406418423427" r="2.6"/>
-<circle class="solid" cx="718.9010018516543" cy="238.34406418423427" r="2.6"/>
-<circle class="solid" cx="708.9010018516543" cy="248.34406418423427" r="2.6"/>
-<circle class="solid" cx="718.9010018516543" cy="248.34406418423427" r="2.6"/>
-<text class="tl" x="724.9" y="247.3" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
-<line class="ln" x1="766.2982356451394" y1="165.1194226491627" x2="776.2982356451394" y2="175.1194226491627"/>
-<line class="ln" x1="766.2982356451394" y1="175.1194226491627" x2="776.2982356451394" y2="165.1194226491627"/>
-<circle class="solid" cx="766.2982356451394" cy="165.1194226491627" r="2.6"/>
-<circle class="solid" cx="776.2982356451394" cy="165.1194226491627" r="2.6"/>
-<circle class="solid" cx="766.2982356451394" cy="175.1194226491627" r="2.6"/>
-<circle class="solid" cx="776.2982356451394" cy="175.1194226491627" r="2.6"/>
-<text class="tl" x="782.3" y="180.1" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="773.6332291817519" y1="139.25407274829382" x2="783.6332291817519" y2="149.25407274829382"/>
-<line class="ln" x1="773.6332291817519" y1="149.25407274829382" x2="783.6332291817519" y2="139.25407274829382"/>
-<circle class="solid" cx="773.6332291817519" cy="139.25407274829382" r="2.6"/>
-<circle class="solid" cx="783.6332291817519" cy="139.25407274829382" r="2.6"/>
-<circle class="solid" cx="773.6332291817519" cy="149.25407274829382" r="2.6"/>
-<circle class="solid" cx="783.6332291817519" cy="149.25407274829382" r="2.6"/>
-<text class="tl" x="789.6" y="139.3" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
-<text class="pl" x="30" y="473">All five drones sit inside the same 26° beam, beyond the blind range and inside the detection limit. Speeds are radial, toward the radar.</text>
+<path class="dash" d="M588.0,376.6 A540,540 0 0 0 588.0,115.4"/>
+<text class="g" x="586.1" y="104.1">60 m</text>
+<path class="dash" d="M653.5,393.0 A607.5,607.5 0 0 0 653.5,99.0"/>
+<text class="g" x="651.3" y="86.8">67.5 m</text>
+<path class="dash" d="M718.9,409.3 A675,675 0 0 0 718.9,82.7"/>
+<text class="g" x="716.6" y="69.6">75 m</text>
+<path class="c1" d="M940.9,448.5 A900,900 0 0 0 940.9,43.5"/>
+<text class="t1" x="1030" y="472" style="text-anchor:end">100 m detection range</text>
+<text class="p" x="1030" y="486" style="text-anchor:end">0.01 m² target (dotted arc)</text>
+<text class="p" x="616.1" y="406.2">60–67.5 m cell</text>
+<text class="p" x="681.0" y="424.6">67.5–75 m cell</text>
+<rect class="bx" x="38" y="222" width="22" height="48" rx="2"/>
+<rect class="solid" x="41.0" y="226.0" width="3" height="7"/>
+<rect class="solid" x="45.6" y="226.0" width="3" height="7"/>
+<rect class="solid" x="50.2" y="226.0" width="3" height="7"/>
+<rect class="solid" x="54.8" y="226.0" width="3" height="7"/>
+<rect class="solid" x="41.0" y="236.6" width="3" height="7"/>
+<rect class="solid" x="45.6" y="236.6" width="3" height="7"/>
+<rect class="solid" x="50.2" y="236.6" width="3" height="7"/>
+<rect class="solid" x="54.8" y="236.6" width="3" height="7"/>
+<rect class="solid" x="41.0" y="247.2" width="3" height="7"/>
+<rect class="solid" x="45.6" y="247.2" width="3" height="7"/>
+<rect class="solid" x="50.2" y="247.2" width="3" height="7"/>
+<rect class="solid" x="54.8" y="247.2" width="3" height="7"/>
+<rect class="solid" x="41.0" y="257.8" width="3" height="7"/>
+<rect class="solid" x="45.6" y="257.8" width="3" height="7"/>
+<rect class="solid" x="50.2" y="257.8" width="3" height="7"/>
+<rect class="solid" x="54.8" y="257.8" width="3" height="7"/>
+<text class="t" x="49" y="288">4×4 array</text>
+<line class="thin" x1="64" y1="246" x2="559" y2="246"/>
+<line class="thin" x1="244" y1="242" x2="244" y2="250"/>
+<text class="g" x="244" y="263">20 m</text>
+<line class="thin" x1="424" y1="242" x2="424" y2="250"/>
+<text class="g" x="424" y="263">40 m</text>
+<line class="ln" x1="601.2408989867306" y1="326.88252130708673" x2="611.2408989867306" y2="336.88252130708673"/>
+<line class="ln" x1="601.2408989867306" y1="336.88252130708673" x2="611.2408989867306" y2="326.88252130708673"/>
+<circle class="solid" cx="601.2408989867306" cy="326.88252130708673" r="2.6"/>
+<circle class="solid" cx="611.2408989867306" cy="326.88252130708673" r="2.6"/>
+<circle class="solid" cx="601.2408989867306" cy="336.88252130708673" r="2.6"/>
+<circle class="solid" cx="611.2408989867306" cy="336.88252130708673" r="2.6"/>
+<text class="tl" x="595.2" y="336.9" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="612.8407526158577" y1="309.00309362007226" x2="622.8407526158577" y2="319.00309362007226"/>
+<line class="ln" x1="612.8407526158577" y1="319.00309362007226" x2="622.8407526158577" y2="309.00309362007226"/>
+<circle class="solid" cx="612.8407526158577" cy="309.00309362007226" r="2.6"/>
+<circle class="solid" cx="622.8407526158577" cy="309.00309362007226" r="2.6"/>
+<circle class="solid" cx="612.8407526158577" cy="319.00309362007226" r="2.6"/>
+<circle class="solid" cx="622.8407526158577" cy="319.00309362007226" r="2.6"/>
+<text class="tl" x="628.8" y="312.0" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
+<line class="ln" x1="643.9109016664889" y1="251.20965776581085" x2="653.9109016664889" y2="261.20965776581085"/>
+<line class="ln" x1="643.9109016664889" y1="261.20965776581085" x2="653.9109016664889" y2="251.20965776581085"/>
+<circle class="solid" cx="643.9109016664889" cy="251.20965776581085" r="2.6"/>
+<circle class="solid" cx="653.9109016664889" cy="251.20965776581085" r="2.6"/>
+<circle class="solid" cx="643.9109016664889" cy="261.20965776581085" r="2.6"/>
+<circle class="solid" cx="653.9109016664889" cy="261.20965776581085" r="2.6"/>
+<text class="tl" x="659.9" y="260.2" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
+<line class="ln" x1="695.5684120806254" y1="185.30748038424645" x2="705.5684120806254" y2="195.30748038424645"/>
+<line class="ln" x1="695.5684120806254" y1="195.30748038424645" x2="705.5684120806254" y2="185.30748038424645"/>
+<circle class="solid" cx="695.5684120806254" cy="185.30748038424645" r="2.6"/>
+<circle class="solid" cx="705.5684120806254" cy="185.30748038424645" r="2.6"/>
+<circle class="solid" cx="695.5684120806254" cy="195.30748038424645" r="2.6"/>
+<circle class="solid" cx="705.5684120806254" cy="195.30748038424645" r="2.6"/>
+<text class="tl" x="711.6" y="200.3" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="702.1699062635766" y1="162.02866547346443" x2="712.1699062635766" y2="172.02866547346443"/>
+<line class="ln" x1="702.1699062635766" y1="172.02866547346443" x2="712.1699062635766" y2="162.02866547346443"/>
+<circle class="solid" cx="702.1699062635766" cy="162.02866547346443" r="2.6"/>
+<circle class="solid" cx="712.1699062635766" cy="162.02866547346443" r="2.6"/>
+<circle class="solid" cx="702.1699062635766" cy="172.02866547346443" r="2.6"/>
+<circle class="solid" cx="712.1699062635766" cy="172.02866547346443" r="2.6"/>
+<text class="tl" x="718.2" y="162.0" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
+<text class="pl" x="30" y="486">All five drones sit inside the same 26° beam, beyond the blind range and inside the detection range. Speeds are radial, toward the radar.</text>
 </svg>
-      <figcaption><b>The swarm from above.</b> All five drones fall inside the one 26&deg; beam pointed at boresight, so angle can&rsquo;t tell them apart. The shaded region near the array is the ~50&nbsp;m blind range (darker where fully blind, lighter where partially eclipsed), and the dotted blue arc is the ~83&nbsp;m detection limit. The dashed arcs mark the 7.5&nbsp;m range cells: A, B and C share the 60&ndash;67.5&nbsp;m cell, and D and E share the 67.5&ndash;75&nbsp;m cell. Within each cell, range alone can&rsquo;t split A from B or D from E either; that takes Doppler.</figcaption>
+      <figcaption><b>The swarm from above.</b> All five drones fall inside the one 26&deg; beam pointed at boresight, so angle can&rsquo;t tell them apart. The shaded region near the array is the ~50&nbsp;m blind range, and the dotted blue arc is the 100&nbsp;m detection range. The dashed arcs mark the 7.5&nbsp;m range cells: A, B and C share the 60&ndash;67.5&nbsp;m cell, and D and E share the 67.5&ndash;75&nbsp;m cell. Within each cell, range alone can&rsquo;t split A from B or D from E either; that takes Doppler.</figcaption>
     </figure>
     <div class="table-wrap">
       <table class="data">
