@@ -1026,7 +1026,7 @@
       <li><b>Noise floor:</b> kTB over 20&nbsp;MHz is &minus;101&nbsp;dBm. Adding the 8&nbsp;dB system noise figure gives <b>&minus;93&nbsp;dBm</b>.</li>
       <li><b>Integration gain:</b> 10&nbsp;log(500) = <b>27&nbsp;dB</b>. For 13&nbsp;dB SNR at detection, each pulse only needs &minus;14&nbsp;dB SNR, so the minimum detectable signal per pulse (array output) is <b>&minus;107&nbsp;dBm</b>.</li>
       <li><b>Detection range:</b> the radar equation then gives about <b>99&nbsp;m</b> for a 0.01&nbsp;m&sup2; drone (ideal), or about <b>83&nbsp;m</b> after ~3&nbsp;dB of processing losses.</li>
-      <li><b>Blind range:</b> the receiver can&rsquo;t listen while transmitting or while the T/R switches settle (~100&nbsp;ns), so targets closer than about <b>22.5&nbsp;m</b> are invisible.</li>
+      <li><b>Blind range:</b> the receiver can&rsquo;t listen while transmitting (50&nbsp;ns) or while the T/R switches turn on. The ADRF5019 takes 285&nbsp;ns in the board&rsquo;s single-supply configuration, so R<sub>min</sub> = c(&tau; + t<sub>sw</sub>)/2 &asymp; <b>50&nbsp;m</b>. Targets inside about 43&nbsp;m are fully blind, and those between 43 and 50&nbsp;m are partially eclipsed. Restoring the &minus;2.5&nbsp;V rail (dual-supply mode, 150&nbsp;ns) would cut this to about 30&nbsp;m.</li>
     </ul>
     <p>
       Now suppose five small quadcopters approach together, 61&ndash;72&nbsp;m from the array. That is outside the blind range
@@ -1076,11 +1076,13 @@
 <defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
 <path class="w1" d="M64,232 L902.0,425.5 A860,860 0 0 0 902.0,38.5 Z"/>
-<path class="soft" style="fill-opacity:.9" d="M64,232 L283.2,282.6 A225.0,225.0 0 0 0 283.2,181.4 Z"/>
-<text class="p" x="179.0" y="228.0">blind range</text>
-<text class="g" x="179.0" y="242.0">0–22.5 m</text>
-<text class="t1" x="364.0" y="196.0" style="text-anchor:start">One beam at boresight</text>
-<text class="p" x="364.0" y="210.0" style="text-anchor:start">26° wide: −13° to +13°</text>
+<path class="soft" style="fill-opacity:.55" d="M64,232 L551.2,344.5 A500,500 0 0 0 551.2,119.5 Z"/>
+<path class="soft" style="fill-opacity:.95" d="M64,232 L480.5,328.2 A427.5,427.5 0 0 0 480.5,135.8 Z"/>
+<text class="p" x="284.0" y="208.0">blind range</text>
+<text class="g" x="284.0" y="222.0">0–50 m</text>
+<text class="p" x="516.1" y="358.4">43–50 m: partially eclipsed</text>
+<text class="t1" x="12" y="52" style="text-anchor:start">One beam at boresight</text>
+<text class="p" x="12" y="67" style="text-anchor:start">26° wide: −13° to +13° (shaded wedge)</text>
 <path class="dash" d="M646.2,377.2 A600,600 0 0 0 646.2,86.8"/>
 <text class="g" x="644.1" y="74.7">60 m</text>
 <path class="dash" d="M718.9,395.3 A675.0,675.0 0 0 0 718.9,68.7"/>
@@ -1111,12 +1113,10 @@
 <rect class="solid" x="54.8" y="243.8" width="3" height="7"/>
 <text class="t" x="49" y="274">4×4 array</text>
 <line class="thin" x1="64" y1="232" x2="614" y2="232"/>
-<line class="thin" x1="364" y1="228" x2="364" y2="236"/>
-<text class="g" x="364" y="249">30 m</text>
+<line class="thin" x1="264" y1="228" x2="264" y2="236"/>
+<text class="g" x="264" y="249">20 m</text>
 <line class="thin" x1="464" y1="228" x2="464" y2="236"/>
 <text class="g" x="464" y="249">40 m</text>
-<line class="thin" x1="564" y1="228" x2="564" y2="236"/>
-<text class="g" x="564" y="249">50 m</text>
 <line class="ln" x1="661.4898877630341" y1="322.42502367454085" x2="671.4898877630341" y2="332.42502367454085"/>
 <line class="ln" x1="661.4898877630341" y1="332.42502367454085" x2="671.4898877630341" y2="322.42502367454085"/>
 <circle class="solid" cx="661.4898877630341" cy="322.42502367454085" r="2.6"/>
@@ -1154,7 +1154,7 @@
 <text class="tl" x="789.6" y="139.3" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
 <text class="pl" x="30" y="473">All five drones sit inside the same 26° beam, beyond the blind range and inside the detection limit. Speeds are radial, toward the radar.</text>
 </svg>
-      <figcaption><b>The swarm from above.</b> All five drones fall inside the one 26&deg; beam pointed at boresight, so angle can&rsquo;t tell them apart. The shaded region near the array is the blind range, and the blue arc is the ~83&nbsp;m detection limit. The dashed arcs mark the 7.5&nbsp;m range cells: A, B and C share the 60&ndash;67.5&nbsp;m cell, and D and E share the 67.5&ndash;75&nbsp;m cell. Within each cell, range alone can&rsquo;t split A from B or D from E either; that takes Doppler.</figcaption>
+      <figcaption><b>The swarm from above.</b> All five drones fall inside the one 26&deg; beam pointed at boresight, so angle can&rsquo;t tell them apart. The shaded region near the array is the ~50&nbsp;m blind range (darker where fully blind, lighter where partially eclipsed), and the dotted blue arc is the ~83&nbsp;m detection limit. The dashed arcs mark the 7.5&nbsp;m range cells: A, B and C share the 60&ndash;67.5&nbsp;m cell, and D and E share the 67.5&ndash;75&nbsp;m cell. Within each cell, range alone can&rsquo;t split A from B or D from E either; that takes Doppler.</figcaption>
     </figure>
     <div class="table-wrap">
       <table class="data">
