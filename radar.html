@@ -1049,6 +1049,12 @@
   .appdiag .wave{stroke:var(--fg-muted,#666);stroke-width:1.4;fill:none}
   .appdiag .solid{fill:var(--fg,#0b0b0b)}
   .appdiag .hollow{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.6}
+  .appdiag .w1{fill:#3b82f6;fill-opacity:.16;stroke:#3b82f6;stroke-opacity:.8;stroke-width:1.2}
+  .appdiag .w2{fill:#f59e0b;fill-opacity:.16;stroke:#f59e0b;stroke-opacity:.8;stroke-width:1.2}
+  .appdiag .c1{stroke:#3b82f6;stroke-width:1.2;stroke-dasharray:2 4;fill:none}
+  .appdiag .c2{stroke:#f59e0b;stroke-width:1.2;stroke-dasharray:2 4;fill:none}
+  .appdiag .t1{fill:#3b82f6;font:600 12px var(--sans,"Inter",sans-serif);text-anchor:middle}
+  .appdiag .t2{fill:#d97706;font:600 12px var(--sans,"Inter",sans-serif);text-anchor:middle}
   .appdiag .wedge{fill:var(--fg,#0b0b0b);fill-opacity:.06;stroke:var(--fg-muted,#666);stroke-width:1}
   .appdiag .t{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif);text-anchor:middle}
   .appdiag .tl{fill:var(--fg,#0b0b0b);font:600 12.5px var(--sans,"Inter",sans-serif)}
@@ -1062,10 +1068,14 @@
 </style>
 <defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
-<path class="wedge" d="M70,300 L700.0,300.0 A630.0,630.0 0 0 0 636.2,23.8 Z"/>
-<text class="p" x="264.9" y="259.0">Beam 2 (0° to +26°)</text>
-<path class="wedge" d="M70,300 L636.2,576.2 A630.0,630.0 0 0 0 700.0,300.0 Z"/>
-<text class="p" x="264.9" y="349.0">Beam 1 (−26° to 0°)</text>
+<path class="w2" d="M70,300 L700.0,300.0 A630.0,630.0 0 0 0 636.2,23.8 Z"/>
+<line class="c2" x1="70" y1="300" x2="683.9" y2="158.3"/>
+<text class="t2" x="236.9" y="216.6">Beam 2 · steered to +13°</text>
+<text class="p" x="236.9" y="231.6">26° wide: 0° to +26°</text>
+<path class="w1" d="M70,300 L636.2,576.2 A630.0,630.0 0 0 0 700.0,300.0 Z"/>
+<line class="c1" x1="70" y1="300" x2="683.9" y2="441.7"/>
+<text class="t1" x="236.9" y="381.4">Beam 1 · steered to −13°</text>
+<text class="p" x="236.9" y="396.4">26° wide: −26° to 0°</text>
 <path class="dash" d="M336.1,438.5 A300,300 0 0 0 336.1,161.5"/>
 <text class="g" x="334.1" y="153.8">15 m</text>
 <path class="dash" d="M469.2,507.8 A450.0,450.0 0 0 0 469.2,92.2"/>
@@ -1132,7 +1142,7 @@
 <circle class="hollow" cx="586.9596921890382" cy="176.36217637617943" r="3.6"/>
 <circle class="hollow" cx="600.9596921890382" cy="176.36217637617943" r="3.6"/>
 <text class="tl" x="608.0" y="159.4" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
-<text class="pl" x="40" y="618">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
+<text class="pl" x="40" y="618">Filled drones are in Beam 1 (blue), hollow drones in Beam 2 (amber). Dotted lines mark each beam’s centre. Speeds are radial, toward the radar.</text>
 </svg>
       <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. Each beam is one 26&deg; beam position; the array forms one at a time and switches between them in microseconds. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 3&deg; apart) or D from E (1&nbsp;m and 4&deg; apart), because each pair shares a beam and a range cell.</figcaption>
     </figure>
