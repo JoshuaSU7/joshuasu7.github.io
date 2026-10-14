@@ -79,7 +79,7 @@
       <div class="metric"><div class="val">17.3 dBi</div><div class="lbl">Peak gain at boresight</div></div>
       <div class="metric"><div class="val">60&deg;</div><div class="lbl">Electronic scan range</div></div>
       <div class="metric"><div class="val">&minus;24 dB</div><div class="lbl">S11 return loss</div></div>
-      <div class="metric"><div class="val">13&deg;</div><div class="lbl">3&nbsp;dB beamwidth</div></div>
+      <div class="metric"><div class="val">26&deg;</div><div class="lbl">3&nbsp;dB beamwidth</div></div>
       <div class="metric"><div class="val">4 &times; 4</div><div class="lbl">Array elements</div></div>
     </div>
 
@@ -376,7 +376,7 @@
     <h3>Radiation pattern at boresight</h3>
     <figure class="shot">
       <img src="images/radar/gain-pattern-boresight.png" alt="3D total gain radiation pattern at boresight, 17.30 dBi peak" />
-      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a 3&nbsp;dB beamwidth of about 13&deg;, a narrow-to-medium beam. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
+      <figcaption><b>3D gain pattern, beam unsteered.</b> Peak realized gain of <b>17.30 dBi</b> concentrated straight up at boresight, with a full 3&nbsp;dB beamwidth of about 26&deg; (&plusmn;13&deg; either side of boresight), as expected for four elements per row at &lambda;/2 spacing. Sidelobes sit roughly 13&ndash;14&nbsp;dB below the main lobe and backlobe levels are low, which is a healthy result for a 4&times;4 array.</figcaption>
     </figure>
 
     <h3>Radiation pattern with the beam steered</h3>
@@ -1032,14 +1032,14 @@
           <tr><th>Dimension</th><th>Resolution</th><th>Where it comes from</th></tr>
         </thead>
         <tbody>
-          <tr><td>Angle</td><td>13&deg; beam &rarr; ~4.5&nbsp;m across at 20&nbsp;m</td><td>The array&rsquo;s simulated 3&nbsp;dB beamwidth. The phased array steers between beams in microseconds.</td></tr>
+          <tr><td>Angle</td><td>26&deg; beam &rarr; ~9&nbsp;m across at 20&nbsp;m</td><td>The array&rsquo;s simulated 3&nbsp;dB beamwidth. The phased array steers between beams in microseconds.</td></tr>
           <tr><td>Range</td><td>&Delta;R = c / 2B = <b>7.5&nbsp;m</b></td><td>Set by the 20&nbsp;MHz signal bandwidth, not by the carrier frequency</td></tr>
           <tr><td>Velocity (Doppler)</td><td>&Delta;v = &lambda; / 2T = <b>0.29&nbsp;m/s</b> (20&nbsp;Hz)</td><td>The short 2.86&nbsp;cm wavelength: every 1&nbsp;m/s of radial speed shifts the echo by 2v/&lambda; = <b>70&nbsp;Hz</b></td></tr>
         </tbody>
       </table>
     </div>
     <figure class="diagram">
-      <svg class="appdiag" viewBox="0 0 960 440" role="img" aria-label="Top-down view of a five-drone swarm 16 to 27 metres from the radar, split across two beams and two range cells" xmlns="http://www.w3.org/2000/svg">
+      <svg class="appdiag" viewBox="0 0 960 640" role="img" aria-label="Top-down view of a five-drone swarm 16 to 27 metres from the radar, split across two beams and two range cells" xmlns="http://www.w3.org/2000/svg">
 <style>
   .appdiag .bx{fill:var(--bg,#fff);stroke:var(--fg,#0b0b0b);stroke-width:1.3}
   .appdiag .soft{fill:var(--bg-soft,#f3f3f3);stroke:var(--fg-faint,#999);stroke-width:1}
@@ -1062,79 +1062,79 @@
 </style>
 <defs><marker id="swa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ar" d="M0,0 L10,5 L0,10 z"/></marker><marker id="swm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path class="arm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
 <text class="lab" x="12" y="20">SWARM GEOMETRY · top-down, true scale</text>
-<path class="wedge" d="M70,205 L926.8,205.0 A856.8,856.8 0 0 0 904.8,12.3 Z"/>
-<text class="p" x="307.9" y="181.9">Beam 2 (0° to +13°)</text>
-<path class="wedge" d="M70,205 L904.8,397.7 A856.8,856.8 0 0 0 926.8,205.0 Z"/>
-<text class="p" x="307.9" y="236.1">Beam 1 (−13° to 0°)</text>
-<path class="dash" d="M436.8,296.4 A378.0,378.0 0 0 0 436.8,113.6"/>
-<text class="g" x="435.8" y="105.7">15 m</text>
-<path class="dash" d="M620.2,342.2 A567.0,567.0 0 0 0 620.2,67.8"/>
-<text class="g" x="618.7" y="58.1">22.5 m</text>
-<path class="dash" d="M803.5,387.9 A756.0,756.0 0 0 0 803.5,22.1"/>
-<text class="g" x="801.6" y="10.4">30 m</text>
-<text class="p" x="525.1" y="336.1">range cell 1</text>
-<text class="p" x="707.1" y="386.9">range cell 2</text>
-<rect class="bx" x="44" y="181" width="22" height="48" rx="2"/>
-<rect class="solid" x="47.0" y="185.0" width="3" height="7"/>
-<rect class="solid" x="51.6" y="185.0" width="3" height="7"/>
-<rect class="solid" x="56.2" y="185.0" width="3" height="7"/>
-<rect class="solid" x="60.8" y="185.0" width="3" height="7"/>
-<rect class="solid" x="47.0" y="195.6" width="3" height="7"/>
-<rect class="solid" x="51.6" y="195.6" width="3" height="7"/>
-<rect class="solid" x="56.2" y="195.6" width="3" height="7"/>
-<rect class="solid" x="60.8" y="195.6" width="3" height="7"/>
-<rect class="solid" x="47.0" y="206.2" width="3" height="7"/>
-<rect class="solid" x="51.6" y="206.2" width="3" height="7"/>
-<rect class="solid" x="56.2" y="206.2" width="3" height="7"/>
-<rect class="solid" x="60.8" y="206.2" width="3" height="7"/>
-<rect class="solid" x="47.0" y="216.8" width="3" height="7"/>
-<rect class="solid" x="51.6" y="216.8" width="3" height="7"/>
-<rect class="solid" x="56.2" y="216.8" width="3" height="7"/>
-<rect class="solid" x="60.8" y="216.8" width="3" height="7"/>
-<text class="t" x="55" y="247">4×4 array</text>
-<line class="thin" x1="70" y1="205" x2="372.4" y2="205"/>
-<line class="thin" x1="196.0" y1="201" x2="196.0" y2="209"/>
-<text class="g" x="196.0" y="222">5 m</text>
-<line class="thin" x1="322.0" y1="201" x2="322.0" y2="209"/>
-<text class="g" x="322.0" y="222">10 m</text>
-<line class="ln" x1="461.2359389279595" y1="261.07437630422106" x2="475.2359389279595" y2="275.07437630422106"/>
-<line class="ln" x1="461.2359389279595" y1="275.07437630422106" x2="475.2359389279595" y2="261.07437630422106"/>
-<circle class="solid" cx="461.2359389279595" cy="261.07437630422106" r="3.6"/>
-<circle class="solid" cx="475.2359389279595" cy="261.07437630422106" r="3.6"/>
-<circle class="solid" cx="461.2359389279595" cy="275.07437630422106" r="3.6"/>
-<circle class="solid" cx="475.2359389279595" cy="275.07437630422106" r="3.6"/>
-<text class="tl" x="454.2" y="278.1" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="488.2067713631423" y1="250.20882671476517" x2="502.2067713631423" y2="264.20882671476517"/>
-<line class="ln" x1="488.2067713631423" y1="264.20882671476517" x2="502.2067713631423" y2="250.20882671476517"/>
-<circle class="solid" cx="488.2067713631423" cy="250.20882671476517" r="3.6"/>
-<circle class="solid" cx="502.2067713631423" cy="250.20882671476517" r="3.6"/>
-<circle class="solid" cx="488.2067713631423" cy="264.20882671476517" r="3.6"/>
-<circle class="solid" cx="502.2067713631423" cy="264.20882671476517" r="3.6"/>
-<text class="tl" x="509.2" y="253.2" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
-<line class="ln" x1="566.9232383588212" y1="206.7960128443909" x2="580.9232383588212" y2="220.7960128443909"/>
-<line class="ln" x1="566.9232383588212" y1="220.7960128443909" x2="580.9232383588212" y2="206.7960128443909"/>
-<circle class="solid" cx="566.9232383588212" cy="206.7960128443909" r="3.6"/>
-<circle class="solid" cx="580.9232383588212" cy="206.7960128443909" r="3.6"/>
-<circle class="solid" cx="566.9232383588212" cy="220.7960128443909" r="3.6"/>
-<circle class="solid" cx="580.9232383588212" cy="220.7960128443909" r="3.6"/>
-<text class="tl" x="587.9" y="211.8" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
-<line class="ln" x1="715.7067661897116" y1="140.89555735173437" x2="729.7067661897116" y2="154.89555735173437"/>
-<line class="ln" x1="715.7067661897116" y1="154.89555735173437" x2="729.7067661897116" y2="140.89555735173437"/>
-<circle class="hollow" cx="715.7067661897116" cy="140.89555735173437" r="3.6"/>
-<circle class="hollow" cx="729.7067661897116" cy="140.89555735173437" r="3.6"/>
-<circle class="hollow" cx="715.7067661897116" cy="154.89555735173437" r="3.6"/>
-<circle class="hollow" cx="729.7067661897116" cy="154.89555735173437" r="3.6"/>
-<text class="tl" x="736.7" y="159.9" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
-<line class="ln" x1="738.3284015767555" y1="115.08009874713765" x2="752.3284015767555" y2="129.08009874713764"/>
-<line class="ln" x1="738.3284015767555" y1="129.08009874713764" x2="752.3284015767555" y2="115.08009874713765"/>
-<circle class="hollow" cx="738.3284015767555" cy="115.08009874713765" r="3.6"/>
-<circle class="hollow" cx="752.3284015767555" cy="115.08009874713765" r="3.6"/>
-<circle class="hollow" cx="738.3284015767555" cy="129.08009874713764" r="3.6"/>
-<circle class="hollow" cx="752.3284015767555" cy="129.08009874713764" r="3.6"/>
-<text class="tl" x="759.3" y="112.1" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
-<text class="pl" x="40" y="430">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
+<path class="wedge" d="M70,300 L700.0,300.0 A630.0,630.0 0 0 0 636.2,23.8 Z"/>
+<text class="p" x="264.9" y="259.0">Beam 2 (0° to +26°)</text>
+<path class="wedge" d="M70,300 L636.2,576.2 A630.0,630.0 0 0 0 700.0,300.0 Z"/>
+<text class="p" x="264.9" y="349.0">Beam 1 (−26° to 0°)</text>
+<path class="dash" d="M336.1,438.5 A300,300 0 0 0 336.1,161.5"/>
+<text class="g" x="334.1" y="153.8">15 m</text>
+<path class="dash" d="M469.2,507.8 A450.0,450.0 0 0 0 469.2,92.2"/>
+<text class="g" x="466.2" y="82.7">22.5 m</text>
+<path class="dash" d="M602.2,577.0 A600,600 0 0 0 602.2,23.0"/>
+<text class="g" x="598.3" y="11.5">30 m</text>
+<text class="p" x="393.1" y="494.3">range cell 1</text>
+<text class="p" x="522.4" y="570.5">range cell 2</text>
+<rect class="bx" x="44" y="276" width="22" height="48" rx="2"/>
+<rect class="solid" x="47.0" y="280.0" width="3" height="7"/>
+<rect class="solid" x="51.6" y="280.0" width="3" height="7"/>
+<rect class="solid" x="56.2" y="280.0" width="3" height="7"/>
+<rect class="solid" x="60.8" y="280.0" width="3" height="7"/>
+<rect class="solid" x="47.0" y="290.6" width="3" height="7"/>
+<rect class="solid" x="51.6" y="290.6" width="3" height="7"/>
+<rect class="solid" x="56.2" y="290.6" width="3" height="7"/>
+<rect class="solid" x="60.8" y="290.6" width="3" height="7"/>
+<rect class="solid" x="47.0" y="301.2" width="3" height="7"/>
+<rect class="solid" x="51.6" y="301.2" width="3" height="7"/>
+<rect class="solid" x="56.2" y="301.2" width="3" height="7"/>
+<rect class="solid" x="60.8" y="301.2" width="3" height="7"/>
+<rect class="solid" x="47.0" y="311.8" width="3" height="7"/>
+<rect class="solid" x="51.6" y="311.8" width="3" height="7"/>
+<rect class="solid" x="56.2" y="311.8" width="3" height="7"/>
+<rect class="solid" x="60.8" y="311.8" width="3" height="7"/>
+<text class="t" x="55" y="342">4×4 array</text>
+<line class="thin" x1="70" y1="300" x2="310" y2="300"/>
+<line class="thin" x1="170" y1="296" x2="170" y2="304"/>
+<text class="g" x="170" y="317">5 m</text>
+<line class="thin" x1="270" y1="296" x2="270" y2="304"/>
+<text class="g" x="270" y="317">10 m</text>
+<line class="ln" x1="367.3380852144491" y1="391.8854381999832" x2="381.3380852144491" y2="405.8854381999832"/>
+<line class="ln" x1="367.3380852144491" y1="405.8854381999832" x2="381.3380852144491" y2="391.8854381999832"/>
+<circle class="solid" cx="367.3380852144491" cy="391.8854381999832" r="3.6"/>
+<circle class="solid" cx="381.3380852144491" cy="391.8854381999832" r="3.6"/>
+<circle class="solid" cx="367.3380852144491" cy="405.8854381999832" r="3.6"/>
+<circle class="solid" cx="381.3380852144491" cy="405.8854381999832" r="3.6"/>
+<text class="tl" x="360.3" y="408.9" text-anchor="end">A <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="391.41478093828323" y1="380.99847533485706" x2="405.41478093828323" y2="394.99847533485706"/>
+<line class="ln" x1="391.41478093828323" y1="394.99847533485706" x2="405.41478093828323" y2="380.99847533485706"/>
+<circle class="solid" cx="391.41478093828323" cy="380.99847533485706" r="3.6"/>
+<circle class="solid" cx="405.41478093828323" cy="380.99847533485706" r="3.6"/>
+<circle class="solid" cx="391.41478093828323" cy="394.99847533485706" r="3.6"/>
+<circle class="solid" cx="405.41478093828323" cy="394.99847533485706" r="3.6"/>
+<text class="tl" x="412.4" y="384.0" text-anchor="start">B <tspan class="gl">12.5 m/s</tspan></text>
+<line class="ln" x1="462.02562010392967" y1="320.9025894976501" x2="476.02562010392967" y2="334.9025894976501"/>
+<line class="ln" x1="462.02562010392967" y1="334.9025894976501" x2="476.02562010392967" y2="320.9025894976501"/>
+<circle class="solid" cx="462.02562010392967" cy="320.9025894976501" r="3.6"/>
+<circle class="solid" cx="476.02562010392967" cy="320.9025894976501" r="3.6"/>
+<circle class="solid" cx="462.02562010392967" cy="334.9025894976501" r="3.6"/>
+<circle class="solid" cx="476.02562010392967" cy="334.9025894976501" r="3.6"/>
+<text class="tl" x="483.0" y="325.9" text-anchor="start">C <tspan class="gl">10.5 m/s</tspan></text>
+<line class="ln" x1="575.1000315663482" y1="202.70294761319622" x2="589.1000315663482" y2="216.70294761319622"/>
+<line class="ln" x1="575.1000315663482" y1="216.70294761319622" x2="589.1000315663482" y2="202.70294761319622"/>
+<circle class="hollow" cx="575.1000315663482" cy="202.70294761319622" r="3.6"/>
+<circle class="hollow" cx="589.1000315663482" cy="202.70294761319622" r="3.6"/>
+<circle class="hollow" cx="575.1000315663482" cy="216.70294761319622" r="3.6"/>
+<circle class="hollow" cx="589.1000315663482" cy="216.70294761319622" r="3.6"/>
+<text class="tl" x="596.1" y="221.7" text-anchor="start">D <tspan class="gl">12 m/s</tspan></text>
+<line class="ln" x1="586.9596921890382" y1="162.36217637617943" x2="600.9596921890382" y2="176.36217637617943"/>
+<line class="ln" x1="586.9596921890382" y1="176.36217637617943" x2="600.9596921890382" y2="162.36217637617943"/>
+<circle class="hollow" cx="586.9596921890382" cy="162.36217637617943" r="3.6"/>
+<circle class="hollow" cx="600.9596921890382" cy="162.36217637617943" r="3.6"/>
+<circle class="hollow" cx="586.9596921890382" cy="176.36217637617943" r="3.6"/>
+<circle class="hollow" cx="600.9596921890382" cy="176.36217637617943" r="3.6"/>
+<text class="tl" x="608.0" y="159.4" text-anchor="start">E <tspan class="gl">8 m/s</tspan></text>
+<text class="pl" x="40" y="618">Filled drones are in Beam 1, hollow drones in Beam 2. Speeds are radial, toward the radar.</text>
 </svg>
-      <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 2&deg; apart) or D from E (1&nbsp;m and 2&deg; apart), because each pair shares a beam and a range cell.</figcaption>
+      <figcaption><b>The swarm from above.</b> Drones A, B and C fall in Beam 1, and D and E in Beam 2. Each beam is one 26&deg; beam position; the array forms one at a time and switches between them in microseconds. The dashed arcs mark the 7.5&nbsp;m range cells. Angle and range alone can&rsquo;t split A from B (1&nbsp;m and 3&deg; apart) or D from E (1&nbsp;m and 4&deg; apart), because each pair shares a beam and a range cell.</figcaption>
     </figure>
     <div class="table-wrap">
       <table class="data">
@@ -1142,11 +1142,11 @@
           <tr><th>Drone</th><th>Range</th><th>Azimuth</th><th>Radial speed</th><th>Doppler shift</th><th>Beam / range cell</th></tr>
         </thead>
         <tbody>
-          <tr><td>A</td><td>16&nbsp;m</td><td>&minus;9&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>B</td><td>17&nbsp;m</td><td>&minus;7&deg;</td><td>12.5&nbsp;m/s</td><td>876&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>C</td><td>20&nbsp;m</td><td>&minus;1&deg;</td><td>10.5&nbsp;m/s</td><td>736&nbsp;Hz</td><td>1 / 1</td></tr>
-          <tr><td>D</td><td>26&nbsp;m</td><td>+5&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>2 / 2</td></tr>
-          <tr><td>E</td><td>27&nbsp;m</td><td>+7&deg;</td><td>8.0&nbsp;m/s</td><td>560&nbsp;Hz</td><td>2 / 2</td></tr>
+          <tr><td>A</td><td>16&nbsp;m</td><td>&minus;18&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>B</td><td>17&nbsp;m</td><td>&minus;15&deg;</td><td>12.5&nbsp;m/s</td><td>876&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>C</td><td>20&nbsp;m</td><td>&minus;4&deg;</td><td>10.5&nbsp;m/s</td><td>736&nbsp;Hz</td><td>1 / 1</td></tr>
+          <tr><td>D</td><td>26&nbsp;m</td><td>+10&deg;</td><td>12.0&nbsp;m/s</td><td>841&nbsp;Hz</td><td>2 / 2</td></tr>
+          <tr><td>E</td><td>27&nbsp;m</td><td>+14&deg;</td><td>8.0&nbsp;m/s</td><td>560&nbsp;Hz</td><td>2 / 2</td></tr>
         </tbody>
       </table>
     </div>
